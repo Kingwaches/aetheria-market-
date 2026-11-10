@@ -3,17 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Aetheria Market — Tienda online con pago en USDT. Ropa, relojes, perfumes y encargos. Envíos internacionales.">
+<meta name="theme-color" content="#0f172a">
 <title>Tienda Virtual Aetheria Market</title>
+<link rel="preconnect" href="https://cdn.tailwindcss.com">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--tx:#0f172a;--mut:#64748b}
 html.dark{--bg:#0f172a;--card:#1e293b;--line:#334155;--tx:#f1f5f9;--mut:#94a3b8}
-body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,sans-serif;transition:background .3s}
+body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;transition:background .25s}
 .c{background:var(--card);border:1px solid var(--line)}
 .m{color:var(--mut)}
 .in{background:var(--bg);border:1px solid var(--line);border-radius:.5rem;padding:.55rem .75rem;font-size:.85rem;width:100%;color:var(--tx)}
 .btn{background:linear-gradient(90deg,#ec4899,#8b5cf6);color:#fff;font-weight:700;border-radius:.75rem;padding:.55rem 1.1rem;font-size:.85rem;transition:transform .15s,opacity .15s}
 .btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
 .wm{position:absolute;bottom:8px;right:8px;background:rgba(15,23,42,.88);color:#06b6d4;font-size:9px;font-weight:900;padding:2px 8px;border-radius:6px;border:1px solid rgba(6,182,212,.45);pointer-events:none;letter-spacing:.3px}
 .logo{background:linear-gradient(90deg,#ec4899,#a78bfa,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
 @keyframes pulseCart{0%,100%{transform:scale(1)}50%{transform:scale(1.22)}}
@@ -26,6 +30,11 @@ body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,sa
 .opt:hover{border-color:#ec4899}
 .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 #ban{transition:all .4s}
+.step{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.step:last-child{border-bottom:none}
+.step-n{min-width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;font-weight:800;font-size:.75rem;display:flex;align-items:center;justify-content:center}
+img{content-visibility:auto}
+.badge-hot{position:absolute;top:8px;left:8px;background:linear-gradient(90deg,#f97316,#ef4444);color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;z-index:2}
 </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -47,6 +56,32 @@ body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,sa
   </div>
   <nav id="nav" class="flex gap-2 overflow-x-auto px-4 pb-2.5 text-xs max-w-7xl mx-auto scrollbar-hide"></nav>
 </header>
+
+<!-- Cómo comprar -->
+<section class="max-w-7xl mx-auto px-4 mt-4 w-full">
+  <div class="c rounded-2xl p-4 md:p-5">
+    <b class="text-sm" id="howTitle">Cómo comprar en 4 pasos</b>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3 text-xs">
+      <div class="flex gap-2 items-start">
+        <span class="step-n">1</span>
+        <div><b id="how1t">Elige</b><p class="m" id="how1d">Busca o navega el catálogo y añade al carrito.</p></div>
+      </div>
+      <div class="flex gap-2 items-start">
+        <span class="step-n">2</span>
+        <div><b id="how2t">Datos</b><p class="m" id="how2d">Indica nombre, edad y dirección de envío.</p></div>
+      </div>
+      <div class="flex gap-2 items-start">
+        <span class="step-n">3</span>
+        <div><b id="how3t">Paga en USDT</b><p class="m" id="how3d">Envía el total a la wallet TRON que aparece.</p></div>
+      </div>
+      <div class="flex gap-2 items-start">
+        <span class="step-n">4</span>
+        <div><b id="how4t">Confirma</b><p class="m" id="how4d">Escríbenos por Discord con el comprobante.</p></div>
+      </div>
+    </div>
+    <p class="text-[11px] m mt-3" id="howNote">Discord: <b style="color:var(--tx)">Aetheriamarket</b> · Envíos internacionales · Pago 100% en USDT (TRON)</p>
+  </div>
+</section>
 
 <!-- Filtros -->
 <section class="max-w-7xl mx-auto px-4 mt-4 w-full grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -120,14 +155,33 @@ body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,sa
   </div>
 </section>
 
-<!-- Aviso legal -->
-<footer class="max-w-5xl mx-auto px-4 pb-28 w-full">
+<!-- Envíos + Confianza + Legal -->
+<footer class="max-w-5xl mx-auto px-4 pb-28 w-full space-y-4">
+  <div class="c rounded-2xl p-4 grid sm:grid-cols-3 gap-4 text-xs">
+    <div>
+      <b id="shipTitle">📦 Envíos</b>
+      <p class="m mt-1" id="shipDesc">Envío estándar y express disponibles. Tiempos estimados: 10–25 días (estándar) / 7–14 días (express), según destino.</p>
+    </div>
+    <div>
+      <b id="payInfoTitle">💎 Pago seguro</b>
+      <p class="m mt-1" id="payInfoDesc">Solo aceptamos USDT en red TRON. Tras pagar, envía el comprobante por Discord (Aetheriamarket).</p>
+    </div>
+    <div>
+      <b id="retTitle">↩️ Devoluciones</b>
+      <p class="m mt-1" id="retDesc">Cancelación dentro de las 24 h posteriores al pago (se aplica 2% de gestión). Luego el cliente gestiona reclamaciones con el transportista.</p>
+    </div>
+  </div>
+
   <details class="c rounded-2xl p-4 text-xs m">
-    <summary class="font-bold cursor-pointer" style="color:var(--tx)">⚖️ Aviso legal, Leyes Jurídicas y Derechos de Autor · Legal Notice</summary>
+    <summary class="font-bold cursor-pointer" style="color:var(--tx)">⚖️ Aviso legal, derechos de autor y exención de responsabilidad</summary>
     <p class="mt-2 text-justify leading-relaxed">
-      Los contenidos, marcas, logos, imágenes, fotografías y signos distintivos exhibidos en este sitio web se encuentran plenamente amparados y protegidos por la legislación aplicable en materia de propiedad intelectual e industrial; quedando absolutamente prohibida su reproducción, comunicación pública o transformación sin autorización expresa. Los proveedores y anunciantes externos responden de forma exclusiva e individual por la licitud, veracidad y calidad de las mercancías y servicios que promocionen. El cliente o comprador asume de manera directa la carga jurídica de formular cualquier reclamación ante las agencias de transporte o proveedores en caso de demoras, daños o extravíos, sin perjuicio del derecho de desistimiento contractual reconocido formalmente dentro del plazo perentorio de 24 horas posteriores al pago de la orden, el cual se reembolsará aplicando una deducción del 2% por gastos de gestión operativa y bancaria. Los creadores, titulares y administradores de la plataforma Aetheria Market quedan liberados de cualquier responsabilidad civil, penal o indemnizatoria derivada de actos de terceros, uso fraudulento de la plataforma, o conductas inapropiadas que vulneren la seguridad o identidad de los usuarios y personal de la tienda.
+      Los contenidos, marcas, logos, imágenes y signos distintivos de este sitio están protegidos por la legislación de propiedad intelectual e industrial. Queda prohibida su reproducción o uso no autorizado. Los proveedores y anunciantes responden de forma exclusiva por la licitud y calidad de sus productos. El comprador asume la reclamación ante transportistas o proveedores en caso de demora, daño o extravío. Existe derecho de desistimiento dentro de las 24 horas posteriores al pago, con deducción del 2% por gastos de gestión. Los titulares de Aetheria Market quedan liberados de responsabilidad civil o penal derivada de actos de terceros, uso indebido de la plataforma o conductas que atenten contra la identidad de la página, clientes o trabajadores.
+    </p>
+    <p class="mt-2 text-justify leading-relaxed">
+      <b>English:</b> All content is protected by intellectual property law. Suppliers are solely responsible for their products. Buyers must claim delays or losses with carriers/suppliers. Cancellation within 24 hours of payment (2% admin fee). Platform owners are not liable for third-party acts or misuse.
     </p>
   </details>
+  <p class="text-center text-[11px] m pb-2">© 2026 Aetheria Market · Discord: <b style="color:var(--tx)">Aetheriamarket</b></p>
 </footer>
 
 <!-- Overlay carrito -->
@@ -154,7 +208,8 @@ body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,sa
     <div id="sm" class="text-xs font-mono space-y-1"></div>
     <div id="wallet" class="text-center text-[11px] p-3 rounded-xl" style="background:var(--bg)">
       <b class="text-cyan-400" id="walTitle"></b>
-      <code class="block break-all select-all my-1.5 text-[10px]">TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3</code>
+      <p class="m my-1" id="paySteps" style="font-size:11px;line-height:1.4">1) Copia la wallet · 2) Envía el total exacto en USDT (TRON) · 3) Confirma por Discord con el comprobante</p>
+      <code class="block break-all select-all my-1.5 text-[10px] p-2 rounded-lg" style="background:var(--card);border:1px dashed var(--line)">TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3</code>
       <button class="opt" onclick="copyWallet()" id="copyBtn"></button>
       <div class="mt-2 flex flex-col items-center">
         <img class="w-24 h-24 bg-white p-1 rounded border border-cyan-400/40" alt="QR"
@@ -280,7 +335,7 @@ const T = {
     bad: 'Comentario eliminado automáticamente por contener palabras prohibidas.',
     cartT: '🛒 Mi carrito',
     name: 'Nombre completo', age: 'Edad', addr: 'Dirección exacta de envío',
-    normal: 'Entrega normal (15-30 días) +3%', express: 'Compra rápida / Exprés (5-8 días) +8%',
+    normal: 'Envío estándar (10-25 días) +3%', express: 'Envío express (7-14 días) +8%',
     coupon: 'Código de cupón', apply: 'Aplicar',
     pay: 'Generar recibo de pago',
     empty: 'Tu carrito está vacío.',
@@ -304,7 +359,17 @@ const T = {
     encok: 'Enlace copiado. Envíalo a Discord (Aetheriamarket) para procesarlo.',
     encargoTitle: 'Resultados de Encargo para',
     wholesale: 'Proveedor Mayorista · Encargo Directo',
-    buyEncargo: 'Comprar por Encargo'
+    buyEncargo: 'Comprar por Encargo',
+    howTitle: 'Cómo comprar en 4 pasos',
+    how1t: 'Elige', how1d: 'Busca o navega el catálogo y añade al carrito.',
+    how2t: 'Datos', how2d: 'Indica nombre, edad y dirección de envío.',
+    how3t: 'Paga en USDT', how3d: 'Envía el total a la wallet TRON que aparece.',
+    how4t: 'Confirma', how4d: 'Escríbenos por Discord con el comprobante.',
+    howNote: 'Discord: Aetheriamarket · Envíos internacionales · Pago 100% en USDT (TRON)',
+    shipTitle: '📦 Envíos', shipDesc: 'Envío estándar y express. Tiempos estimados: 10–25 días (estándar) / 7–14 días (express), según destino.',
+    payInfoTitle: '💎 Pago seguro', payInfoDesc: 'Solo aceptamos USDT en red TRON. Tras pagar, envía el comprobante por Discord (Aetheriamarket).',
+    retTitle: '↩️ Devoluciones', retDesc: 'Cancelación dentro de las 24 h posteriores al pago (2% de gestión). Luego el cliente gestiona reclamaciones con el transportista.',
+    paySteps: '1) Copia la wallet · 2) Envía el total exacto en USDT (TRON) · 3) Confirma por Discord con el comprobante'
   },
   en: {
     search: 'Search perfume, watch, clothes, cosmetics...',
@@ -319,7 +384,7 @@ const T = {
     bad: 'Comment removed automatically for using prohibited language.',
     cartT: '🛒 My cart',
     name: 'Full name', age: 'Age', addr: 'Exact shipping address',
-    normal: 'Standard delivery (15-30 days) +3%', express: 'Express fast buy (5-8 days) +8%',
+    normal: 'Standard shipping (10-25 days) +3%', express: 'Express shipping (7-14 days) +8%',
     coupon: 'Coupon code', apply: 'Apply',
     pay: 'Generate payment receipt',
     empty: 'Your cart is empty.',
@@ -343,7 +408,17 @@ const T = {
     encok: 'Link copied. Send it to Discord (Aetheriamarket) to process.',
     encargoTitle: 'Order results for',
     wholesale: 'Wholesale Supplier · Direct Order',
-    buyEncargo: 'Buy as Order'
+    buyEncargo: 'Buy as Order',
+    howTitle: 'How to buy in 4 steps',
+    how1t: 'Choose', how1d: 'Search or browse the catalog and add to cart.',
+    how2t: 'Details', how2d: 'Enter your name, age and shipping address.',
+    how3t: 'Pay in USDT', how3d: 'Send the exact total to the TRON wallet shown.',
+    how4t: 'Confirm', how4d: 'Message us on Discord with the payment proof.',
+    howNote: 'Discord: Aetheriamarket · International shipping · 100% USDT (TRON) payments',
+    shipTitle: '📦 Shipping', shipDesc: 'Standard and express available. Estimated: 10–25 days (standard) / 7–14 days (express), depending on destination.',
+    payInfoTitle: '💎 Secure payment', payInfoDesc: 'We only accept USDT on TRON. After paying, send the receipt via Discord (Aetheriamarket).',
+    retTitle: '↩️ Returns', retDesc: 'Cancel within 24h after payment (2% admin fee). After that, claims are handled with the carrier.',
+    paySteps: '1) Copy the wallet · 2) Send the exact total in USDT (TRON) · 3) Confirm on Discord with proof'
   }
 };
 
@@ -562,6 +637,16 @@ function applyLang() {
   $('#ct').placeholder = t('cmph');
   $('#postBtn').textContent = t('post');
   $('#receiptTitle').textContent = t('pay');
+
+  // Cómo comprar + confianza
+  const set = (id, key) => { const el = $(id); if (el) el.textContent = t(key); };
+  set('howTitle','howTitle'); set('how1t','how1t'); set('how1d','how1d');
+  set('how2t','how2t'); set('how2d','how2d'); set('how3t','how3t'); set('how3d','how3d');
+  set('how4t','how4t'); set('how4d','how4d'); set('howNote','howNote');
+  set('shipTitle','shipTitle'); set('shipDesc','shipDesc');
+  set('payInfoTitle','payInfoTitle'); set('payInfoDesc','payInfoDesc');
+  set('retTitle','retTitle'); set('retDesc','retDesc');
+  set('paySteps','paySteps');
 
   // Select sexo
   const fs = $('#fs');
