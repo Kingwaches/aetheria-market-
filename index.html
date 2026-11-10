@@ -114,6 +114,32 @@ img{content-visibility:auto}
   </div>
 </section>
 
+<!-- Banner publicitario (proveedores) -->
+<section class="max-w-7xl mx-auto px-4 mt-4 w-full">
+  <div id="adBanner" class="c rounded-2xl overflow-hidden relative" style="min-height:120px">
+    <div id="adBannerInner" class="p-4 md:p-5 flex flex-col md:flex-row items-center gap-4 justify-between">
+      <div>
+        <b class="text-sm" id="adBannerTitle">📢 Espacio publicitario</b>
+        <p class="text-xs m mt-1" id="adBannerDesc">Proveedores: anuncia aquí tu marca (foto o video corto). Calcula la tarifa abajo y escríbenos por Discord o WhatsApp.</p>
+      </div>
+      <a id="adBannerCta" href="#adsTitle" class="btn whitespace-nowrap text-sm">Ver tarifas</a>
+    </div>
+    <!-- Si hay anuncio activo, se muestra aquí (imagen o video) -->
+    <div id="adMedia" class="hidden">
+      <img id="adImg" alt="Publicidad" class="w-full max-h-48 object-cover" loading="lazy" decoding="async">
+      <video id="adVid" class="w-full max-h-48 object-cover hidden" controls playsinline muted></video>
+    </div>
+  </div>
+</section>
+
+<!-- Destacados / Ofertas -->
+<section class="max-w-7xl mx-auto px-4 mt-5 w-full">
+  <div class="flex justify-between items-center mb-3">
+    <h2 class="font-bold border-l-4 border-orange-500 pl-3" id="featTitle">🔥 Destacados y ofertas</h2>
+  </div>
+  <div id="featGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4"></div>
+</section>
+
 <!-- Catálogo -->
 <main class="flex-grow max-w-7xl mx-auto px-4 py-6 w-full">
   <div class="flex justify-between items-center mb-4">
@@ -209,7 +235,7 @@ img{content-visibility:auto}
     <div id="wallet" class="text-center text-[11px] p-3 rounded-xl" style="background:var(--bg)">
       <b class="text-cyan-400" id="walTitle"></b>
       <p class="m my-1" id="paySteps" style="font-size:11px;line-height:1.4">1) Copia la wallet · 2) Envía el total exacto en USDT (TRON) · 3) Confirma por Discord con el comprobante</p>
-      <code class="block break-all select-all my-1.5 text-[10px] p-2 rounded-lg" style="background:var(--card);border:1px dashed var(--line)">TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3</code>
+      <code id="walletAddr" class="block break-all select-all my-1.5 text-[10px] p-2 rounded-lg" style="background:var(--card);border:1px dashed var(--line)">TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3</code>
       <button class="opt" onclick="copyWallet()" id="copyBtn"></button>
       <div class="mt-2 flex flex-col items-center">
         <img class="w-24 h-24 bg-white p-1 rounded border border-cyan-400/40" alt="QR"
@@ -268,7 +294,15 @@ img{content-visibility:auto}
 
 <script>
 /* ========== CONFIG ========== */
-const CFG = { folder: '', key: 'Rist2026', coupon: 'AETHERIA2026' };
+const CFG = {
+  folder: '',
+  key: 'Rist2026',
+  coupon: 'AETHERIA2026',
+  /* Pon tu número con código de país, sin + ni espacios. Ej: 584121234567 */
+  whatsapp: '',
+  discord: 'Aetheriamarket',
+  wallet: 'TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3'
+};
 
 /* Lista completa de fotos (nombres exactos de tu carpeta) */
 const IMAGES = [
@@ -326,7 +360,7 @@ const T = {
     search: 'Buscar perfume, reloj, ropa, cosméticos...',
     allsex: 'Todos los sexos', mujer: 'Mujer', hombre: 'Hombre', unisex: 'Unisex',
     allsz: 'Todas las tallas',
-    asc: 'Más baratos primero (desde 0.50 USDT)', desc: 'Más costosos primero',
+    asc: 'Más baratos primero', desc: 'Más costosos primero',
     items: 'productos', catalog: 'Catálogo verificado',
     add: 'Añadir al carrito', upd: 'Actualizar artículo',
     size: 'Talla / Medida', color: 'Color / Estilo',
@@ -350,7 +384,7 @@ const T = {
     encph: 'Enlace del artículo de SheIn...',
     encb: 'Solicitar encargo',
     ads: '📢 Publicidad para nuevos proveedores',
-    adsd: 'Tarifas: 0.25 USDT/min · 8 USDT/hora · 40 USDT/día · 200 USDT/semana. Descuento del 1.5% si el contrato supera los 5 días. Contacto por Discord.',
+    adsd: 'Tarifas: 0.25 USDT/min · 8 USDT/hora · 40 USDT/día · 200 USDT/semana. −1.5% si supera 5 días. Envíanos foto o video corto por Discord y lo publicamos en el banner.',
     comp: '📬 Quejas y sugerencias',
     compph: 'Cuéntanos cómo mejorar la tienda...',
     send: 'Enviar', thanks: '¡Gracias! Tu mensaje fue registrado.',
@@ -375,7 +409,7 @@ const T = {
     search: 'Search perfume, watch, clothes, cosmetics...',
     allsex: 'All genders', mujer: 'Women', hombre: 'Men', unisex: 'Unisex',
     allsz: 'All sizes',
-    asc: 'Cheapest first (from 0.50 USDT)', desc: 'Most expensive first',
+    asc: 'Cheapest first', desc: 'Most expensive first',
     items: 'products', catalog: 'Verified catalog',
     add: 'Add to cart', upd: 'Update item',
     size: 'Size', color: 'Color / Style',
@@ -399,7 +433,7 @@ const T = {
     encph: 'SheIn item link...',
     encb: 'Request order',
     ads: '📢 Advertising for suppliers',
-    adsd: 'Rates: 0.25 USDT/min · 8 USDT/hour · 40 USDT/day · 200 USDT/week. 1.5% off for contracts over 5 days. Contact via Discord.',
+    adsd: 'Rates: 0.25 USDT/min · 8 USDT/hour · 40 USDT/day · 200 USDT/week. 1.5% off over 5 days. Send a photo or short video on Discord and we publish it on the banner.',
     comp: '📬 Complaints & suggestions',
     compph: 'Tell us how to improve...',
     send: 'Send', thanks: 'Thank you! Message recorded.',
@@ -452,10 +486,10 @@ const RULES = [
 ];
 
 const PR = {
-  perfumes: [6, 28], relojes: [8, 35], joyas: [4, 15], gafas: [4, 12],
-  cremas: [5, 15], cosmeticos: [3, 12], ropa: [4, 25], deportiva: [5, 20],
-  zapatos: [12, 40], elegante: [14, 45], abrigos: [15, 40], eventos: [6, 25],
-  interior: [0.50, 1]
+  perfumes: [12, 45], relojes: [15, 55], joyas: [8, 28], gafas: [8, 22],
+  cremas: [9, 25], cosmeticos: [6, 22], ropa: [8, 35], deportiva: [10, 32],
+  zapatos: [18, 55], elegante: [20, 60], abrigos: [22, 55], eventos: [12, 40],
+  interior: [3, 12]
 };
 
 const COL = [
@@ -573,14 +607,12 @@ function buildProduct(f, i) {
     .replace(/gym|deporte/gi, 'Sport')
     .replace(/disfraz/gi, 'Costume');
 
-  let price;
-  if (cat === 'interior' && !/fina|elegan|conjunto|estampad|modelo/.test(n)) {
-    price = H % 2 ? 1 : 0.50;
-  } else {
-    let [lo, hi] = PR[cat] || [4, 25];
-    if (/inteligente|smart/.test(n)) [lo, hi] = [30, 48];
-    price = Math.round((lo + (H % 1000) / 1000 * (hi - lo)) * 2) / 2;
-  }
+  let [lo, hi] = PR[cat] || [8, 30];
+  if (/inteligente|smart/.test(n)) [lo, hi] = [35, 65];
+  if (cat === 'interior' && /fina|elegan|conjunto|modelo/.test(n)) { lo = 6; hi = 16; }
+  // Precios más realistas (mín. 2.5 USDT)
+  let price = Math.round((lo + (H % 1000) / 1000 * (hi - lo)) * 2) / 2;
+  if (price < 2.5) price = 2.5;
 
   const sizes = ['zapatos'].includes(cat)
     ? ['38', '39', '40', '41', '42', '43']
@@ -602,6 +634,11 @@ function displayName(p) {
 function load() {
   P = IMAGES.map((f, i) => buildProduct(f, i));
   cart = cart.filter(item => P.some(p => p.f === item.f));
+  const w = CFG.wallet || 'TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3';
+  const waEl = $('#walletAddr');
+  if (waEl) waEl.textContent = w;
+  const qr = document.querySelector('#wallet img');
+  if (qr) qr.src = 'https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=' + encodeURIComponent(w);
   applyLang();
 }
 
@@ -684,9 +721,51 @@ function applyLang() {
 
   renderNav();
   renderCatalog();
+  renderFeatured();
   drawCart();
   applySeason();
-  if (!$('#bp').classList.contains('hidden')) showBotMenu();
+  updateContacts();
+  if ($('#bp') && !$('#bp').classList.contains('hidden')) showBotMenu();
+}
+
+function contactLine() {
+  const d = CFG.discord || 'Aetheriamarket';
+  const wa = (CFG.whatsapp || '').replace(/\D/g, '');
+  if (wa) {
+    return L === 'es'
+      ? `Discord: ${d} · WhatsApp: +${wa}`
+      : `Discord: ${d} · WhatsApp: +${wa}`;
+  }
+  return L === 'es'
+    ? `Discord: ${d} · WhatsApp: pídelo por Discord`
+    : `Discord: ${d} · WhatsApp: ask via Discord`;
+}
+
+function updateContacts() {
+  const wa = (CFG.whatsapp || '').replace(/\D/g, '');
+  const d = CFG.discord || 'Aetheriamarket';
+  const note = $('#howNote');
+  if (note) {
+    note.innerHTML = L === 'es'
+      ? `${contactLine()} · Envíos internacionales · Pago 100% en USDT (TRON)`
+      : `${contactLine()} · International shipping · 100% USDT (TRON) payments`;
+  }
+  // Enlaces rápidos en pie si existen
+  const foot = document.querySelector('footer p.text-center');
+  if (foot) {
+    const waLink = wa ? ` · <a href="https://wa.me/${wa}" target="_blank" rel="noopener" class="underline">WhatsApp</a>` : '';
+    foot.innerHTML = `© 2026 Aetheria Market · Discord: <b style="color:var(--tx)">${esc(d)}</b>${waLink}`;
+  }
+  const adDesc = $('#adBannerDesc');
+  if (adDesc) {
+    adDesc.textContent = L === 'es'
+      ? `Proveedores: anuncia aquí tu marca (foto o video corto). Calcula la tarifa abajo y escríbenos por Discord (${d})${wa ? ' o WhatsApp' : ''}.`
+      : `Suppliers: advertise your brand here (photo or short video). Check rates below and contact us on Discord (${d})${wa ? ' or WhatsApp' : ''}.`;
+  }
+  const adTitle = $('#adBannerTitle');
+  if (adTitle) adTitle.textContent = L === 'es' ? '📢 Espacio publicitario' : '📢 Ad space';
+  const feat = $('#featTitle');
+  if (feat) feat.textContent = L === 'es' ? '🔥 Destacados y ofertas' : '🔥 Featured & deals';
 }
 
 function toggleLang() {
@@ -716,12 +795,15 @@ function setCategory(c) {
 }
 
 /* ========== TARJETA DE PRODUCTO ========== */
-function productCard(p) {
+function productCard(p, opts = {}) {
+  const hot = opts.hot ? `<span class="badge-hot">${L === 'es' ? 'OFERTA' : 'DEAL'}</span>` : '';
   return `
   <article class="c rounded-2xl p-3 flex flex-col hover:shadow-lg transition-shadow">
     <div class="relative overflow-hidden rounded-xl mb-2 cursor-pointer" onclick="openProduct(${p.i})">
-      <img src="${imgUrl(p.f)}" alt="${esc(displayName(p))}" class="w-full h-52 object-cover" loading="lazy"
+      <img src="${imgUrl(p.f)}" alt="${esc(displayName(p))}" width="400" height="208"
+        class="w-full h-52 object-cover" loading="lazy" decoding="async"
         onerror="this.src='https://placehold.co/400x400/1e293b/94a3b8?text=No+Image'">
+      ${hot}
       <div class="wm">AETHERIA MARKET</div>
       <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-black/65 text-white uppercase">${p.cat}</span>
       <span class="absolute top-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded bg-pink-600 text-white">${p.sex}</span>
@@ -736,6 +818,27 @@ function productCard(p) {
     </div>
     <button class="btn mt-2 w-full" onclick="openProduct(${p.i})">${t('add')}</button>
   </article>`;
+}
+
+function renderFeatured() {
+  const box = $('#featGrid');
+  if (!box || !P.length) return;
+  // Destacados: mezcla de categorías, precio medio-alto, máx 4
+  const picks = [];
+  const catsSeen = new Set();
+  const sorted = [...P].sort((a, b) => b.price - a.price);
+  for (const p of sorted) {
+    if (picks.length >= 4) break;
+    if (catsSeen.has(p.cat) && picks.length < 3) continue;
+    catsSeen.add(p.cat);
+    picks.push(p);
+  }
+  while (picks.length < 4 && picks.length < P.length) {
+    const p = P[picks.length * 7 % P.length];
+    if (!picks.includes(p)) picks.push(p);
+    else break;
+  }
+  box.innerHTML = picks.map(p => productCard(p, { hot: true })).join('');
 }
 
 /* ========== BÚSQUEDA INTELIGENTE + ENCARGO ========== */
@@ -1092,7 +1195,8 @@ function applyCoupon() {
 }
 
 function copyWallet() {
-  navigator.clipboard.writeText('TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3').then(() => {
+  const w = CFG.wallet || 'TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3';
+  navigator.clipboard.writeText(w).then(() => {
     const btn = $('#copyBtn');
     btn.textContent = t('copied');
     setTimeout(() => btn.textContent = t('copy'), 1500);
@@ -1118,8 +1222,18 @@ function generateReceipt() {
     return p ? `<div>• ${esc(displayName(p))} (${item.s}) ×${item.q} = ${f2(p.price * item.q)} USDT</div>` : '';
   }).join('');
 
+  const wallet = CFG.wallet || 'TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3';
+  const wa = (CFG.whatsapp || '').replace(/\D/g, '');
+  const d = CFG.discord || 'Aetheriamarket';
+  const contactHtml = wa
+    ? `<a class="btn inline-block mt-2" href="https://wa.me/${wa}?text=${encodeURIComponent('Hola, ya pagué mi pedido en Aetheria Market. Total: ' + f2(total) + ' USDT')}" target="_blank" rel="noopener">WhatsApp</a>
+       <span class="m text-xs mx-2">o</span>
+       <span class="text-xs">Discord: <b>${esc(d)}</b></span>`
+    : `<p class="text-xs mt-2">Discord: <b>${esc(d)}</b> ${L === 'es' ? '(envía captura del pago)' : '(send payment screenshot)'}</p>`;
+
   $('#rb').innerHTML = `
-    <div class="mb-2"><b>${esc(name)}</b> · ${esc(age)} años</div>
+    <div class="mb-2 text-emerald-400 font-bold">${L === 'es' ? '✅ Pedido generado' : '✅ Order created'}</div>
+    <div class="mb-2"><b>${esc(name)}</b> · ${esc(age)} ${L === 'es' ? 'años' : 'y/o'}</div>
     <div class="mb-2 m">${esc(addr)}</div>
     <div class="mb-2">${ship === 'expres' ? t('express') : t('normal')}</div>
     <hr class="my-2" style="border-color:var(--line)">
@@ -1130,9 +1244,18 @@ function generateReceipt() {
     <div>${t('ent')}: ${f2(delivery)} USDT</div>
     ${couponDisc > 0 ? `<div class="text-emerald-400">${t('cup')}: −${f2(couponDisc)} USDT</div>` : ''}
     ${volumeDisc > 0 ? `<div class="text-emerald-400">${t('vol')}: −${f2(volumeDisc)} USDT</div>` : ''}
-    <div class="font-bold text-cyan-400 mt-1">${t('tot')}: ${f2(total)} USDT</div>
-    <p class="text-amber-500 mt-2 text-[11px]">${t('cancel')}</p>
-    <p class="break-all select-all font-mono mt-2 text-[10px]">USDT TRC20: TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3</p>`;
+    <div class="font-bold text-cyan-400 mt-1 text-base">${t('tot')}: ${f2(total)} USDT</div>
+    <div class="mt-3 p-3 rounded-xl text-left text-[11px]" style="background:var(--bg);border:1px solid var(--line)">
+      <b>${L === 'es' ? 'Siguiente paso — Pago' : 'Next step — Payment'}</b>
+      <ol class="mt-1 ml-4 list-decimal space-y-1 m">
+        <li>${L === 'es' ? 'Copia la wallet USDT (TRON / TRC20)' : 'Copy the USDT wallet (TRON / TRC20)'}</li>
+        <li>${L === 'es' ? 'Envía exactamente' : 'Send exactly'} <b style="color:var(--tx)">${f2(total)} USDT</b></li>
+        <li>${L === 'es' ? 'Mándanos el comprobante por Discord' : 'Send us the receipt on Discord'}${wa ? (L === 'es' ? ' o WhatsApp' : ' or WhatsApp') : ''}</li>
+      </ol>
+      <p class="break-all select-all font-mono mt-2 text-[10px] p-2 rounded-lg" style="background:var(--card)">${wallet}</p>
+      ${contactHtml}
+    </div>
+    <p class="text-amber-500 mt-2 text-[11px]">${t('cancel')}</p>`;
 
   $('#rm').classList.remove('hidden');
 }
