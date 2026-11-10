@@ -213,20 +213,52 @@ body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,sa
 
 <script>
 /* ========== CONFIG ========== */
-const CFG = { folder: 'Img', key: 'Rist2026', coupon: 'AETHERIA2026' };
+const CFG = { folder: '', key: 'Rist2026', coupon: 'AETHERIA2026' };
 
+/* Fotos en la raíz del repositorio (nombres exactos) */
 const IMAGES = [
-  'Jeans ancho claro.jpg','Jeans corte moderno.jpg','Playera chica gym.jpg','Ropa interior mujer.jpg',
-  'Shorts hombre.jpg','Zapatillas GJ.jpg','Zapatillas.jpg','Zapato de vestir.jpg',
-  'abrigo elegante chica.jpg','abrigos.jpg','disfraz.jpg','mono moderno.jpg',
-  'monos de chica.jpg','monos de hombre.jpg','perfume.jpg','perfumería.jpg',
-  'playera de GYM.jpg','playera oscura.jpg','playera.jpg','reloj elegante.jpg',
-  'reloj estilo clásico.jpg','reloj inteligente.jpg','relojes 3.jpg','relojes varios.jpg',
-  'ropa de mujer.jpg','ropa interior de hombre.jpg','ropa interior estampado.jpg',
-  'ropa interior hombre clásico.jpg','ropa interior modelo estampa.jpg','ropa interior moderna.jpg',
-  'ropa interior mujer elegante.jpg','ropa interior mujer fina.jpg','ropa interior.jpg',
-  'sudadera festiva.jpg','tenis moderno.jpg','tenis mujer.jpg','tenis.jpg','vestido.jpg',
-  'zapatilla.jpg','zapato.jpg','pantalón ancho de mujer.jpg','conjunto de ropa interior.jpg'
+  'abrigo elegante chica.jpg',
+  'abrigos.jpg',
+  'conjunto de ropa interior.jpg',
+  'cosméticos ojos.jpg',
+  'disfraz.jpg',
+  'jeans ancho claro1.jpg',
+  'jeans claro.jpg',
+  'jeans clásico.jpg',
+  'jeans corte moderno3.jpg',
+  'mono moderno.jpg',
+  'monos de chica.jpg',
+  'monos de hombre.jpg',
+  'pantalón ancho de mujer.jpg',
+  'perfume 2.jpg',
+  'perfume clásico.jpg',
+  'perfume.jpg',
+  'playera con michi1.jpg',
+  'playera de gym1.jpg',
+  'playera oscura 1.jpg',
+  'playera oscura.jpg',
+  'playera.jpg',
+  'reloj elegante.jpg',
+  'reloj estilo clásico.jpg',
+  'reloj inteligente.jpg',
+  'relojes 3.jpg',
+  'relojes varios.jpg',
+  'ropa de hombre elegante.jpg',
+  'ropa de mujer.jpg',
+  'ropa interior de hombre.jpg',
+  'ropa interior estampados.jpg',
+  'ropa interior hombre clasico.jpg',
+  'ropa interior mujer elegante.jpg',
+  'ropa interior mujer fina.jpg',
+  'ropa interior.jpg',
+  'set de cosméticos.jpg',
+  'shorts hombre1.jpg',
+  'sudadera festiva.jpg',
+  'tenis de mujer.jpg',
+  'tenis moderno.jpg',
+  'tenis.jpg',
+  'zapatilla.jpg',
+  'zapatillas GJ2.jpg'
 ];
 
 /* ========== TRADUCCIONES ========== */
@@ -423,7 +455,7 @@ const nz = s => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLow
 const hs = s => [...String(s)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const f2 = n => Number(n).toFixed(2);
-const imgUrl = f => CFG.folder + '/' + encodeURIComponent(f);
+const imgUrl = f => (CFG.folder ? CFG.folder + '/' : '') + encodeURIComponent(f);
 
 /* ========== CONSTRUCCIÓN DE PRODUCTOS ========== */
 function buildProduct(f, i) {
