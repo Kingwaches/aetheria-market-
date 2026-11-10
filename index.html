@@ -1,996 +1,1163 @@
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aetheria Market - Tienda Virtual</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            pink: '#ff2a74',
-                            purple: '#8b5cf6',
-                            gold: '#f59e0b',
-                            dark: '#0f172a'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- FontAwesome & QR Library -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <style>
-        .gradient-title {
-            background: linear-gradient(135deg, #ff2a74, #8b5cf6, #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-30deg);
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: rgba(255, 255, 255, 0.25);
-            pointer-events: none;
-            white-space: nowrap;
-            text-transform: uppercase;
-        }
-        .theme-halloween { background-color: #1a0f00; border-color: #ff6600; }
-        .theme-valentine { background-color: #1f050d; border-color: #ff3366; }
-        .theme-newyear { background-color: #051923; border-color: #ffd700; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tienda Virtual Aetheria Market</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--tx:#0f172a;--mut:#64748b}
+html.dark{--bg:#0f172a;--card:#1e293b;--line:#334155;--tx:#f1f5f9;--mut:#94a3b8}
+body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,sans-serif;transition:background .3s}
+.c{background:var(--card);border:1px solid var(--line)}
+.m{color:var(--mut)}
+.in{background:var(--bg);border:1px solid var(--line);border-radius:.5rem;padding:.55rem .75rem;font-size:.85rem;width:100%;color:var(--tx)}
+.btn{background:linear-gradient(90deg,#ec4899,#8b5cf6);color:#fff;font-weight:700;border-radius:.75rem;padding:.55rem 1.1rem;font-size:.85rem;transition:transform .15s,opacity .15s}
+.btn:active{transform:scale(.97)}
+.wm{position:absolute;bottom:8px;right:8px;background:rgba(15,23,42,.88);color:#06b6d4;font-size:9px;font-weight:900;padding:2px 8px;border-radius:6px;border:1px solid rgba(6,182,212,.45);pointer-events:none;letter-spacing:.3px}
+.logo{background:linear-gradient(90deg,#ec4899,#a78bfa,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes pulseCart{0%,100%{transform:scale(1)}50%{transform:scale(1.22)}}
+.pulse{animation:pulseCart .45s ease 3}
+#cart{transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1)}
+#cart.open{transform:translateX(0)}
+.hl{outline:3px solid #06b6d4;outline-offset:3px;border-radius:.6rem}
+.opt{border:1px solid var(--line);border-radius:.5rem;padding:.3rem .7rem;font-size:.78rem;cursor:pointer;transition:all .15s}
+.opt.on{background:#ec4899;color:#fff;border-color:#ec4899}
+.opt:hover{border-color:#ec4899}
+.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#ban{transition:all .4s}
+</style>
 </head>
-<body class="bg-gray-50 dark:bg-slate-900 text-gray-800 dark:text-gray-100 min-h-screen transition-colors duration-300">
+<body class="min-h-screen flex flex-col">
 
-    <!-- TOP ANNOUNCEMENT BANNER (IA Managed) -->
-    <div id="seasonalBanner" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs md:text-sm py-2 px-4 text-center font-bold relative flex justify-between items-center">
-        <span id="seasonalText" class="w-full">🎉 ¡Bienvenidos a Aetheria Market! Descuentos automáticos en compras mayores a 100 USDT</span>
-        <button onclick="toggleDarkMode()" class="bg-black/30 px-3 py-1 rounded-full text-xs hover:bg-black/50 transition">
-            <i class="fa-solid fa-moon mr-1"></i> <span id="themeBtnText">Modo</span>
+<!-- Banner de fechas especiales -->
+<div id="ban" class="hidden text-center text-xs font-bold text-white py-1.5 tracking-wide"></div>
+
+<!-- Header -->
+<header class="sticky top-0 z-40 border-b backdrop-blur-md" style="background:color-mix(in srgb,var(--bg) 92%,transparent);border-color:var(--line)">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3 justify-between">
+    <h1 class="logo text-xl md:text-2xl font-black tracking-wide select-none">TIENDA VIRTUAL AETHERIA MARKET</h1>
+    <input id="q" oninput="handleSearch(this.value)" class="in rounded-full md:flex-1 max-w-xl" placeholder="">
+    <div class="flex gap-2 items-center">
+      <button id="lb" onclick="toggleLang()" class="c px-2.5 py-1.5 rounded-lg text-xs font-semibold">EN</button>
+      <button onclick="toggleDark()" class="c px-2.5 py-1.5 rounded-lg text-xs" title="Modo oscuro">🌓</button>
+      <button onclick="openAdmin()" class="c px-2.5 py-1.5 rounded-lg text-xs" title="Admin">🔒</button>
+      <button id="cartBtn" onclick="toggleCart()" class="btn flex items-center gap-1.5">🛒 <span id="cc">0</span></button>
+    </div>
+  </div>
+  <nav id="nav" class="flex gap-2 overflow-x-auto px-4 pb-2.5 text-xs max-w-7xl mx-auto scrollbar-hide"></nav>
+</header>
+
+<!-- Filtros -->
+<section class="max-w-7xl mx-auto px-4 mt-4 w-full grid grid-cols-1 sm:grid-cols-3 gap-2">
+  <select id="fs" class="in" onchange="renderCatalog()"></select>
+  <select id="fz" class="in" onchange="renderCatalog()"></select>
+  <select id="fo" class="in" onchange="renderCatalog()"></select>
+</section>
+
+<!-- Panel Admin (oculto) -->
+<section id="adm" class="hidden max-w-2xl mx-auto px-4 mt-4 w-full">
+  <div class="c rounded-2xl p-4 border-2 border-pink-500/50">
+    <b class="text-xs text-pink-400">🔒 Panel Administrador · SheIn Importer</b>
+    <div class="flex gap-2 mt-2">
+      <input id="su" class="in" placeholder="Pegar URL de SheIn...">
+      <button class="btn" onclick="processShein()">Procesar</button>
+    </div>
+    <p id="ss" class="text-[11px] m mt-2"></p>
+  </div>
+</section>
+
+<!-- Encargo SheIn -->
+<section class="max-w-3xl mx-auto px-4 mt-4 w-full">
+  <div class="c rounded-2xl p-4">
+    <b class="text-sm" id="encTitle"></b>
+    <p class="text-xs m my-2" id="encDesc"></p>
+    <div class="flex flex-col sm:flex-row gap-2">
+      <input id="eu" class="in" placeholder="">
+      <button class="btn whitespace-nowrap" onclick="requestEncargo()" id="encBtn"></button>
+    </div>
+  </div>
+</section>
+
+<!-- Catálogo -->
+<main class="flex-grow max-w-7xl mx-auto px-4 py-6 w-full">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="font-bold border-l-4 border-pink-500 pl-3" id="catalogTitle"></h2>
+    <span id="cnt" class="text-xs m"></span>
+  </div>
+
+  <!-- Resultados dinámicos de Encargo (buscador) -->
+  <div id="encargo-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mb-6"></div>
+
+  <!-- Catálogo local -->
+  <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
+</main>
+
+<!-- Publicidad + Quejas -->
+<section class="max-w-5xl mx-auto px-4 pb-6 w-full grid md:grid-cols-2 gap-4">
+  <div class="c rounded-2xl p-4">
+    <b class="text-sm" id="adsTitle"></b>
+    <p class="text-xs m my-2" id="adsDesc"></p>
+    <div class="flex gap-2">
+      <select id="au" class="in">
+        <option value="min">/ min</option>
+        <option value="hora">/ hora</option>
+        <option value="dia">/ día</option>
+        <option value="sem">/ semana</option>
+      </select>
+      <input id="an" type="number" min="1" value="1" class="in">
+      <button class="btn" onclick="calcAd()">=</button>
+    </div>
+    <p id="ar" class="text-sm font-bold text-cyan-400 mt-2"></p>
+    <p class="text-[11px] m mt-2">Monedero USDT (Red TRON · App Keeper):</p>
+    <code class="text-[10px] break-all select-all">TAQ5Gnezeftivkok2mrLGWMbvhgJNaRN8f</code>
+  </div>
+  <div class="c rounded-2xl p-4">
+    <b class="text-sm" id="compTitle"></b>
+    <textarea id="qj" class="in my-2" rows="3" maxlength="500" placeholder=""></textarea>
+    <button class="btn" onclick="sendComplaint()" id="compBtn"></button>
+    <p class="text-xs m mt-3">💬 Discord (Atención Moderador): <b>Aetheriamarket</b></p>
+  </div>
+</section>
+
+<!-- Aviso legal -->
+<footer class="max-w-5xl mx-auto px-4 pb-28 w-full">
+  <details class="c rounded-2xl p-4 text-xs m">
+    <summary class="font-bold cursor-pointer" style="color:var(--tx)">⚖️ Aviso legal, Leyes Jurídicas y Derechos de Autor · Legal Notice</summary>
+    <p class="mt-2 text-justify leading-relaxed">
+      Los contenidos, marcas, logos, imágenes, fotografías y signos distintivos exhibidos en este sitio web se encuentran plenamente amparados y protegidos por la legislación aplicable en materia de propiedad intelectual e industrial; quedando absolutamente prohibida su reproducción, comunicación pública o transformación sin autorización expresa. Los proveedores y anunciantes externos responden de forma exclusiva e individual por la licitud, veracidad y calidad de las mercancías y servicios que promocionen. El cliente o comprador asume de manera directa la carga jurídica de formular cualquier reclamación ante las agencias de transporte o proveedores en caso de demoras, daños o extravíos, sin perjuicio del derecho de desistimiento contractual reconocido formalmente dentro del plazo perentorio de 24 horas posteriores al pago de la orden, el cual se reembolsará aplicando una deducción del 2% por gastos de gestión operativa y bancaria. Los creadores, titulares y administradores de la plataforma Aetheria Market quedan liberados de cualquier responsabilidad civil, penal o indemnizatoria derivada de actos de terceros, uso fraudulento de la plataforma, o conductas inapropiadas que vulneren la seguridad o identidad de los usuarios y personal de la tienda.
+    </p>
+  </details>
+</footer>
+
+<!-- Overlay carrito -->
+<div id="bk" onclick="toggleCart(false)" class="fixed inset-0 bg-black/60 z-40 hidden"></div>
+
+<!-- Carrito lateral -->
+<aside id="cart" class="fixed top-0 right-0 h-full w-full max-w-md z-50 c flex flex-col shadow-2xl">
+  <div class="p-3 flex justify-between items-center border-b" style="border-color:var(--line)">
+    <b id="cartTitle"></b>
+    <button onclick="toggleCart(false)" class="text-xl leading-none">✕</button>
+  </div>
+  <div id="ci" class="flex-1 overflow-y-auto p-3 space-y-2"></div>
+  <div class="p-3 border-t space-y-2 overflow-y-auto max-h-[58vh]" style="border-color:var(--line)">
+    <input id="nm" class="in" placeholder="">
+    <div class="grid grid-cols-2 gap-2">
+      <input id="ag" type="number" min="1" class="in" placeholder="">
+      <select id="sh" class="in" onchange="ship=this.value;drawCart()"></select>
+    </div>
+    <textarea id="ad" rows="2" class="in" placeholder=""></textarea>
+    <div class="flex gap-2">
+      <input id="cp" class="in" placeholder="">
+      <button class="btn" onclick="applyCoupon()" id="applyBtn"></button>
+    </div>
+    <div id="sm" class="text-xs font-mono space-y-1"></div>
+    <div id="wallet" class="text-center text-[11px] p-3 rounded-xl" style="background:var(--bg)">
+      <b class="text-cyan-400" id="walTitle"></b>
+      <code class="block break-all select-all my-1.5 text-[10px]">TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3</code>
+      <button class="opt" onclick="copyWallet()" id="copyBtn"></button>
+      <div class="mt-2 flex flex-col items-center">
+        <img class="w-24 h-24 bg-white p-1 rounded border border-cyan-400/40" alt="QR"
+          src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3">
+        <span class="text-[9px] text-cyan-400 mt-1">✓ QR verificación de usuario real</span>
+      </div>
+    </div>
+    <button class="btn w-full" onclick="generateReceipt()" id="payBtn"></button>
+  </div>
+</aside>
+
+<!-- Modal producto -->
+<div id="modal" class="fixed inset-0 z-50 hidden bg-black/70 flex items-center justify-center p-3">
+  <div class="c rounded-2xl p-4 w-full max-w-2xl max-h-[92vh] overflow-y-auto relative">
+    <button onclick="closeModal()" class="absolute top-2 right-3 text-xl z-10">✕</button>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="relative">
+        <img id="mi" alt="" class="w-full h-72 object-cover rounded-xl">
+        <div class="wm">AETHERIA MARKET</div>
+      </div>
+      <div>
+        <h3 id="mn" class="font-bold text-lg"></h3>
+        <p id="mp" class="text-cyan-400 font-extrabold text-xl"></p>
+        <p class="text-[11px] p-2 my-2 rounded-lg bg-amber-500/10 text-amber-500" id="cancelWarn"></p>
+        <b class="text-xs" id="sizeLabel"></b>
+        <div id="ms" class="flex flex-wrap gap-2 my-2"></div>
+        <b class="text-xs" id="colorLabel"></b>
+        <div id="mc" class="flex flex-wrap gap-2 my-2"></div>
+        <button id="mb" class="btn w-full" onclick="addToCart()"></button>
+      </div>
+    </div>
+    <div class="mt-3">
+      <b class="text-xs" id="reviewsLabel"></b>
+      <div id="mr" class="text-xs space-y-1 my-2 max-h-32 overflow-y-auto"></div>
+      <textarea id="ct" maxlength="300" rows="2" class="in" placeholder=""></textarea>
+      <button class="btn mt-1" onclick="postComment()" id="postBtn"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal recibo -->
+<div id="rm" class="fixed inset-0 z-[60] hidden bg-black/70 flex items-center justify-center p-3">
+  <div class="c rounded-2xl p-4 w-full max-w-md max-h-[92vh] overflow-y-auto">
+    <h3 class="font-bold mb-2">🧾 <span id="receiptTitle"></span></h3>
+    <div id="rb" class="text-xs space-y-1"></div>
+    <button class="btn w-full mt-3" onclick="document.getElementById('rm').classList.add('hidden')">OK</button>
+  </div>
+</div>
+
+<!-- Bot asistente -->
+<button onclick="toggleBot()" class="fixed bottom-4 left-4 z-40 btn text-lg shadow-2xl" title="Bot Asistente">🤖</button>
+<div id="bp" class="hidden fixed bottom-16 left-4 z-40 c rounded-2xl p-3 w-72 text-xs shadow-2xl border border-pink-500/40">
+  <div id="bm" class="mb-2 font-medium"></div>
+  <div id="bq" class="flex flex-col gap-1"></div>
+</div>
+
+<script>
+/* ========== CONFIG ========== */
+const CFG = { folder: 'Img', key: 'Rist2026', coupon: 'AETHERIA2026' };
+
+const IMAGES = [
+  'Jeans ancho claro.jpg','Jeans corte moderno.jpg','Playera chica gym.jpg','Ropa interior mujer.jpg',
+  'Shorts hombre.jpg','Zapatillas GJ.jpg','Zapatillas.jpg','Zapato de vestir.jpg',
+  'abrigo elegante chica.jpg','abrigos.jpg','disfraz.jpg','mono moderno.jpg',
+  'monos de chica.jpg','monos de hombre.jpg','perfume.jpg','perfumería.jpg',
+  'playera de GYM.jpg','playera oscura.jpg','playera.jpg','reloj elegante.jpg',
+  'reloj estilo clásico.jpg','reloj inteligente.jpg','relojes 3.jpg','relojes varios.jpg',
+  'ropa de mujer.jpg','ropa interior de hombre.jpg','ropa interior estampado.jpg',
+  'ropa interior hombre clásico.jpg','ropa interior modelo estampa.jpg','ropa interior moderna.jpg',
+  'ropa interior mujer elegante.jpg','ropa interior mujer fina.jpg','ropa interior.jpg',
+  'sudadera festiva.jpg','tenis moderno.jpg','tenis mujer.jpg','tenis.jpg','vestido.jpg',
+  'zapatilla.jpg','zapato.jpg','pantalón ancho de mujer.jpg','conjunto de ropa interior.jpg'
+];
+
+/* ========== TRADUCCIONES ========== */
+const T = {
+  es: {
+    search: 'Buscar perfume, reloj, ropa, cosméticos...',
+    allsex: 'Todos los sexos', mujer: 'Mujer', hombre: 'Hombre', unisex: 'Unisex',
+    allsz: 'Todas las tallas',
+    asc: 'Más baratos primero (desde 0.50 USDT)', desc: 'Más costosos primero',
+    items: 'productos', catalog: 'Catálogo verificado',
+    add: 'Añadir al carrito', upd: 'Actualizar artículo',
+    size: 'Talla / Medida', color: 'Color / Estilo',
+    reviews: '⭐ Valoraciones', post: 'Publicar comentario',
+    cmph: 'Tu opinión (máx. 300 caracteres)...',
+    bad: 'Comentario eliminado automáticamente por contener palabras prohibidas.',
+    cartT: '🛒 Mi carrito',
+    name: 'Nombre completo', age: 'Edad', addr: 'Dirección exacta de envío',
+    normal: 'Entrega normal (15-30 días) +3%', express: 'Compra rápida / Exprés (5-8 días) +8%',
+    coupon: 'Código de cupón', apply: 'Aplicar',
+    pay: 'Generar recibo de pago',
+    empty: 'Tu carrito está vacío.',
+    need: 'Por favor completa nombre, edad y dirección.',
+    cancel: '⚠️ Cancelación: Puedes cancelar dentro de las 24h posteriores al pago; se devuelve el 98% (se retiene 2% de gestión).',
+    wal: 'Billetera USDT (red TRON · TRC20)',
+    copy: 'Copiar dirección', copied: '¡Copiado!',
+    sub: 'Importe del producto', imp: 'IMPSV (Impuesto 5%)', ent: 'Impuesto de entrega',
+    cup: 'Cupón (−2%)', vol: 'Descuento por volumen (−3.4%)', tot: 'TOTAL A PAGAR',
+    enc: '🛍️ Encargo SheIn con USDT (+35%)',
+    encd: '¿No puedes pagar en SheIn? Pega el enlace del artículo. Nosotros lo compramos en dólares y te lo enviamos. Tú pagas en USDT el precio + 35% de gestión.',
+    encph: 'Enlace del artículo de SheIn...',
+    encb: 'Solicitar encargo',
+    ads: '📢 Publicidad para nuevos proveedores',
+    adsd: 'Tarifas: 0.25 USDT/min · 8 USDT/hora · 40 USDT/día · 200 USDT/semana. Descuento del 1.5% si el contrato supera los 5 días. Contacto por Discord.',
+    comp: '📬 Quejas y sugerencias',
+    compph: 'Cuéntanos cómo mejorar la tienda...',
+    send: 'Enviar', thanks: '¡Gracias! Tu mensaje fue registrado.',
+    hi: '¡Hola! Soy el Bot de Aetheria Market. ¿En qué puedo ayudarte?',
+    noenc: 'Pega un enlace válido de SheIn.',
+    encok: 'Enlace copiado. Envíalo a Discord (Aetheriamarket) para procesarlo.',
+    encargoTitle: 'Resultados de Encargo para',
+    wholesale: 'Proveedor Mayorista · Encargo Directo',
+    buyEncargo: 'Comprar por Encargo'
+  },
+  en: {
+    search: 'Search perfume, watch, clothes, cosmetics...',
+    allsex: 'All genders', mujer: 'Women', hombre: 'Men', unisex: 'Unisex',
+    allsz: 'All sizes',
+    asc: 'Cheapest first (from 0.50 USDT)', desc: 'Most expensive first',
+    items: 'products', catalog: 'Verified catalog',
+    add: 'Add to cart', upd: 'Update item',
+    size: 'Size', color: 'Color / Style',
+    reviews: '⭐ Reviews', post: 'Post comment',
+    cmph: 'Your opinion (max. 300 characters)...',
+    bad: 'Comment removed automatically for using prohibited language.',
+    cartT: '🛒 My cart',
+    name: 'Full name', age: 'Age', addr: 'Exact shipping address',
+    normal: 'Standard delivery (15-30 days) +3%', express: 'Express fast buy (5-8 days) +8%',
+    coupon: 'Coupon code', apply: 'Apply',
+    pay: 'Generate payment receipt',
+    empty: 'Your cart is empty.',
+    need: 'Please fill in name, age and address.',
+    cancel: '⚠️ Cancellation: You may cancel within 24h after payment; 98% refunded (2% management fee retained).',
+    wal: 'USDT wallet (TRON · TRC20)',
+    copy: 'Copy address', copied: 'Copied!',
+    sub: 'Product amount', imp: 'IMPSV Tax (5%)', ent: 'Delivery tax',
+    cup: 'Coupon (−2%)', vol: 'Volume discount (−3.4%)', tot: 'TOTAL DUE',
+    enc: '🛍️ SheIn order service (+35%)',
+    encd: "Can't pay on SheIn? Paste the item link. We buy it in USD and ship it to you. You pay the price + 35% fee in USDT.",
+    encph: 'SheIn item link...',
+    encb: 'Request order',
+    ads: '📢 Advertising for suppliers',
+    adsd: 'Rates: 0.25 USDT/min · 8 USDT/hour · 40 USDT/day · 200 USDT/week. 1.5% off for contracts over 5 days. Contact via Discord.',
+    comp: '📬 Complaints & suggestions',
+    compph: 'Tell us how to improve...',
+    send: 'Send', thanks: 'Thank you! Message recorded.',
+    hi: "Hi! I'm the Aetheria Market Bot. How can I help you?",
+    noenc: 'Paste a valid SheIn link.',
+    encok: 'Link copied. Send it to Discord (Aetheriamarket) to process.',
+    encargoTitle: 'Order results for',
+    wholesale: 'Wholesale Supplier · Direct Order',
+    buyEncargo: 'Buy as Order'
+  }
+};
+
+/* ========== CATEGORÍAS Y REGLAS ========== */
+const CATS = [
+  ['todos', '🔥 Todo', '🔥 All'],
+  ['perfumes', '✨ Perfumes', '✨ Perfumes'],
+  ['relojes', '⌚ Relojes', '⌚ Watches'],
+  ['interior', '🩲 Ropa interior', '🩲 Underwear'],
+  ['ropa', '👕 Ropa y jeans', '👕 Clothes & jeans'],
+  ['deportiva', '⚽ Deportiva', '⚽ Sportswear'],
+  ['zapatos', '👟 Zapatos', '👟 Shoes'],
+  ['elegante', '👔 Elegante', '👔 Elegant'],
+  ['abrigos', '❄️ Abrigos', '❄️ Coats'],
+  ['eventos', '🎃 Festivos', '🎃 Holidays']
+];
+
+const RULES = [
+  [/perfum|fragan|colonia/, 'perfumes'],
+  [/reloj/, 'relojes'],
+  [/cadena|pendiente|anillo|collar|pulsera|joya/, 'joyas'],
+  [/gafas|lentes/, 'gafas'],
+  [/crema|locion/, 'cremas'],
+  [/delineador|labial|maquill|cosmet|sombra|rimel/, 'cosmeticos'],
+  [/interior|calzoncillo|boxer|media|brasier|panty/, 'interior'],
+  [/disfraz|halloween|festiv|navide/, 'eventos'],
+  [/abrigo|chaqueta|chamarra|invierno|bufanda/, 'abrigos'],
+  [/tenis|zapatill|zapato|sandalia|bota/, 'zapatos'],
+  [/gym|deport|short|licra|legging/, 'deportiva'],
+  [/vestido|elegante|gala|traje|vestir/, 'elegante']
+];
+
+const PR = {
+  perfumes: [6, 28], relojes: [8, 35], joyas: [4, 15], gafas: [4, 12],
+  cremas: [5, 15], cosmeticos: [3, 12], ropa: [4, 25], deportiva: [5, 20],
+  zapatos: [12, 40], elegante: [14, 45], abrigos: [15, 40], eventos: [6, 25],
+  interior: [0.50, 1]
+};
+
+const COL = [
+  ['Original', 'Original', 'none'],
+  ['Rojo', 'Red', 'hue-rotate(320deg)'],
+  ['Azul', 'Blue', 'hue-rotate(180deg)'],
+  ['Verde', 'Green', 'hue-rotate(90deg)'],
+  ['Morado', 'Purple', 'hue-rotate(240deg)'],
+  ['Gris', 'Gray', 'grayscale(1)']
+];
+
+const RV = {
+  R: [
+    ['Excelente material y acabado.', 5], ['Me agradó bastante el diseño.', 4],
+    ['Tardó en llegar pero todo bien.', 4], ['Talla algo justa.', 3],
+    ['Buena relación calidad-precio.', 5], ['El color es tal cual la foto.', 4]
+  ],
+  Z: [
+    ['Muy cómodos para caminar.', 5], ['Buen agarre y suela resistente.', 4],
+    ['Pedir una talla más de la habitual.', 3], ['Ligeros y bonitos.', 5]
+  ],
+  W: [
+    ['Elegancia absoluta.', 5], ['Se siente bien en la muñeca.', 4],
+    ['El cristal requiere cuidado.', 3], ['Precisión excelente.', 5]
+  ],
+  P: [
+    ['Aroma perdurable.', 5], ['Muy buena relación calidad-precio.', 4],
+    ['Ideal para uso diario.', 5], ['Duración media.', 3]
+  ],
+  C: [
+    ['Textura suave.', 5], ['Buen producto.', 4],
+    ['Absorción rápida.', 5], ['Resultado visible en días.', 4]
+  ]
+};
+
+const POOL = { zapatos: 'Z', relojes: 'W', perfumes: 'P', cosmeticos: 'C', cremas: 'C', joyas: 'R' };
+const BAD = /estaf|\brobo\b|robar|engan|mentir|ladron|idiot|mierd|puta|basura|imbecil|estupid|pendej|cabron|fraude|scam|steal|liar|idiot|shit|fuck|asshole/i;
+const AD = { min: 0.25, hora: 8, dia: 40, sem: 200 };
+
+/* Sinónimos para búsqueda inteligente */
+const SYNONYMS = {
+  perfume: ['perfume', 'fragancia', 'colonia', 'fragrance', 'scent'],
+  reloj: ['reloj', 'relojes', 'watch', 'watches', 'clock'],
+  ropa: ['ropa', 'prenda', 'clothes', 'clothing', 'apparel'],
+  interior: ['interior', 'ropa interior', 'calzoncillo', 'boxer', 'panty', 'brasier', 'underwear', 'lingerie', 'medias'],
+  zapatos: ['zapato', 'zapatos', 'zapatilla', 'tenis', 'shoes', 'sneakers', 'footwear'],
+  abrigo: ['abrigo', 'abrigos', 'chaqueta', 'coat', 'jacket'],
+  vestido: ['vestido', 'dress'],
+  mono: ['mono', 'monos', 'jumpsuit'],
+  playera: ['playera', 'camiseta', 't-shirt', 'tee'],
+  short: ['short', 'shorts'],
+  mujer: ['mujer', 'chica', 'dama', 'women', 'woman', 'female', 'girl'],
+  hombre: ['hombre', 'chico', 'caballero', 'men', 'man', 'male'],
+  gym: ['gym', 'deportiva', 'deportivo', 'sport', 'sportswear'],
+  elegante: ['elegante', 'gala', 'elegant', 'formal'],
+  jeans: ['jeans', 'pantalon', 'pants'],
+  camisa: ['camisa', 'shirt', 'blouse']
+};
+
+/* ========== ESTADO GLOBAL ========== */
+let L = localStorage.getItem('lang') || 'es';
+let P = [];
+let cat = 'todos';
+let ship = 'normal';
+let coupon = false;
+let sel = {};
+let edit = -1;
+let cart = [];
+try { cart = JSON.parse(localStorage.getItem('cart') || '[]'); } catch(e) {}
+
+/* ========== UTILIDADES ========== */
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+const t = k => (T[L] && T[L][k]) || k;
+const nz = s => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const hs = s => [...String(s)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const f2 = n => Number(n).toFixed(2);
+const imgUrl = f => CFG.folder + '/' + encodeURIComponent(f);
+
+/* ========== CONSTRUCCIÓN DE PRODUCTOS ========== */
+function buildProduct(f, i) {
+  const base = f.replace(/\.[^.]+$/, '').replace(/\s+/g, ' ').trim();
+  const n = nz(base);
+  const H = hs(base);
+  const cat = (RULES.find(r => r[0].test(n)) || [0, 'ropa'])[1];
+  const sex = /mujer|chica|dama|femen|vestido/.test(n) ? 'Mujer'
+            : /hombre|chico|caballero|masculin/.test(n) ? 'Hombre' : 'Unisex';
+
+  const nameEs = base.charAt(0).toUpperCase() + base.slice(1);
+  let nameEn = nameEs
+    .replace(/ropa interior/gi, 'Underwear')
+    .replace(/mujer/gi, 'Women')
+    .replace(/hombre/gi, 'Men')
+    .replace(/chica/gi, 'Women')
+    .replace(/reloj(es)?/gi, m => m.toLowerCase().includes('es') ? 'Watches' : 'Watch')
+    .replace(/perfume(ría)?/gi, 'Perfume')
+    .replace(/zapatillas?/gi, 'Sneakers')
+    .replace(/zapato/gi, 'Shoe')
+    .replace(/tenis/gi, 'Sneakers')
+    .replace(/abrigo(s)?/gi, m => m.toLowerCase().endsWith('s') ? 'Coats' : 'Coat')
+    .replace(/vestido/gi, 'Dress')
+    .replace(/playera/gi, 'T-shirt')
+    .replace(/short(s)?/gi, 'Shorts')
+    .replace(/mono(s)?/gi, 'Jumpsuit')
+    .replace(/sudadera/gi, 'Hoodie')
+    .replace(/jeans/gi, 'Jeans')
+    .replace(/pantalón/gi, 'Pants')
+    .replace(/conjunto/gi, 'Set')
+    .replace(/elegante/gi, 'Elegant')
+    .replace(/moderno/gi, 'Modern')
+    .replace(/clásico/gi, 'Classic')
+    .replace(/inteligente/gi, 'Smart')
+    .replace(/festiva/gi, 'Festive')
+    .replace(/gym|deporte/gi, 'Sport')
+    .replace(/disfraz/gi, 'Costume');
+
+  let price;
+  if (cat === 'interior' && !/fina|elegan|conjunto|estampad|modelo/.test(n)) {
+    price = H % 2 ? 1 : 0.50;
+  } else {
+    let [lo, hi] = PR[cat] || [4, 25];
+    if (/inteligente|smart/.test(n)) [lo, hi] = [30, 48];
+    price = Math.round((lo + (H % 1000) / 1000 * (hi - lo)) * 2) / 2;
+  }
+
+  const sizes = ['zapatos'].includes(cat)
+    ? ['38', '39', '40', '41', '42', '43']
+    : ['perfumes', 'relojes', 'joyas', 'gafas', 'cremas', 'cosmeticos'].includes(cat)
+      ? ['Única']
+      : ['S', 'M', 'L', 'XL'];
+
+  const pool = RV[POOL[cat] || 'R'];
+  const rev = [0, 1, 2].map(k => pool[(H + k * 3) % pool.length]);
+
+  return { i, f, nameEs, nameEn, cat, sex, price, sizes, rev };
+}
+
+function displayName(p) {
+  return L === 'es' ? p.nameEs : p.nameEn;
+}
+
+/* ========== INICIALIZACIÓN ========== */
+function load() {
+  P = IMAGES.map((f, i) => buildProduct(f, i));
+  cart = cart.filter(item => P.some(p => p.f === item.f));
+  applyLang();
+}
+
+function applyLang() {
+  document.documentElement.lang = L;
+  $('#lb').textContent = L === 'es' ? 'EN' : 'ES';
+
+  // Placeholders y textos fijos
+  $('#q').placeholder = t('search');
+  $('#catalogTitle').textContent = t('catalog');
+  $('#encTitle').textContent = t('enc');
+  $('#encDesc').textContent = t('encd');
+  $('#eu').placeholder = t('encph');
+  $('#encBtn').textContent = t('encb');
+  $('#adsTitle').textContent = t('ads');
+  $('#adsDesc').textContent = t('adsd');
+  $('#compTitle').textContent = t('comp');
+  $('#qj').placeholder = t('compph');
+  $('#compBtn').textContent = t('send');
+  $('#cartTitle').textContent = t('cartT');
+  $('#nm').placeholder = t('name');
+  $('#ag').placeholder = t('age');
+  $('#ad').placeholder = t('addr');
+  $('#cp').placeholder = t('coupon');
+  $('#applyBtn').textContent = t('apply');
+  $('#walTitle').textContent = t('wal');
+  $('#copyBtn').textContent = t('copy');
+  $('#payBtn').textContent = t('pay');
+  $('#cancelWarn').textContent = t('cancel');
+  $('#sizeLabel').textContent = t('size');
+  $('#colorLabel').textContent = t('color');
+  $('#reviewsLabel').textContent = t('reviews');
+  $('#ct').placeholder = t('cmph');
+  $('#postBtn').textContent = t('post');
+  $('#receiptTitle').textContent = t('pay');
+
+  // Select sexo
+  const fs = $('#fs');
+  const curSex = fs.value || 'todos';
+  fs.innerHTML = `
+    <option value="todos">${t('allsex')}</option>
+    <option value="Mujer">${t('mujer')}</option>
+    <option value="Hombre">${t('hombre')}</option>
+    <option value="Unisex">${t('unisex')}</option>`;
+  fs.value = curSex;
+
+  // Select orden
+  const fo = $('#fo');
+  const curOrd = fo.value || 'asc';
+  fo.innerHTML = `
+    <option value="asc">${t('asc')}</option>
+    <option value="desc">${t('desc')}</option>`;
+  fo.value = curOrd;
+
+  // Select talla
+  const allSizes = [...new Set(P.flatMap(p => p.sizes))];
+  const fz = $('#fz');
+  const curSz = fz.value || 'todas';
+  fz.innerHTML = `<option value="todas">${t('allsz')}</option>` + allSizes.map(s => `<option value="${s}">${s}</option>`).join('');
+  fz.value = allSizes.includes(curSz) ? curSz : 'todas';
+
+  // Select envío
+  const sh = $('#sh');
+  const curShip = sh.value || 'normal';
+  sh.innerHTML = `
+    <option value="normal">${t('normal')}</option>
+    <option value="expres">${t('express')}</option>`;
+  sh.value = curShip;
+  ship = curShip;
+
+  renderNav();
+  renderCatalog();
+  drawCart();
+  applySeason();
+  if (!$('#bp').classList.contains('hidden')) showBotMenu();
+}
+
+function toggleLang() {
+  L = L === 'es' ? 'en' : 'es';
+  localStorage.setItem('lang', L);
+  applyLang();
+}
+
+function toggleDark() {
+  document.documentElement.classList.toggle('dark');
+}
+
+/* ========== NAVEGACIÓN ========== */
+function renderNav() {
+  $('#nav').innerHTML = CATS
+    .filter(c => c[0] === 'todos' || P.some(p => p.cat === c[0]))
+    .map(c => {
+      const active = cat === c[0] ? '!bg-pink-600 text-white border-pink-600' : '';
+      return `<button onclick="setCategory('${c[0]}')" class="px-3 py-1.5 rounded-full whitespace-nowrap c border ${active}">${c[L === 'es' ? 1 : 2]}</button>`;
+    }).join('');
+}
+
+function setCategory(c) {
+  cat = c;
+  renderNav();
+  renderCatalog();
+}
+
+/* ========== TARJETA DE PRODUCTO ========== */
+function productCard(p) {
+  return `
+  <article class="c rounded-2xl p-3 flex flex-col hover:shadow-lg transition-shadow">
+    <div class="relative overflow-hidden rounded-xl mb-2 cursor-pointer" onclick="openProduct(${p.i})">
+      <img src="${imgUrl(p.f)}" alt="${esc(displayName(p))}" class="w-full h-52 object-cover" loading="lazy"
+        onerror="this.src='https://placehold.co/400x400/1e293b/94a3b8?text=No+Image'">
+      <div class="wm">AETHERIA MARKET</div>
+      <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-black/65 text-white uppercase">${p.cat}</span>
+      <span class="absolute top-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded bg-pink-600 text-white">${p.sex}</span>
+    </div>
+    <h3 class="font-semibold text-sm leading-tight line-clamp-2">${esc(displayName(p))}</h3>
+    <div class="text-[11px] m my-1 space-y-0.5">
+      ${p.rev.slice(0, 2).map(r => `<div>${'★'.repeat(r[1])}${'☆'.repeat(5 - r[1])} "${esc(r[0])}"</div>`).join('')}
+    </div>
+    <div class="flex justify-between items-center mt-auto pt-2">
+      <b class="text-cyan-400 text-lg">${f2(p.price)} USDT</b>
+      <button class="m text-xs" onclick="openProduct(${p.i})">🔍</button>
+    </div>
+    <button class="btn mt-2 w-full" onclick="openProduct(${p.i})">${t('add')}</button>
+  </article>`;
+}
+
+/* ========== BÚSQUEDA INTELIGENTE + ENCARGO ========== */
+function smartMatch(p, query) {
+  if (!query) return true;
+  const text = nz(displayName(p) + ' ' + p.nameEs + ' ' + p.nameEn + ' ' + p.cat + ' ' + p.sex + ' ' + p.sizes.join(' '));
+  if (text.includes(query)) return true;
+  for (const [key, words] of Object.entries(SYNONYMS)) {
+    if (words.some(w => query.includes(nz(w)) || nz(w).includes(query))) {
+      if (text.includes(key) || words.some(w => text.includes(nz(w)))) return true;
+    }
+  }
+  return false;
+}
+
+function renderCatalog() {
+  const q = nz($('#q').value);
+  const sx = $('#fs').value;
+  const sz = $('#fz').value;
+  const o = $('#fo').value;
+
+  let list = P.filter(p =>
+    (cat === 'todos' || p.cat === cat) &&
+    (sx === 'todos' || p.sex === sx) &&
+    (sz === 'todas' || p.sizes.includes(sz)) &&
+    smartMatch(p, q)
+  );
+
+  list.sort((a, b) => o === 'asc' ? a.price - b.price : b.price - a.price);
+
+  $('#grid').innerHTML = list.map(productCard).join('');
+  $('#cnt').textContent = list.length + ' ' + t('items');
+}
+
+/* Buscador de Encargo mejorado + enlace directo a CJ Dropshipping */
+function handleSearch(val) {
+  renderCatalog(); // primero filtra el catálogo local
+
+  const grid = $('#encargo-grid');
+  const query = val.trim();
+
+  if (!query) {
+    grid.innerHTML = '';
+    return;
+  }
+
+  const qLower = query.toLowerCase();
+
+  // Imágenes más relevantes según la búsqueda
+  const imgSets = {
+    reloj: [
+      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80',
+      'https://images.unsplash.com/photo-1522312346375-d1a652e4598e?w=400&q=80',
+      'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=400&q=80',
+      'https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=400&q=80'
+    ],
+    watch: [
+      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80',
+      'https://images.unsplash.com/photo-1522312346375-d1a652e4598e?w=400&q=80',
+      'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=400&q=80',
+      'https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=400&q=80'
+    ],
+    zapato: [
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80',
+      'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&q=80',
+      'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&q=80',
+      'https://images.unsplash.com/photo-1560769629-975ec94e6a9e?w=400&q=80'
+    ],
+    shoe: [
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80',
+      'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&q=80',
+      'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&q=80',
+      'https://images.unsplash.com/photo-1560769629-975ec94e6a9e?w=400&q=80'
+    ],
+    tenis: [
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80',
+      'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&q=80',
+      'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&q=80',
+      'https://images.unsplash.com/photo-1560769629-975ec94e6a9e?w=400&q=80'
+    ],
+    perfume: [
+      'https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&q=80',
+      'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400&q=80',
+      'https://images.unsplash.com/photo-1594035910387-fea47794241e?w=400&q=80',
+      'https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=400&q=80'
+    ],
+    ropa: [
+      'https://images.unsplash.com/photo-1521572163474-6854fcae595a?w=400&q=80',
+      'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&q=80',
+      'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400&q=80',
+      'https://images.unsplash.com/photo-1576561547992-50b6c0c0c0c0?w=400&q=80'
+    ],
+    camisa: [
+      'https://images.unsplash.com/photo-1521572163474-6854fcae595a?w=400&q=80',
+      'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&q=80',
+      'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400&q=80',
+      'https://images.unsplash.com/photo-1576561547992-50b6c0c0c0c0?w=400&q=80'
+    ],
+    default: [
+      'https://images.unsplash.com/photo-1521572163474-6854fcae595a?w=400&q=80',
+      'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&q=80',
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80',
+      'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&q=80'
+    ]
+  };
+
+  let sampleImgs = imgSets.default;
+  for (const key of Object.keys(imgSets)) {
+    if (key !== 'default' && qLower.includes(key)) {
+      sampleImgs = imgSets[key];
+      break;
+    }
+  }
+
+  const variants = L === 'es'
+    ? ['Modelo Urbano Clásico', 'Edición Deportiva Pro', 'Estilo Casual Premium', 'Línea Ejecutiva']
+    : ['Classic Urban Model', 'Pro Sports Edition', 'Premium Casual Style', 'Executive Line'];
+
+  const baseCosts = [4.50, 6.80, 5.20, 8.90];
+
+  // URL de búsqueda en CJ Dropshipping
+  const cjSearchUrl = 'https://cjdropshipping.com/search.html?keyword=' + encodeURIComponent(query);
+
+  let html = `
+    <div style="grid-column:1/-1;margin-bottom:12px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:12px;">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;">
+        <div style="color:#38bdf8;font-size:0.95rem;">
+          🔍 ${t('encargoTitle')}: <strong>"${esc(query)}"</strong>
+        </div>
+        <a href="${cjSearchUrl}" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(90deg,#f97316,#ea580c);color:#fff;font-weight:700;font-size:0.8rem;padding:8px 14px;border-radius:8px;text-decoration:none;">
+          🌐 ${L === 'es' ? 'Ver todos en CJ Dropshipping' : 'View all on CJ Dropshipping'} →
+        </a>
+      </div>
+      <p style="margin:8px 0 0;font-size:0.75rem;color:var(--mut);">
+        ${L === 'es'
+          ? 'Resultados de Encargo generados para ti. También puedes abrir el catálogo completo del proveedor.'
+          : 'Order results generated for you. You can also open the full supplier catalog.'}
+      </p>
+    </div>`;
+
+  for (let i = 0; i < 4; i++) {
+    const base = baseCosts[i % baseCosts.length];
+    const sell = (base * 2).toFixed(2);          // margen 100%
+    const original = (sell * 1.35).toFixed(2);   // tachado +35%
+    const img = sampleImgs[i % sampleImgs.length];
+    const title = `${query.toUpperCase()} – ${variants[i]}`;
+
+    html += `
+    <div class="c rounded-2xl p-3 flex flex-col text-center">
+      <div class="relative overflow-hidden rounded-xl mb-2">
+        <img src="${img}" alt="${esc(title)}" class="w-full h-48 object-cover" loading="lazy"
+          onerror="this.src='https://placehold.co/400x300/1e293b/94a3b8?text=Product'">
+        <div class="wm">AETHERIA MARKET</div>
+      </div>
+      <h4 class="font-semibold text-sm leading-tight mb-1">${esc(title)}</h4>
+      <div class="my-1">
+        <span class="text-lg font-bold text-emerald-400">${sell} USDT</span>
+        <span class="text-xs line-through m ml-1.5">${original} USDT</span>
+      </div>
+      <p class="text-[11px] m mb-2">${t('wholesale')}</p>
+      <div class="flex flex-col gap-1.5">
+        <button class="btn w-full text-sm" onclick="alert('${L === 'es'
+          ? 'Encargo seleccionado. Contacta por Discord (Aetheriamarket) y envía el nombre del producto para completar el pago en USDT.'
+          : 'Order selected. Contact via Discord (Aetheriamarket) and send the product name to complete payment in USDT.'}')">
+          🛒 ${t('buyEncargo')} (${sell} USDT)
         </button>
-    </div>
+        <a href="${cjSearchUrl}" target="_blank" rel="noopener"
+           class="opt w-full text-center text-xs py-1.5" style="display:block;">
+          ${L === 'es' ? 'Ver similares en CJ' : 'See similar on CJ'} ↗
+        </a>
+      </div>
+    </div>`;
+  }
 
-    <!-- NAVBAR -->
-    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-md border-b border-gray-200 dark:border-slate-700">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-            <!-- Brand -->
-            <div class="flex items-center gap-3">
-                <button onclick="toggleSidebar()" class="text-2xl lg:hidden text-gray-600 dark:text-gray-300"><i class="fa-solid fa-bars"></i></button>
-                <h1 class="text-2xl md:text-3xl font-extrabold tracking-wider gradient-title cursor-pointer" onclick="filterCategory('all')">Aetheria Market</h1>
-            </div>
+  grid.innerHTML = html;
+}
 
-            <!-- Search Bar -->
-            <div class="hidden md:flex flex-1 max-w-md relative">
-                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Buscar por modelo, color, sexo, categoría..." 
-                    class="w-full bg-gray-100 dark:bg-slate-700 text-sm px-4 py-2 rounded-full border border-gray-300 dark:border-slate-600 focus:outline-none focus:border-pink-500">
-                <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-gray-400"></i>
-            </div>
+/* ========== MODAL PRODUCTO ========== */
+function openProduct(i, e = -1) {
+  const p = P[i];
+  edit = e;
+  sel = {
+    i,
+    s: e >= 0 ? cart[e].s : p.sizes[0],
+    c: e >= 0 ? cart[e].c : 0
+  };
+  drawModal();
+  $('#modal').classList.remove('hidden');
+}
 
-            <!-- Actions Right -->
-            <div class="flex items-center gap-4">
-                <!-- Lang Switch -->
-                <button onclick="toggleLanguage()" class="text-xs font-bold bg-gray-200 dark:bg-slate-700 px-2.5 py-1.5 rounded-md">
-                    <span id="langDisplay">ES / EN</span>
-                </button>
+function closeModal() {
+  $('#modal').classList.add('hidden');
+}
 
-                <!-- Admin Link -->
-                <button onclick="openAdminModal()" class="text-gray-500 dark:text-gray-400 hover:text-pink-500" title="Panel Administrador">
-                    <i class="fa-solid fa-user-shield text-xl"></i>
-                </button>
+function drawModal() {
+  const p = P[sel.i];
+  $('#mi').src = imgUrl(p.f);
+  $('#mi').style.filter = COL[sel.c][2];
+  $('#mn').textContent = displayName(p);
+  $('#mp').textContent = f2(p.price) + ' USDT';
+  $('#ms').innerHTML = p.sizes.map(s =>
+    `<button class="opt ${s === sel.s ? 'on' : ''}" onclick="sel.s='${s}';drawModal()">${s}</button>`
+  ).join('');
+  $('#mc').innerHTML = COL.map((c, k) =>
+    `<button class="opt ${k === sel.c ? 'on' : ''}" onclick="sel.c=${k};drawModal()">${c[L === 'es' ? 0 : 1]}</button>`
+  ).join('');
+  $('#mb').textContent = edit >= 0 ? t('upd') : t('add');
 
-                <!-- Cart Button -->
-                <button onclick="toggleCartDrawer()" class="relative p-2 bg-pink-600 hover:bg-pink-700 text-white rounded-full transition transform active:scale-95">
-                    <i class="fa-solid fa-cart-shopping text-lg"></i>
-                    <span id="cartBadge" class="absolute -top-1 -right-1 bg-yellow-400 text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
-                </button>
-            </div>
+  const stored = JSON.parse(localStorage.getItem('cm' + p.f) || '[]');
+  const allRev = [...p.rev.map(r => [r[0], r[1]]), ...stored.map(x => [x, 5])];
+  $('#mr').innerHTML = allRev.map(r =>
+    `<div>${'★'.repeat(r[1])}${'☆'.repeat(5 - r[1])} ${esc(r[0])}</div>`
+  ).join('');
+}
+
+function postComment() {
+  const txt = $('#ct').value.trim().slice(0, 300);
+  if (!txt) return;
+  if (BAD.test(nz(txt))) {
+    alert(t('bad'));
+    $('#ct').value = '';
+    return;
+  }
+  const key = 'cm' + P[sel.i].f;
+  const arr = JSON.parse(localStorage.getItem(key) || '[]');
+  arr.push(txt);
+  localStorage.setItem(key, JSON.stringify(arr));
+  $('#ct').value = '';
+  drawModal();
+}
+
+/* ========== CARRITO ========== */
+function saveCart() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function addToCart() {
+  const p = P[sel.i];
+  const item = { f: p.f, s: sel.s, c: sel.c, q: 1 };
+  if (edit >= 0) {
+    item.q = cart[edit].q;
+    cart[edit] = item;
+  } else {
+    const existing = cart.find(x => x.f === item.f && x.s === item.s && x.c === item.c);
+    if (existing) existing.q++;
+    else cart.push(item);
+  }
+  saveCart();
+  closeModal();
+  drawCart();
+  const btn = $('#cartBtn');
+  btn.classList.remove('pulse');
+  void btn.offsetWidth;
+  btn.classList.add('pulse');
+}
+
+function changeQty(i, d) {
+  cart[i].q += d;
+  if (cart[i].q < 1) cart.splice(i, 1);
+  saveCart();
+  drawCart();
+}
+
+function removeItem(i) {
+  cart.splice(i, 1);
+  saveCart();
+  drawCart();
+}
+
+function toggleCart(force) {
+  const el = $('#cart');
+  const open = force === true ? true : force === false ? false : !el.classList.contains('open');
+  el.classList.toggle('open', open);
+  $('#bk').classList.toggle('hidden', !open);
+}
+
+function calcTotals() {
+  let sub = 0;
+  cart.forEach(item => {
+    const p = P.find(x => x.f === item.f);
+    if (p) sub += p.price * item.q;
+  });
+  const tax = sub * 0.05;                    // IMPSV 5%
+  const deliveryRate = ship === 'expres' ? 0.08 : 0.03;
+  const delivery = sub * deliveryRate;
+  let total = sub + tax + delivery;
+  let couponDisc = 0;
+  let volumeDisc = 0;
+  if (coupon) {
+    couponDisc = sub * 0.02;
+    total -= couponDisc;
+  }
+  const totalItems = cart.reduce((a, i) => a + i.q, 0);
+  if (total > 100 && totalItems > 3) {
+    volumeDisc = total * 0.034;
+    total -= volumeDisc;
+  }
+  return { sub, tax, delivery, couponDisc, volumeDisc, total, totalItems };
+}
+
+function drawCart() {
+  $('#cc').textContent = cart.reduce((a, i) => a + i.q, 0);
+  const box = $('#ci');
+  if (!cart.length) {
+    box.innerHTML = `<p class="text-center m py-8">${t('empty')}</p>`;
+    $('#sm').innerHTML = '';
+    return;
+  }
+
+  box.innerHTML = cart.map((item, i) => {
+    const p = P.find(x => x.f === item.f);
+    if (!p) return '';
+    return `
+    <div class="flex gap-2 c rounded-xl p-2 items-center">
+      <img src="${imgUrl(p.f)}" class="w-14 h-14 object-cover rounded-lg" style="filter:${COL[item.c][2]}">
+      <div class="flex-1 min-w-0">
+        <div class="text-xs font-semibold truncate">${esc(displayName(p))}</div>
+        <div class="text-[10px] m">${item.s} · ${COL[item.c][L === 'es' ? 0 : 1]}</div>
+        <div class="text-cyan-400 text-sm font-bold">${f2(p.price)} USDT</div>
+      </div>
+      <div class="flex flex-col items-center gap-1">
+        <div class="flex items-center gap-1">
+          <button class="opt" onclick="changeQty(${i},-1)">−</button>
+          <span class="text-sm w-5 text-center">${item.q}</span>
+          <button class="opt" onclick="changeQty(${i},1)">+</button>
         </div>
-
-        <!-- Mobile Search Bar -->
-        <div class="p-2 md:hidden bg-gray-100 dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700">
-            <input type="text" id="mobileSearchInput" oninput="handleSearchMobile()" placeholder="Buscar productos..." 
-                class="w-full bg-white dark:bg-slate-700 text-sm px-4 py-2 rounded-full border border-gray-300 dark:border-slate-600">
-        </div>
-    </header>
-
-    <!-- MAIN LAYOUT -->
-    <div class="max-w-7xl mx-auto px-4 py-6 flex gap-6">
-
-        <!-- SIDEBAR FILTERS (DESKTOP & MOBILE SLIDE) -->
-        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-800 lg:bg-transparent p-5 lg:p-0 shadow-2xl lg:shadow-none transform -translate-x-full lg:translate-x-0 transition-transform duration-300 overflow-y-auto">
-            <div class="flex justify-between items-center lg:hidden mb-4">
-                <h2 class="font-bold text-lg" data-i18n="filters">Filtros</h2>
-                <button onclick="toggleSidebar()" class="text-xl">&times;</button>
-            </div>
-
-            <div class="space-y-6">
-                <!-- Navigation Categories -->
-                <div>
-                    <h3 class="font-bold text-sm uppercase tracking-wider text-pink-500 mb-3" data-i18n="categories">Categorías</h3>
-                    <ul class="space-y-2 text-sm" id="categoryList">
-                        <!-- Dynamic Categories -->
-                    </ul>
-                </div>
-
-                <!-- Price Range Filter -->
-                <div>
-                    <h3 class="font-bold text-sm uppercase tracking-wider text-pink-500 mb-3" data-i18n="priceRange">Filtro de Precio</h3>
-                    <select id="priceFilter" onchange="applyFilters()" class="w-full bg-gray-100 dark:bg-slate-700 p-2 rounded-md text-sm">
-                        <option value="all" data-i18n="allPrices">Todos los Precios</option>
-                        <option value="cheap" data-i18n="cheapOpt">Baratos (0.50 - 1.00 USDT)</option>
-                        <option value="medium" data-i18n="medOpt">Estándar (4.00 - 25.00 USDT)</option>
-                        <option value="vip" data-i18n="vipOpt">Alta Gama / VIP (> 50 USDT)</option>
-                    </select>
-                </div>
-
-                <!-- Quick Services Buttons -->
-                <div class="pt-4 border-t border-gray-200 dark:border-slate-700 space-y-2">
-                    <button onclick="openSheinModal()" class="w-full text-left bg-gradient-to-r from-yellow-500 to-amber-600 text-white font-semibold text-xs py-2 px-3 rounded-lg shadow flex items-center justify-between">
-                        <span><i class="fa-solid fa-bag-shopping mr-2"></i> Importar de SheIn</span>
-                        <i class="fa-solid fa-chevron-right text-xs"></i>
-                    </button>
-
-                    <button onclick="openAdsModal()" class="w-full text-left bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-xs py-2 px-3 rounded-lg shadow flex items-center justify-between">
-                        <span><i class="fa-solid fa-bullhorn mr-2"></i> Anúnciate Aquí</span>
-                        <i class="fa-solid fa-chevron-right text-xs"></i>
-                    </button>
-
-                    <button onclick="openFeedbackModal()" class="w-full text-left bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold text-xs py-2 px-3 rounded-lg shadow flex items-center justify-between">
-                        <span><i class="fa-solid fa-comment-dots mr-2"></i> Buzón de Opinión</span>
-                        <i class="fa-solid fa-chevron-right text-xs"></i>
-                    </button>
-                </div>
-
-                <!-- Discord Moderation Info -->
-                <div class="p-3 bg-indigo-900/40 border border-indigo-500/30 rounded-xl text-xs text-indigo-200">
-                    <p class="font-bold flex items-center gap-1.5"><i class="fa-brands fa-discord text-base"></i> Soporte Discord</p>
-                    <p class="mt-1">Moderador oficial: <span class="font-mono bg-indigo-950 px-1 py-0.5 rounded text-white">Aetheriamarket</span></p>
-                </div>
-            </div>
-        </aside>
-
-        <!-- MAIN PRODUCT GRID SECTION -->
-        <main class="flex-1">
-            <!-- Header Grid Title & Order -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
-                <h2 id="currentCategoryTitle" class="text-xl font-bold border-l-4 border-pink-500 pl-3">Todos los Productos</h2>
-                <div class="flex items-center gap-2 text-sm">
-                    <label data-i18n="sortBy">Ordenar por:</label>
-                    <select id="sortSelect" onchange="applyFilters()" class="bg-gray-100 dark:bg-slate-700 p-2 rounded-md text-sm border border-gray-300 dark:border-slate-600">
-                        <option value="cheapFirst" data-i18n="cheapFirst">Más baratos primero</option>
-                        <option value="expensiveFirst" data-i18n="expensiveFirst">Más exclusivos primero</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Product Grid -->
-            <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                <!-- Rendered dynamically -->
-            </div>
-        </main>
-    </div>
-
-    <!-- FOOTER & LEGAL -->
-    <footer class="bg-gray-900 text-gray-400 mt-12 py-10 border-t border-slate-800 text-xs">
-        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-                <h4 class="text-white font-bold text-sm mb-3">Aetheria Market</h4>
-                <p class="leading-relaxed">Plataforma global de comercio electrónico descentralizado con pagos automatizados en USDT vía Red Tron.</p>
-            </div>
-            <div>
-                <h4 class="text-white font-bold text-sm mb-3">Términos & Garantía</h4>
-                <p class="leading-relaxed">Cancelaciones y devoluciones permitidas dentro de las 24 horas posteriores al pago con una retención del 2% por gastos operacionales de reembolso.</p>
-            </div>
-            <div>
-                <h4 class="text-white font-bold text-sm mb-3">Marco Jurídico & Exención de Responsabilidad</h4>
-                <p id="legalText" class="text-justify leading-relaxed">
-                    La entidad titular de este ecosistema digital opera bajo rigurosa estipulación de reserva de derechos de autor e intelectuales. Se exonera explícitamente a la administración central de responsabilidades emergentes por dilaciones logísticas, pérdidas atribuidas a terceros operadores de encomienda o actuaciones fraudulentas ejecutadas por usuarios que contravengan la integridad de la plataforma.
-                </p>
-            </div>
-        </div>
-        <div class="text-center mt-8 pt-4 border-t border-slate-800 text-gray-500">
-            &copy; 2026 Aetheria Market. Todos los derechos reservados.
-        </div>
-    </footer>
-
-    <!-- CART DRAWER (ANIMATED & FUNCTIONAL) -->
-    <div id="cartDrawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white dark:bg-slate-800 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
-        <div class="p-4 bg-slate-100 dark:bg-slate-700 flex justify-between items-center border-b border-gray-200 dark:border-slate-600">
-            <h3 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-cart-shopping text-pink-500"></i> Tu Carrito</h3>
-            <button onclick="toggleCartDrawer()" class="text-2xl font-bold">&times;</button>
-        </div>
-
-        <!-- Cart Items List -->
-        <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-4">
-            <!-- Dynamic Cart Items -->
-        </div>
-
-        <!-- Customer Form & Receipt Breakdown -->
-        <div class="p-4 bg-gray-50 dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700 space-y-3">
-            <div class="space-y-2 text-xs">
-                <input type="text" id="custName" placeholder="Nombre completo" class="w-full p-2 rounded bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600">
-                <div class="flex gap-2">
-                    <input type="number" id="custAge" placeholder="Edad" class="w-24 p-2 rounded bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600">
-                    <input type="text" id="custAddress" placeholder="Dirección exacta de entrega" class="flex-1 p-2 rounded bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600">
-                </div>
-                <select id="shippingSpeed" onchange="calculateCart()" class="w-full p-2 rounded bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600">
-                    <option value="normal">Envío Normal (15 - 30 días)</option>
-                    <option value="express">Envío Exprés / Compra Rápida (5 - 8 días)</option>
-                </select>
-            </div>
-
-            <!-- Receipt Breakdown -->
-            <div id="receiptBreakdown" class="text-xs space-y-1 bg-white dark:bg-slate-800 p-3 rounded-lg border border-gray-200 dark:border-slate-700">
-                <!-- Breakdown dynamically filled -->
-            </div>
-
-            <button onclick="processCheckout()" class="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold py-2.5 rounded-lg shadow-lg hover:opacity-95 transition">
-                Pagar con USDT (TRC-20)
-            </button>
-        </div>
-    </div>
-
-    <!-- PRODUCT DETAIL & COMMENT MODAL -->
-    <div id="productModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-800 w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl relative max-h-[90vh] flex flex-col md:flex-row">
-            <button onclick="closeProductModal()" class="absolute top-3 right-3 z-10 bg-black/50 text-white w-8 h-8 rounded-full">&times;</button>
-            
-            <!-- Image View -->
-            <div class="md:w-1/2 relative bg-gray-900 flex items-center justify-center p-4">
-                <img id="modalImg" src="" alt="" class="max-h-72 md:max-h-96 object-contain rounded">
-                <div class="watermark">AETHERIA MARKET</div>
-            </div>
-
-            <!-- Options & Info -->
-            <div class="md:w-1/2 p-5 flex flex-col justify-between overflow-y-auto">
-                <div>
-                    <h3 id="modalTitle" class="text-xl font-bold text-gray-900 dark:text-white"></h3>
-                    <p id="modalCategory" class="text-xs text-pink-500 font-semibold mb-2"></p>
-                    <p id="modalPrice" class="text-2xl font-black text-emerald-500 mb-4"></p>
-
-                    <!-- Variations -->
-                    <div class="space-y-3 text-xs mb-4">
-                        <div>
-                            <label class="font-bold block mb-1">Talla:</label>
-                            <div id="modalSizes" class="flex gap-2"></div>
-                        </div>
-                        <div>
-                            <label class="font-bold block mb-1">Color / Modelo:</label>
-                            <div id="modalColors" class="flex gap-2"></div>
-                        </div>
-                    </div>
-
-                    <!-- Cancellation Guarantee Note -->
-                    <div class="p-2.5 bg-amber-500/10 border border-amber-500/30 rounded-lg text-[11px] text-amber-600 dark:text-amber-400 mb-4">
-                        <i class="fa-solid fa-triangle-exclamation mr-1"></i> <strong>Derecho de Cancelación:</strong> Cancelación permitida en 24h tras el pago (reembolso con 2% de retención).
-                    </div>
-
-                    <!-- Reviews Section -->
-                    <div class="border-t border-gray-200 dark:border-slate-700 pt-3">
-                        <h4 class="font-bold text-xs mb-2">Reseñas de compradores:</h4>
-                        <div id="modalReviews" class="space-y-1.5 text-xs max-h-28 overflow-y-auto pr-1"></div>
-                    </div>
-                </div>
-
-                <!-- Add Comment & Add to Cart -->
-                <div class="pt-3 border-t border-gray-200 dark:border-slate-700 space-y-2">
-                    <div class="flex gap-1">
-                        <input type="text" id="userCommentInput" maxlength="300" placeholder="Escribe tu opinión (máx 300 caracteres)..." class="flex-1 text-xs p-2 rounded bg-gray-100 dark:bg-slate-700 border border-gray-300 dark:border-slate-600">
-                        <button onclick="submitComment()" class="bg-pink-600 text-white text-xs px-3 rounded font-bold">Publicar</button>
-                    </div>
-                    <button id="modalAddToCartBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg text-sm transition">
-                        Añadir al Carrito
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- PAYMENT MODAL (TRC20 QR & ADDRESS) -->
-    <div id="paymentModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-6 text-center shadow-2xl relative">
-            <button onclick="closePaymentModal()" class="absolute top-3 right-3 text-2xl font-bold">&times;</button>
-            <h3 class="text-xl font-bold mb-2 text-pink-500">Pago en USDT (Red TRON)</h3>
-            <p class="text-xs text-gray-400 mb-4">Escanea el código QR o copia la dirección para completar tu pedido.</p>
-            
-            <div class="flex justify-center mb-4 p-3 bg-white rounded-xl w-fit mx-auto shadow">
-                <div id="qrcode"></div>
-            </div>
-
-            <div class="bg-gray-100 dark:bg-slate-700 p-2.5 rounded-lg text-xs font-mono break-all mb-4 border border-gray-300 dark:border-slate-600 flex justify-between items-center">
-                <span id="usdtWallet">TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3</span>
-                <button onclick="copyWallet('TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3')" class="ml-2 bg-pink-600 text-white px-2 py-1 rounded text-[10px] font-sans">Copiar</button>
-            </div>
-
-            <div id="finalPayAmount" class="text-lg font-bold text-emerald-400 mb-4"></div>
-            <button onclick="confirmOrderSuccess()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold py-2.5 rounded-lg shadow">
-                Confirmar Transacción
-            </button>
-        </div>
-    </div>
-
-    <!-- SHEIN IMPORT BOX MODAL -->
-    <div id="sheinModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl p-6 shadow-2xl relative">
-            <button onclick="closeSheinModal()" class="absolute top-3 right-3 text-2xl font-bold">&times;</button>
-            <h3 class="text-lg font-bold text-amber-500 mb-2"><i class="fa-solid fa-bag-shopping"></i> Compras Asistidas SheIn</h3>
-            <p class="text-xs text-gray-300 mb-4">
-                ¿No puedes comprar en SheIn directamente con USDT? Pega el enlace de tu artículo aquí. Nosotros lo adquirimos en USD y tú lo pagas en USDT a solo el <strong>35% del valor mostrado en SheIn</strong>.
-            </p>
-            <input type="url" id="sheinUrl" placeholder="https://m.shein.com/es/product-p-..." class="w-full p-2.5 rounded-lg bg-gray-100 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 text-xs mb-3">
-            <button onclick="submitSheinLink()" class="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold py-2 rounded-lg text-xs">Enviar Enlace para Cotización</button>
-        </div>
-    </div>
-
-    <!-- ADVERTISING MODAL -->
-    <div id="adsModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeAdsModal()" class="absolute top-3 right-3 text-2xl font-bold">&times;</button>
-            <h3 class="text-lg font-bold text-blue-500 mb-2"><i class="fa-solid fa-bullhorn"></i> Espacio Publicitario para Proveedores</h3>
-            <p class="text-xs text-gray-300 mb-3">Promociona tus productos en Aetheria Market. Tarifas flexibles en USDT (Descuento del 1.5% en contratos > 5 días).</p>
-            
-            <div class="space-y-2 text-xs mb-4">
-                <div class="flex justify-between bg-gray-100 dark:bg-slate-700 p-2 rounded"><span>10 Minutos de Banner:</span> <strong>1.50 USDT</strong></div>
-                <div class="flex justify-between bg-gray-100 dark:bg-slate-700 p-2 rounded"><span>1 Hora Destacada:</span> <strong>5.00 USDT</strong></div>
-                <div class="flex justify-between bg-gray-100 dark:bg-slate-700 p-2 rounded"><span>1 Día Completo:</span> <strong>20.00 USDT</strong></div>
-                <div class="flex justify-between bg-gray-100 dark:bg-slate-700 p-2 rounded"><span>1 Semana (7 días -1.5% OFF):</span> <strong>118.20 USDT</strong></div>
-            </div>
-
-            <p class="text-[11px] text-gray-400 mb-2">Billetera de Pago de Publicidad (Keeper App / TRC20):</p>
-            <div class="bg-gray-100 dark:bg-slate-700 p-2 rounded text-xs font-mono break-all mb-4 flex justify-between items-center">
-                <span>TAQ5Gnezeftivkok2mrLGWMbvhgJNaRN8f</span>
-                <button onclick="copyWallet('TAQ5Gnezeftivkok2mrLGWMbvhgJNaRN8f')" class="bg-blue-600 text-white px-2 py-0.5 rounded text-[10px]">Copiar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- FEEDBACK MODAL -->
-    <div id="feedbackModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl relative">
-            <button onclick="closeFeedbackModal()" class="absolute top-3 right-3 text-2xl font-bold">&times;</button>
-            <h3 class="text-lg font-bold text-emerald-500 mb-2">Buzón de Opiniones y Quejas</h3>
-            <textarea id="feedbackText" rows="4" placeholder="Escribe tus comentarios para ayudarnos a mejorar..." class="w-full p-3 rounded-lg bg-gray-100 dark:bg-slate-700 text-xs border border-gray-300 dark:border-slate-600 mb-3"></textarea>
-            <button onclick="sendFeedback()" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-lg text-xs">Enviar Opinión</button>
-        </div>
-    </div>
-
-    <!-- ADMIN MODAL (HIDDEN) -->
-    <div id="adminModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl relative">
-            <button onclick="closeAdminModal()" class="absolute top-3 right-3 text-2xl font-bold">&times;</button>
-            <h3 class="text-lg font-bold text-purple-500 mb-4"><i class="fa-solid fa-lock"></i> Acceso Administrador</h3>
-            
-            <div id="adminAuthSection" class="space-y-3">
-                <input type="password" id="adminPassInput" placeholder="Introduce la clave secreta..." class="w-full p-2.5 rounded bg-gray-100 dark:bg-slate-700 text-xs border border-gray-300 dark:border-slate-600">
-                <button onclick="verifyAdmin()" class="w-full bg-purple-600 text-white font-bold py-2 rounded text-xs">Ingresar</button>
-            </div>
-
-            <div id="adminPanelSection" class="hidden space-y-3">
-                <p class="text-xs text-emerald-400 font-bold">¡Acceso Concedido!</p>
-                <h4 class="text-xs font-bold">Módulo Exportador SheIn (Herramienta Admin):</h4>
-                <input type="text" id="sheinExportId" placeholder="ID de producto SheIn..." class="w-full p-2 rounded bg-gray-100 dark:bg-slate-700 text-xs">
-                <button onclick="alert('Exportación iniciada desde servidores SheIn.')" class="w-full bg-pink-600 text-white text-xs py-2 rounded font-bold">Sincronizar Catálogo</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- INTERACTIVE ASSISTANT BOT / TUTORIAL WIDGET -->
-    <div id="botWidget" class="fixed bottom-4 right-4 z-40">
-        <div id="botSpeechBubble" class="hidden bg-white dark:bg-slate-800 text-xs p-3 rounded-xl shadow-2xl border border-pink-500/40 w-64 mb-2 relative">
-            <p id="botMsg">¡Hola! Soy la IA de Aetheria. ¿Quieres un recorrido tutorial?</p>
-            <div class="mt-2 flex gap-1">
-                <button onclick="startTutorial()" class="bg-pink-600 text-white text-[10px] px-2 py-1 rounded">Iniciar Tour</button>
-                <button onclick="toggleBotBubble()" class="bg-gray-500 text-white text-[10px] px-2 py-1 rounded">Cerrar</button>
-            </div>
-        </div>
-        <button onclick="toggleBotBubble()" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center transform hover:scale-110 transition">
-            <i class="fa-solid fa-robot text-xl"></i>
-        </button>
-    </div>
-
-    <!-- JAVASCRIPT LOGIC ENGINE -->
-    <script>
-        // Global State & Data Models
-        let currentLang = 'es';
-        let cart = [];
-        let currentFilterCategory = 'all';
-        let currentSearchQuery = '';
-        let activeModalProduct = null;
-        let selectedSize = '';
-        let selectedColor = '';
-
-        // Product Data Array (Filtered by naming convention: excludes IMG_ prefixes)
-        const productsData = [
-            {
-                id: 'prod_1',
-                name: 'Medias Sencillas Algodón (Pack 3)',
-                category: 'ropa_interior',
-                price: 0.50,
-                sex: 'unisex',
-                img: 'https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=500',
-                sizes: ['S', 'M', 'L'],
-                colors: ['Blanco', 'Negro'],
-                reviews: [
-                    { user: 'Laura M.', comment: 'Muy cómodas para el precio diario.', rating: 5 },
-                    { user: 'Carlos G.', comment: 'Sencillas pero cumplen su función.', rating: 4 }
-                ]
-            },
-            {
-                id: 'prod_2',
-                name: 'Ropa Interior Femenina Encaje Soft',
-                category: 'ropa_interior',
-                price: 0.80,
-                sex: 'mujer',
-                img: 'https://images.unsplash.com/photo-1596475604470-3486c478c520?w=500',
-                sizes: ['S', 'M'],
-                colors: ['Rojo', 'Negro', 'Rosa'],
-                reviews: [
-                    { user: 'Elena P.', comment: 'El encaje es suave, no pica.', rating: 5 },
-                    { user: 'Sofía R.', comment: 'Talla un poco ajustada.', rating: 3 }
-                ]
-            },
-            {
-                id: 'prod_3',
-                name: 'Camiseta Verano Casual Algodón',
-                category: 'ropa_verano',
-                price: 8.50,
-                sex: 'hombre',
-                img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500',
-                sizes: ['M', 'L', 'XL'],
-                colors: ['Azul', 'Blanco', 'Gris'],
-                reviews: [
-                    { user: 'Marcos T.', comment: 'Fresca para el calor del verano.', rating: 5 },
-                    { user: 'Andrés V.', comment: 'La tela es fina pero aceptable.', rating: 4 }
-                ]
-            },
-            {
-                id: 'prod_4',
-                name: 'Vestido Elegante Noche Fiesta',
-                category: 'ropa_elegante',
-                price: 24.00,
-                sex: 'mujer',
-                img: 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=500',
-                sizes: ['S', 'M', 'L'],
-                colors: ['Negro Elegante', 'Vino Tinto'],
-                reviews: [
-                    { user: 'Beatriz L.', comment: 'Espectacular para eventos formales.', rating: 5 },
-                    { user: 'Carmen D.', comment: 'El color es idéntico a la foto.', rating: 5 }
-                ]
-            },
-            {
-                id: 'prod_5',
-                name: 'Perfume Floral Rose Luxury 100ml',
-                category: 'perfumes',
-                price: 18.50,
-                sex: 'mujer',
-                img: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=500',
-                sizes: ['100ml'],
-                colors: ['Estándar'],
-                reviews: [
-                    { user: 'Valeria K.', comment: 'Aroma perdurable y muy dulce.', rating: 5 },
-                    { user: 'Lucía B.', comment: 'Frasco muy bonito.', rating: 4 }
-                ]
-            },
-            {
-                id: 'prod_6',
-                name: 'Reloj Cronógrafo Deportivo Acero',
-                category: 'relojes',
-                price: 22.00,
-                sex: 'hombre',
-                img: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500',
-                sizes: ['Única'],
-                colors: ['Plateado', 'Negro Mate'],
-                reviews: [
-                    { user: 'Roberto F.', comment: 'Excelente diseño pesado y resistente.', rating: 5 },
-                    { user: 'Gabriel M.', comment: 'La correa es ligeramente rígida.', rating: 3 }
-                ]
-            },
-            {
-                id: 'prod_7',
-                name: 'Crema Hidratante Bio Skin Care',
-                category: 'cremas_piel',
-                price: 12.00,
-                sex: 'unisex',
-                img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500',
-                sizes: ['200ml'],
-                colors: ['Estándar'],
-                reviews: [
-                    { user: 'Diana N.', comment: 'Deja la piel super tersa.', rating: 5 },
-                    { user: 'Patricia C.', comment: 'Absorbe bastante rápido.', rating: 4 }
-                ]
-            },
-            {
-                id: 'prod_8',
-                name: 'Chaqueta Térmica Invierno VIP',
-                category: 'ropa_invierno',
-                price: 85.00, // VIP Luxury item (> 50 USDT)
-                sex: 'unisex',
-                img: 'https://images.unsplash.com/photo-1544923246-77307dd654cb?w=500',
-                sizes: ['M', 'L', 'XL'],
-                colors: ['Negro', 'Verde Olivo'],
-                reviews: [
-                    { user: 'Javier S.', comment: 'Calidad extrema de alta gama.', rating: 5 },
-                    { user: 'Mateo H.', comment: 'Protege del frío total.', rating: 5 }
-                ]
-            }
-        ];
-
-        // Categories Configuration
-        const categoriesList = [
-            { id: 'all', name: 'Todos los Productos' },
-            { id: 'ropa_interior', name: 'Ropa Interior & Medias' },
-            { id: 'ropa_verano', name: 'Ropa de Verano' },
-            { id: 'ropa_invierno', name: 'Ropa de Invierno' },
-            { id: 'ropa_deportiva', name: 'Ropa Deportiva' },
-            { id: 'ropa_elegante', name: 'Ropa Elegante' },
-            { id: 'perfumes', name: 'Perfumes & Fragancias' },
-            { id: 'cosmetica', name: 'Cosmética & Maquillaje' },
-            { id: 'cremas_piel', name: 'Cremas para la Piel' },
-            { id: 'relojes', name: 'Relojes & Joyería' },
-            { id: 'gafas', name: 'Gafas de Sol' },
-            { id: 'eventos_halloween', name: 'Halloween & Festivos' }
-        ];
-
-        // Initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            renderCategories();
-            applyFilters();
-            initQR();
-            checkSeasonalEvents();
-        });
-
-        // Seasonal Dynamic Decorator (AI Theme Switcher)
-        function checkSeasonalEvents() {
-            const today = new Date();
-            const month = today.getMonth() + 1;
-            const banner = document.getElementById('seasonalBanner');
-            const seasonalText = document.getElementById('seasonalText');
-
-            if (month === 10) { // October - Halloween
-                banner.className = 'bg-orange-600 text-white text-xs md:text-sm py-2 px-4 text-center font-bold relative flex justify-between items-center';
-                seasonalText.innerText = '🎃 ¡Especial de Halloween! Descuentos espeluznantes en disfraces y accesorios';
-            } else if (month === 2) { // Feb - Valentine
-                banner.className = 'bg-pink-700 text-white text-xs md:text-sm py-2 px-4 text-center font-bold relative flex justify-between items-center';
-                seasonalText.innerText = '💖 Mes del Amor y la Amistad: Ofertas especiales en Perfumes y Joyería';
-            } else if (month === 12) { // Dec - New Year
-                banner.className = 'bg-yellow-600 text-black text-xs md:text-sm py-2 px-4 text-center font-bold relative flex justify-between items-center';
-                seasonalText.innerText = '🎄 ¡Especial de Fin de Año! Prepárate con ropa elegante y ofertas VIP';
-            }
-        }
-
-        // Category Menu Render
-        function renderCategories() {
-            const container = document.getElementById('categoryList');
-            container.innerHTML = categoriesList.map(cat => `
-                <li>
-                    <button onclick="filterCategory('${cat.id}')" 
-                        class="w-full text-left py-1.5 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 transition ${currentFilterCategory === cat.id ? 'font-bold text-pink-500 bg-pink-500/10' : 'text-gray-600 dark:text-gray-300'}">
-                        ${cat.name}
-                    </button>
-                </li>
-            `).join('');
-        }
-
-        function filterCategory(catId) {
-            currentFilterCategory = catId;
-            renderCategories();
-            const catObj = categoriesList.find(c => c.id === catId);
-            document.getElementById('currentCategoryTitle').innerText = catObj ? catObj.name : 'Productos';
-            applyFilters();
-        }
-
-        // Search & Filter Pipeline
-        function handleSearch() {
-            currentSearchQuery = document.getElementById('searchInput').value.toLowerCase();
-            applyFilters();
-        }
-
-        function handleSearchMobile() {
-            currentSearchQuery = document.getElementById('mobileSearchInput').value.toLowerCase();
-            applyFilters();
-        }
-
-        function applyFilters() {
-            const priceVal = document.getElementById('priceFilter').value;
-            const sortVal = document.getElementById('sortSelect').value;
-
-            let filtered = productsData.filter(p => {
-                // Ignore raw unassigned camera files per requirements
-                if (p.name.startsWith('IMG')) return false;
-
-                // Category filter
-                const matchesCat = (currentFilterCategory === 'all') || (p.category === currentFilterCategory);
-
-                // Search query filter
-                const matchesSearch = p.name.toLowerCase().includes(currentSearchQuery) || 
-                                      p.sex.toLowerCase().includes(currentSearchQuery) ||
-                                      p.category.toLowerCase().includes(currentSearchQuery);
-
-                // Price filter
-                let matchesPrice = true;
-                if (priceVal === 'cheap') matchesPrice = p.price <= 1.00;
-                else if (priceVal === 'medium') matchesPrice = p.price >= 4.00 && p.price <= 25.00;
-                else if (priceVal === 'vip') matchesPrice = p.price > 50.00;
-
-                return matchesCat && matchesSearch && matchesPrice;
-            });
-
-            // Sorting
-            if (sortVal === 'cheapFirst') {
-                filtered.sort((a, b) => a.price - b.price);
-            } else if (sortVal === 'expensiveFirst') {
-                filtered.sort((a, b) => b.price - a.price);
-            }
-
-            renderProducts(filtered);
-        }
-
-        // Render Product Cards
-        function renderProducts(list) {
-            const grid = document.getElementById('productGrid');
-            if (list.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400">No se encontraron productos con las especificaciones seleccionadas.</div>`;
-                return;
-            }
-
-            grid.innerHTML = list.map(p => `
-                <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition border border-gray-100 dark:border-slate-700 flex flex-col justify-between group">
-                    <div class="relative overflow-hidden cursor-pointer bg-gray-900" onclick="openProductModal('${p.id}')">
-                        <img src="${p.img}" alt="${p.name}" class="w-full h-44 sm:h-52 object-cover group-hover:scale-105 transition duration-300">
-                        <div class="watermark">AETHERIA MARKET</div>
-                        ${p.price > 50 ? '<span class="absolute top-2 left-2 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-extrabold text-[10px] px-2 py-0.5 rounded shadow">VIP</span>' : ''}
-                    </div>
-                    <div class="p-3.5 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h3 class="font-bold text-xs sm:text-sm text-gray-800 dark:text-gray-100 line-clamp-2 cursor-pointer hover:text-pink-500" onclick="openProductModal('${p.id}')">${p.name}</h3>
-                            <p class="text-[10px] text-gray-400 uppercase mt-1">${p.sex}</p>
-                        </div>
-                        <div class="mt-3 flex items-center justify-between">
-                            <div>
-                                <span class="text-base sm:text-lg font-black text-emerald-500">${p.price.toFixed(2)} USDT</span>
-                            </div>
-                            <button onclick="quickAddToCart('${p.id}')" class="bg-pink-600 hover:bg-pink-700 text-white p-2 rounded-lg text-xs transition">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Product Detailed Modal
-        function openProductModal(productId) {
-            const product = productsData.find(p => p.id === productId);
-            if (!product) return;
-            activeModalProduct = product;
-            selectedSize = product.sizes[0] || '';
-            selectedColor = product.colors[0] || '';
-
-            document.getElementById('modalImg').src = product.img;
-            document.getElementById('modalTitle').innerText = product.name;
-            document.getElementById('modalCategory').innerText = product.category.toUpperCase();
-            document.getElementById('modalPrice').innerText = `${product.price.toFixed(2)} USDT`;
-
-            // Sizes render
-            document.getElementById('modalSizes').innerHTML = product.sizes.map(s => `
-                <button onclick="selectedSize='${s}'; updateVariationBtn(this)" class="px-2.5 py-1 border rounded text-xs font-semibold ${selectedSize === s ? 'bg-pink-600 text-white border-pink-600' : 'bg-gray-100 dark:bg-slate-700'}">${s}</button>
-            `).join('');
-
-            // Colors render
-            document.getElementById('modalColors').innerHTML = product.colors.map(c => `
-                <button onclick="selectedColor='${c}'; updateVariationBtn(this)" class="px-2.5 py-1 border rounded text-xs font-semibold ${selectedColor === c ? 'bg-pink-600 text-white border-pink-600' : 'bg-gray-100 dark:bg-slate-700'}">${c}</button>
-            `).join('');
-
-            // Reviews render
-            document.getElementById('modalReviews').innerHTML = product.reviews.map(r => `
-                <div class="bg-gray-50 dark:bg-slate-700/50 p-2 rounded">
-                    <div class="flex justify-between font-bold text-[11px]">
-                        <span>${r.user}</span>
-                        <span class="text-yellow-400">★ ${r.rating}/5</span>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-300 text-[10px] mt-0.5">${r.comment}</p>
-                </div>
-            `).join('');
-
-            document.getElementById('modalAddToCartBtn').onclick = () => {
-                addToCart(product, selectedSize, selectedColor);
-                closeProductModal();
-            };
-
-            document.getElementById('productModal').classList.remove('hidden');
-        }
-
-        function updateVariationBtn(btn) {
-            Array.from(btn.parentElement.children).forEach(c => c.className = 'px-2.5 py-1 border rounded text-xs font-semibold bg-gray-100 dark:bg-slate-700');
-            btn.className = 'px-2.5 py-1 border rounded text-xs font-semibold bg-pink-600 text-white border-pink-600';
-        }
-
-        function closeProductModal() {
-            document.getElementById('productModal').classList.add('hidden');
-        }
-
-        // Comment Submission with Auto-Moderation Engine
-        function submitComment() {
-            const input = document.getElementById('userCommentInput');
-            const text = input.value.trim();
-            if (!text) return;
-
-            // Forbidden words filter
-            const forbiddenWords = ['estafa', 'robo', 'engaño', 'mentira', 'fraude', 'basura'];
-            const containsForbidden = forbiddenWords.some(word => text.toLowerCase().includes(word));
-
-            if (containsForbidden) {
-                alert('⚠️ Comentario bloqueado por la IA de Moderación: El texto contiene términos prohibidos o inapropiados.');
-                input.value = '';
-                return;
-            }
-
-            activeModalProduct.reviews.unshift({
-                user: 'Usuario Verificado',
-                comment: text,
-                rating: 5
-            });
-
-            openProductModal(activeModalProduct.id);
-            input.value = '';
-        }
-
-        // Cart Core Logic
-        function quickAddToCart(productId) {
-            const product = productsData.find(p => p.id === productId);
-            if (product) addToCart(product, product.sizes[0], product.colors[0]);
-        }
-
-        function addToCart(product, size, color) {
-            const cartItemKey = `${product.id}_${size}_${color}`;
-            const existing = cart.find(i => i.key === cartItemKey);
-
-            if (existing) {
-                existing.qty++;
-            } else {
-                cart.push({
-                    key: cartItemKey,
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    img: product.img,
-                    size: size,
-                    color: color,
-                    qty: 1
-                });
-            }
-            updateCartUI();
-            toggleCartDrawer(true);
-        }
-
-        function removeFromCart(key) {
-            cart = cart.filter(i => i.key !== key);
-            updateCartUI();
-        }
-
-        function changeQty(key, delta) {
-            const item = cart.find(i => i.key === key);
-            if (!item) return;
-            item.qty += delta;
-            if (item.qty <= 0) {
-                removeFromCart(key);
-            } else {
-                updateCartUI();
-            }
-        }
-
-        function updateCartUI() {
-            const badge = document.getElementById('cartBadge');
-            const totalItems = cart.reduce((acc, i) => acc + i.qty, 0);
-            
-            if (totalItems > 0) {
-                badge.innerText = totalItems;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-
-            const container = document.getElementById('cartItemsContainer');
-            if (cart.length === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-gray-400 text-xs">Tu carrito está vacío</div>`;
-                calculateCart();
-                return;
-            }
-
-            container.innerHTML = cart.map(item => `
-                <div class="flex items-center justify-between bg-gray-50 dark:bg-slate-700/60 p-2.5 rounded-xl border border-gray-200 dark:border-slate-600">
-                    <img src="${item.img}" class="w-12 h-12 object-cover rounded">
-                    <div class="flex-1 ml-3 text-xs">
-                        <h4 class="font-bold line-clamp-1">${item.name}</h4>
-                        <p class="text-[10px] text-gray-400">${item.size} | ${item.color}</p>
-                        <span class="font-bold text-emerald-500">${(item.price * item.qty).toFixed(2)} USDT</span>
-                    </div>
-                    <div class="flex items-center gap-1.5 bg-gray-200 dark:bg-slate-600 rounded px-1.5 py-0.5 text-xs">
-                        <button onclick="changeQty('${item.key}', -1)" class="px-1 font-bold">-</button>
-                        <span>${item.qty}</span>
-                        <button onclick="changeQty('${item.key}', 1)" class="px-1 font-bold">+</button>
-                    </div>
-                    <button onclick="removeFromCart('${item.key}')" class="ml-2 text-red-400 hover:text-red-600 text-xs p-1">&times;</button>
-                </div>
-            `).join('');
-
-            calculateCart();
-        }
-
-        // Financial Calculation Algorithm with Tax and Discounts Breakdown
-        function calculateCart() {
-            const subtotal = cart.reduce((acc, i) => acc + (i.price * i.qty), 0);
-            const totalQty = cart.reduce((acc, i) => acc + i.qty, 0);
-
-            // Taxes
-            const impsv = subtotal * 0.05; // 5% IMPSV Tax
-            const deliveryTax = subtotal * 0.03; // 3% Delivery Tax
-
-            // Coupon / Offer Rebate (2% on original product price)
-            const couponDiscount = subtotal * 0.02;
-
-            // VIP / Bulk Buyer Discount: > 100 USDT AND > 3 items -> 3.4% extra discount
-            let bulkDiscount = 0;
-            if (subtotal > 100 && totalQty >= 3) {
-                bulkDiscount = subtotal * 0.034;
-            }
-
-            // Shipping Mode Addon
-            const speed = document.getElementById('shippingSpeed').value;
-            const expressFee = (speed === 'express') ? 4.00 : 0.00;
-
-            const totalPayable = subtotal + impsv + deliveryTax + expressFee - couponDiscount - bulkDiscount;
-
-            const breakdown = document.getElementById('receiptBreakdown');
-            breakdown.innerHTML = `
-                <div class="flex justify-between"><span>Importe de Productos:</span> <span>${subtotal.toFixed(2)} USDT</span></div>
-                <div class="flex justify-between text-gray-400"><span>Impuesto IMPSV (5%):</span> <span>+${impsv.toFixed(2)} USDT</span></div>
-                <div class="flex justify-between text-gray-400"><span>Impuesto Entrega (3%):</span> <span>+${deliveryTax.toFixed(2)} USDT</span></div>
-                ${expressFee > 0 ? `<div class="flex justify-between text-amber-400"><span>Recargo Envío Exprés:</span> <span>+${expressFee.toFixed(2)} USDT</span></div>` : ''}
-                <div class="flex justify-between text-emerald-400"><span>Cupón Descuento (2%):</span> <span>-${couponDiscount.toFixed(2)} USDT</span></div>
-                ${bulkDiscount > 0 ? `<div class="flex justify-between text-pink-400 font-bold"><span>Rebaja Especial VIP (>100 USDT):</span> <span>-${bulkDiscount.toFixed(2)} USDT</span></div>` : ''}
-                <div class="flex justify-between font-black text-sm border-t border-gray-200 dark:border-slate-700 pt-1.5 mt-1 text-emerald-400">
-                    <span>TOTAL A PAGAR:</span>
-                    <span>${Math.max(0, totalPayable).toFixed(2)} USDT</span>
-                </div>
-            `;
-
-            return Math.max(0, totalPayable);
-        }
-
-        function toggleCartDrawer(forceOpen = false) {
-            const drawer = document.getElementById('cartDrawer');
-            if (forceOpen) {
-                drawer.classList.remove('translate-x-full');
-            } else {
-                drawer.classList.toggle('translate-x-full');
-            }
-        }
-
-        // Checkout Process Execution
-        function processCheckout() {
-            if (cart.length === 0) {
-                alert('Añade al menos un producto al carrito antes de proceder.');
-                return;
-            }
-            const name = document.getElementById('custName').value.trim();
-            const age = document.getElementById('custAge').value.trim();
-            const addr = document.getElementById('custAddress').value.trim();
-
-            if (!name || !age || !addr) {
-                alert('Por favor complete todos los datos del recibo (Nombre, Edad y Dirección).');
-                return;
-            }
-
-            const total = calculateCart();
-            document.getElementById('finalPayAmount').innerText = `Monto total: ${total.toFixed(2)} USDT`;
-            document.getElementById('paymentModal').classList.remove('hidden');
-        }
-
-        // QR Code Generator
-        function initQR() {
-            const qrContainer = document.getElementById("qrcode");
-            qrContainer.innerHTML = "";
-            new QRCode(qrContainer, {
-                text: "TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3",
-                width: 128,
-                height: 128
-            });
-        }
-
-        function copyWallet(address) {
-            navigator.clipboard.writeText(address);
-            alert('¡Dirección copiada al portapapeles!');
-        }
-
-        function closePaymentModal() {
-            document.getElementById('paymentModal').classList.add('hidden');
-        }
-
-        function confirmOrderSuccess() {
-            alert('¡Pedido registrado con éxito! Tu orden ha sido enviada al sistema logístico de Aetheria Market.');
-            cart = [];
-            updateCartUI();
-            closePaymentModal();
-            toggleCartDrawer();
-        }
-
-        // Modals Auxiliary Controls
-        function openSheinModal() { document.getElementById('sheinModal').classList.remove('hidden'); }
-        function closeSheinModal() { document.getElementById('sheinModal').classList.add('hidden'); }
-        function submitSheinLink() {
-            const url = document.getElementById('sheinUrl').value;
-            if (!url) return;
-            alert('Enlace SheIn enviado con éxito. Nuestro equipo procesará la solicitud en dólares y recibirás tu cotización en USDT.');
-            closeSheinModal();
-        }
-
-        function openAdsModal() { document.getElementById('adsModal').classList.remove('hidden'); }
-        function closeAdsModal() { document.getElementById('adsModal').classList.add('hidden'); }
-
-        function openFeedbackModal() { document.getElementById('feedbackModal').classList.remove('hidden'); }
-        function closeFeedbackModal() { document.getElementById('feedbackModal').classList.add('hidden'); }
-        function sendFeedback() {
-            const text = document.getElementById('feedbackText').value;
-            if (!text) return;
-            alert('¡Gracias por tus comentarios! Nos ayudan a seguir mejorando.');
-            closeFeedbackModal();
-        }
-
-        function openAdminModal() { document.getElementById('adminModal').classList.remove('hidden'); }
-        function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); }
-        function verifyAdmin() {
-            const pass = document.getElementById('adminPassInput').value;
-            if (pass === 'Rist2026') {
-                document.getElementById('adminAuthSection').classList.add('hidden');
-                document.getElementById('adminPanelSection').classList.remove('hidden');
-            } else {
-                alert('Clave incorrecta.');
-            }
-        }
-
-        // Theme Switcher (Dark Mode)
-        function toggleDarkMode() {
-            const html = document.documentElement;
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                document.getElementById('themeBtnText').innerText = 'Modo Claro';
-            } else {
-                html.classList.add('dark');
-                document.getElementById('themeBtnText').innerText = 'Modo Oscuro';
-            }
-        }
-
-        // Internationalization Switch (ES / EN)
-        function toggleLanguage() {
-            currentLang = currentLang === 'es' ? 'en' : 'es';
-            document.getElementById('langDisplay').innerText = currentLang === 'es' ? 'ES / EN' : 'EN / ES';
-            alert(currentLang === 'es' ? 'Idioma cambiado a Español' : 'Language switched to English');
-        }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-        }
-
-        // Interactive Assistant Bot Engine
-        function toggleBotBubble() {
-            document.getElementById('botSpeechBubble').classList.toggle('hidden');
-        }
-
-        function startTutorial() {
-            alert('PASO 1: Usa la barra lateral para explorar productos por categoría o por rango de precio.');
-            alert('PASO 2: Toca cualquier artículo para ver sus tallas, modelos o dejar una reseña.');
-            alert('PASO 3: Haz clic en el carrito para ingresar tu nombre/dirección y completar tu pago directo en USDT vía Red TRON.');
-        }
-    </script>
+        <button class="text-[10px] text-red-400" onclick="removeItem(${i})">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  const { sub, tax, delivery, couponDisc, volumeDisc, total } = calcTotals();
+  let html = `
+    <div class="flex justify-between"><span>${t('sub')}</span><span>${f2(sub)} USDT</span></div>
+    <div class="flex justify-between"><span>${t('imp')}</span><span>${f2(tax)} USDT</span></div>
+    <div class="flex justify-between"><span>${t('ent')}</span><span>${f2(delivery)} USDT</span></div>`;
+  if (couponDisc > 0) html += `<div class="flex justify-between text-emerald-400"><span>${t('cup')}</span><span>−${f2(couponDisc)} USDT</span></div>`;
+  if (volumeDisc > 0) html += `<div class="flex justify-between text-emerald-400"><span>${t('vol')}</span><span>−${f2(volumeDisc)} USDT</span></div>`;
+  html += `<div class="flex justify-between font-bold text-base pt-1 border-t" style="border-color:var(--line)"><span>${t('tot')}</span><span class="text-cyan-400">${f2(total)} USDT</span></div>`;
+  $('#sm').innerHTML = html;
+}
+
+function applyCoupon() {
+  const code = $('#cp').value.trim().toUpperCase();
+  if (code === CFG.coupon || code === 'AETHERIA') {
+    coupon = true;
+    alert(L === 'es' ? '✓ Cupón aplicado (−2%)' : '✓ Coupon applied (−2%)');
+  } else {
+    coupon = false;
+    alert(L === 'es' ? 'Cupón no válido' : 'Invalid coupon');
+  }
+  drawCart();
+}
+
+function copyWallet() {
+  navigator.clipboard.writeText('TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3').then(() => {
+    const btn = $('#copyBtn');
+    btn.textContent = t('copied');
+    setTimeout(() => btn.textContent = t('copy'), 1500);
+  });
+}
+
+function generateReceipt() {
+  const name = $('#nm').value.trim();
+  const age = $('#ag').value.trim();
+  const addr = $('#ad').value.trim();
+  if (!name || !age || !addr) {
+    alert(t('need'));
+    return;
+  }
+  if (!cart.length) {
+    alert(t('empty'));
+    return;
+  }
+
+  const { sub, tax, delivery, couponDisc, volumeDisc, total } = calcTotals();
+  let itemsHtml = cart.map(item => {
+    const p = P.find(x => x.f === item.f);
+    return p ? `<div>• ${esc(displayName(p))} (${item.s}) ×${item.q} = ${f2(p.price * item.q)} USDT</div>` : '';
+  }).join('');
+
+  $('#rb').innerHTML = `
+    <div class="mb-2"><b>${esc(name)}</b> · ${esc(age)} años</div>
+    <div class="mb-2 m">${esc(addr)}</div>
+    <div class="mb-2">${ship === 'expres' ? t('express') : t('normal')}</div>
+    <hr class="my-2" style="border-color:var(--line)">
+    ${itemsHtml}
+    <hr class="my-2" style="border-color:var(--line)">
+    <div>${t('sub')}: ${f2(sub)} USDT</div>
+    <div>${t('imp')}: ${f2(tax)} USDT</div>
+    <div>${t('ent')}: ${f2(delivery)} USDT</div>
+    ${couponDisc > 0 ? `<div class="text-emerald-400">${t('cup')}: −${f2(couponDisc)} USDT</div>` : ''}
+    ${volumeDisc > 0 ? `<div class="text-emerald-400">${t('vol')}: −${f2(volumeDisc)} USDT</div>` : ''}
+    <div class="font-bold text-cyan-400 mt-1">${t('tot')}: ${f2(total)} USDT</div>
+    <p class="text-amber-500 mt-2 text-[11px]">${t('cancel')}</p>
+    <p class="break-all select-all font-mono mt-2 text-[10px]">USDT TRC20: TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3</p>`;
+
+  $('#rm').classList.remove('hidden');
+}
+
+/* ========== ENCARGO SHEIN ========== */
+function requestEncargo() {
+  const u = $('#eu').value.trim();
+  if (!/^https?:\/\/([\w-]+\.)*(shein)\./i.test(u)) {
+    alert(t('noenc'));
+    return;
+  }
+  navigator.clipboard && navigator.clipboard.writeText(u);
+  alert(t('encok'));
+  $('#eu').value = '';
+}
+
+/* ========== QUEJAS ========== */
+function sendComplaint() {
+  const x = $('#qj').value.trim();
+  if (!x) return;
+  const arr = JSON.parse(localStorage.getItem('quejas') || '[]');
+  arr.push({ text: x, date: new Date().toISOString() });
+  localStorage.setItem('quejas', JSON.stringify(arr));
+  $('#qj').value = '';
+  alert(t('thanks'));
+}
+
+/* ========== PUBLICIDAD ========== */
+function calcAd() {
+  const u = $('#au').value;
+  const n = Math.max(1, +$('#an').value || 1);
+  const days = u === 'dia' ? n : u === 'sem' ? n * 7 : 0;
+  let p = AD[u] * n;
+  const disc = days > 5;
+  if (disc) p *= 0.985;
+  $('#ar').textContent = f2(p) + ' USDT' + (disc ? (L === 'es' ? ' (−1.5% desc. >5 días)' : ' (−1.5% off >5 days)') : '');
+}
+
+/* ========== ADMIN ========== */
+function openAdmin() {
+  const key = prompt(L === 'es' ? 'Clave de Administrador:' : 'Admin Key:');
+  if (key === CFG.key) {
+    $('#adm').classList.remove('hidden');
+  }
+}
+
+function processShein() {
+  const u = $('#su').value.trim();
+  $('#ss').textContent = /shein/i.test(u)
+    ? (L === 'es' ? '✔ URL procesada. Sube la foto a la carpeta Img con el nombre del producto.' : '✔ URL processed. Upload the photo to the Img folder with the product name.')
+    : (L === 'es' ? '✗ URL no válida' : '✗ Invalid URL');
+}
+
+/* ========== TEMAS DE FECHAS ========== */
+function applySeason() {
+  const d = new Date();
+  const v = (d.getMonth() + 1) * 100 + d.getDate();
+  const events = [
+    [1015, 1101, '🎃 Halloween: disfraces y ofertas festivas', '🎃 Halloween theme', '#ea580c', '#581c87'],
+    [1220, 105, '🎆 Fin de Año: súper ofertas y rebajas', '🎆 New Year theme', '#ca8a04', '#be185d'],
+    [207, 214, '💘 San Valentín: regalos especiales', '💘 Valentine’s theme', '#be123c', '#ec4899'],
+    [501, 512, '💐 Día de las Madres: ofertas', '💐 Mother’s Day theme', '#db2777', '#f472b6'],
+    [615, 621, '👔 Día de los Padres: regalos', '👔 Father’s Day theme', '#0369a1', '#1e3a8a'],
+    [1120, 1130, '🏷️ Black Friday: descuentos masivos', '🏷️ Black Friday theme', '#dc2626', '#111827']
+  ];
+  const e = events.find(x => x[0] <= x[1] ? (v >= x[0] && v <= x[1]) : (v >= x[0] || v <= x[1]));
+  const ban = $('#ban');
+  if (!e) {
+    ban.classList.add('hidden');
+    document.body.style.backgroundImage = '';
+    return;
+  }
+  ban.classList.remove('hidden');
+  ban.textContent = e[L === 'es' ? 2 : 3];
+  ban.style.background = `linear-gradient(90deg,${e[4]},${e[5]})`;
+  document.body.style.backgroundImage = `linear-gradient(180deg,${e[4]}33,transparent 320px)`;
+}
+
+/* ========== BOT ASISTENTE ========== */
+const FAQ = {
+  es: [
+    ['📝 Inscribirse / Nuevo Cliente', 'Para registrarte realiza tu primera compra llenando tus datos en el carrito.'],
+    ['⚡ Compra rápida y Envío exprés', 'Normal (15-30 días) +3%. Compra exprés (5-8 días) +8%.'],
+    ['🏷️ Cupones y Descuentos', 'Cupón AETHERIA2026 (−2%). Pedidos >100 USDT con >3 artículos tienen −3.4% extra.'],
+    ['🕒 Cancelaciones (24h)', 'Puedes cancelar dentro de las 24h posteriores al pago con devolución del 98%.'],
+    ['🎉 Fechas importantes', 'La tienda cambia de ambiente automáticamente según la festividad.'],
+    ['▶ Tour Guiado Paso a Paso']
+  ],
+  en: [
+    ['📝 Register / New Customer', 'To register place your first order filling your data in the cart.'],
+    ['⚡ Fast buy & Express Shipping', 'Standard (15-30 days) +3%. Express (5-8 days) +8%.'],
+    ['🏷️ Coupons & Discounts', 'Coupon AETHERIA2026 (−2%). Orders >100 USDT with >3 items get −3.4% off.'],
+    ['🕒 Cancellations (24h)', 'You may cancel within 24h of payment with a 98% refund.'],
+    ['🎉 Special Dates', 'The store changes theme automatically for holidays.'],
+    ['▶ Guided Tour Step-by-Step']
+  ]
+};
+
+const TOUR = [
+  ['#q', '1. Busca por producto, color, sexo o talla.', '1. Search by product, color, gender or size.'],
+  ['#nav', '2. Elige categoría en el menú superior.', '2. Choose category from the top menu.'],
+  ['#grid article', '3. Haz clic en cualquier producto para ver detalles y añadir al carrito.', '3. Click any product to view details and add to cart.'],
+  ['#cartBtn', '4. Abre tu carrito para revisar productos e impuestos.', '4. Open your cart to check items and taxes.'],
+  ['#wallet', '5. Ingresa tus datos, copia la billetera USDT o escanea el QR y paga.', '5. Fill your details, copy the USDT wallet or scan the QR and pay.']
+];
+
+function toggleBot() {
+  $('#bp').classList.toggle('hidden');
+  showBotMenu();
+}
+
+function showBotMenu() {
+  $$('.hl').forEach(e => e.classList.remove('hl'));
+  $('#bm').innerHTML = `<p>${t('hi')}</p>`;
+  $('#bq').innerHTML = FAQ[L].map((f, i) =>
+    `<button class="c rounded-lg px-2 py-1.5 text-left hover:border-pink-500 transition-colors w-full" onclick="botAnswer(${i})">${f[0]}</button>`
+  ).join('');
+}
+
+function botAnswer(i) {
+  if (i === FAQ[L].length - 1) return startTour(0);
+  $('#bm').innerHTML = `<p>${FAQ[L][i][1]}</p>`;
+}
+
+function startTour(i) {
+  $$('.hl').forEach(e => e.classList.remove('hl'));
+  if (i >= TOUR.length) {
+    toggleCart(false);
+    return showBotMenu();
+  }
+  if (i === 3 || i === 4) toggleCart(true);
+  const el = $(TOUR[i][0]);
+  if (el) {
+    el.classList.add('hl');
+    el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+  $('#bm').innerHTML = `<p><b>Paso ${i + 1} de ${TOUR.length}:</b> ${TOUR[i][L === 'es' ? 1 : 2]}</p>`;
+  $('#bq').innerHTML = `
+    <div class="flex gap-2">
+      <button class="btn flex-1" onclick="startTour(${i + 1})">${i < TOUR.length - 1 ? (L === 'es' ? 'Siguiente →' : 'Next →') : (L === 'es' ? 'Finalizar ✓' : 'Finish ✓')}</button>
+      <button class="opt" onclick="showBotMenu()">${L === 'es' ? 'Salir' : 'Exit'}</button>
+    </div>`;
+}
+
+/* ========== ARRANQUE ========== */
+load();
+</script>
 </body>
 </html>
