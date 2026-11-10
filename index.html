@@ -114,20 +114,24 @@ img{content-visibility:auto}
   </div>
 </section>
 
-<!-- Banner publicitario (proveedores) -->
+<!-- Banner IA: promociona productos del catálogo automáticamente -->
 <section class="max-w-7xl mx-auto px-4 mt-4 w-full">
-  <div id="adBanner" class="c rounded-2xl overflow-hidden relative" style="min-height:120px">
-    <div id="adBannerInner" class="p-4 md:p-5 flex flex-col md:flex-row items-center gap-4 justify-between">
-      <div>
-        <b class="text-sm" id="adBannerTitle">📢 Espacio publicitario</b>
-        <p class="text-xs m mt-1" id="adBannerDesc">Proveedores: anuncia aquí tu marca (foto o video corto). Calcula la tarifa abajo y escríbenos por Discord o WhatsApp.</p>
+  <div id="adBanner" class="c rounded-2xl overflow-hidden relative" style="min-height:140px">
+    <div id="promoBanner" class="flex flex-col sm:flex-row items-stretch cursor-pointer" onclick="promoClick()">
+      <div class="relative sm:w-2/5 md:w-1/3 min-h-[140px] bg-black/20">
+        <img id="promoImg" alt="" class="w-full h-full object-cover min-h-[140px] max-h-[200px]" loading="eager" decoding="async"
+          onerror="this.src='https://placehold.co/600x300/1e293b/94a3b8?text=Aetheria'">
+        <span class="badge-hot" id="promoBadge">IA</span>
       </div>
-      <a id="adBannerCta" href="#adsTitle" class="btn whitespace-nowrap text-sm">Ver tarifas</a>
-    </div>
-    <!-- Si hay anuncio activo, se muestra aquí (imagen o video) -->
-    <div id="adMedia" class="hidden">
-      <img id="adImg" alt="Publicidad" class="w-full max-h-48 object-cover" loading="lazy" decoding="async">
-      <video id="adVid" class="w-full max-h-48 object-cover hidden" controls playsinline muted></video>
+      <div class="flex-1 p-4 md:p-5 flex flex-col justify-center gap-2">
+        <div class="text-[10px] uppercase tracking-wider font-bold text-pink-400" id="promoLabel">✨ Selección automática</div>
+        <b class="text-base md:text-lg leading-tight" id="promoName">—</b>
+        <p class="text-xs m line-clamp-2" id="promoText">—</p>
+        <div class="flex flex-wrap items-center gap-3 mt-1">
+          <span class="text-cyan-400 font-extrabold text-lg" id="promoPrice">—</span>
+          <button type="button" class="btn text-sm" id="promoBtn">Ver producto</button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -722,6 +726,7 @@ function applyLang() {
   renderNav();
   renderCatalog();
   renderFeatured();
+  startPromoBanner();
   drawCart();
   applySeason();
   updateContacts();
@@ -756,16 +761,94 @@ function updateContacts() {
     const waLink = wa ? ` · <a href="https://wa.me/${wa}" target="_blank" rel="noopener" class="underline">WhatsApp</a>` : '';
     foot.innerHTML = `© 2026 Aetheria Market · Discord: <b style="color:var(--tx)">${esc(d)}</b>${waLink}`;
   }
-  const adDesc = $('#adBannerDesc');
-  if (adDesc) {
-    adDesc.textContent = L === 'es'
-      ? `Proveedores: anuncia aquí tu marca (foto o video corto). Calcula la tarifa abajo y escríbenos por Discord (${d})${wa ? ' o WhatsApp' : ''}.`
-      : `Suppliers: advertise your brand here (photo or short video). Check rates below and contact us on Discord (${d})${wa ? ' or WhatsApp' : ''}.`;
-  }
-  const adTitle = $('#adBannerTitle');
-  if (adTitle) adTitle.textContent = L === 'es' ? '📢 Espacio publicitario' : '📢 Ad space';
   const feat = $('#featTitle');
   if (feat) feat.textContent = L === 'es' ? '🔥 Destacados y ofertas' : '🔥 Featured & deals';
+  // Actualizar textos del banner promo según idioma
+  showPromo(promoIdx);
+}
+
+/* ========== BANNER IA (promoción automática de productos) ========== */
+let promoIdx = 0;
+let promoTimer = null;
+let promoList = [];
+
+function buildPromoList() {
+  if (!P.length) return [];
+  // Mezcla: más caros + variedad de categorías
+  const byPrice = [...P].sort((a, b) => b.price - a.price);
+  const picks = [];
+  const seen = new Set();
+  for (const p of byPrice) {
+    if (picks.length >= 12) break;
+    if (seen.has(p.cat) && picks.length < 8) continue;
+    seen.add(p.cat);
+    picks.push(p);
+  }
+  // Rellenar hasta 8–12
+  for (const p of P) {
+    if (picks.length >= 12) break;
+    if (!picks.includes(p)) picks.push(p);
+  }
+  return picks;
+}
+
+function promoPhrase(p) {
+  const name = displayName(p);
+  if (L === 'es') {
+    const phrases = [
+      `Destacado hoy: ${name}. Ideal para tu estilo. Pago en USDT.`,
+      `La IA eligió ${name} para ti. Stock listo para envío.`,
+      `Oferta inteligente: ${name}. Añádelo al carrito en un toque.`,
+      `Tendencia en Aetheria: ${name}. Compra segura con USDT.`
+    ];
+    return phrases[p.i % phrases.length];
+  }
+  const phrases = [
+    `Today's pick: ${name}. Perfect for your style. Pay in USDT.`,
+    `AI selected ${name} for you. Ready to ship.`,
+    `Smart deal: ${name}. Add to cart in one tap.`,
+    `Trending at Aetheria: ${name}. Secure USDT checkout.`
+  ];
+  return phrases[p.i % phrases.length];
+}
+
+function showPromo(i) {
+  promoList = buildPromoList();
+  if (!promoList.length) return;
+  promoIdx = ((i % promoList.length) + promoList.length) % promoList.length;
+  const p = promoList[promoIdx];
+  const img = $('#promoImg');
+  const name = $('#promoName');
+  const text = $('#promoText');
+  const price = $('#promoPrice');
+  const btn = $('#promoBtn');
+  const label = $('#promoLabel');
+  const badge = $('#promoBadge');
+  if (img) {
+    img.src = imgUrl(p.f);
+    img.alt = displayName(p);
+  }
+  if (name) name.textContent = displayName(p);
+  if (text) text.textContent = promoPhrase(p);
+  if (price) price.textContent = f2(p.price) + ' USDT';
+  if (btn) btn.textContent = L === 'es' ? 'Ver producto' : 'View product';
+  if (label) label.textContent = L === 'es' ? '✨ Selección automática de la IA' : '✨ AI automatic pick';
+  if (badge) badge.textContent = L === 'es' ? 'IA' : 'AI';
+}
+
+function promoClick() {
+  promoList = buildPromoList();
+  if (!promoList.length) return;
+  const p = promoList[promoIdx];
+  if (p) openProduct(p.i);
+}
+
+function startPromoBanner() {
+  showPromo(0);
+  if (promoTimer) clearInterval(promoTimer);
+  promoTimer = setInterval(() => {
+    showPromo(promoIdx + 1);
+  }, 5000);
 }
 
 function toggleLang() {
