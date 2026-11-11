@@ -3,38 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Aetheria Market — Tienda online con pago en USDT. Ropa, relojes, perfumes y encargos. Envíos internacionales.">
+<meta name="description" content="Aetheria Market — Tienda online profesional. Ropa, relojes, perfumes y encargos. Pago en USDT (BNB Smart Chain BEP20). Envíos internacionales.">
 <meta name="theme-color" content="#0f172a">
-<title>Tienda Virtual Aetheria Market</title>
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="Aetheria Market">
+<meta property="og:description" content="Catálogo verificado · Pago USDT BEP20 · Envíos internacionales">
+<meta property="og:type" content="website">
+<title>Aetheria Market | Tienda online USDT</title>
 <link rel="preconnect" href="https://cdn.tailwindcss.com">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-:root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--tx:#0f172a;--mut:#64748b}
-html.dark{--bg:#0f172a;--card:#1e293b;--line:#334155;--tx:#f1f5f9;--mut:#94a3b8}
-body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;transition:background .25s}
-.c{background:var(--card);border:1px solid var(--line)}
+:root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--tx:#0f172a;--mut:#64748b;--accent:#ec4899;--accent2:#8b5cf6}
+html.dark{--bg:#0b1220;--card:#141c2e;--line:#243044;--tx:#f1f5f9;--mut:#94a3b8}
+body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;transition:background .25s,color .25s}
+.c{background:var(--card);border:1px solid var(--line);box-shadow:0 1px 0 rgba(255,255,255,.03)}
 .m{color:var(--mut)}
-.in{background:var(--bg);border:1px solid var(--line);border-radius:.5rem;padding:.55rem .75rem;font-size:.85rem;width:100%;color:var(--tx)}
-.btn{background:linear-gradient(90deg,#ec4899,#8b5cf6);color:#fff;font-weight:700;border-radius:.75rem;padding:.55rem 1.1rem;font-size:.85rem;transition:transform .15s,opacity .15s}
+.in{background:var(--bg);border:1px solid var(--line);border-radius:.65rem;padding:.6rem .8rem;font-size:.85rem;width:100%;color:var(--tx);transition:border-color .15s,box-shadow .15s}
+.in:focus{outline:none;border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.2)}
+.btn{background:linear-gradient(90deg,#ec4899,#8b5cf6);color:#fff;font-weight:700;border-radius:.75rem;padding:.6rem 1.15rem;font-size:.85rem;transition:transform .15s,opacity .15s,box-shadow .15s;box-shadow:0 6px 20px rgba(236,72,153,.18)}
+.btn:hover{box-shadow:0 8px 24px rgba(139,92,246,.28)}
 .btn:active{transform:scale(.97)}
-.btn:disabled{opacity:.55;cursor:not-allowed}
-.wm{position:absolute;bottom:8px;right:8px;background:rgba(15,23,42,.88);color:#06b6d4;font-size:9px;font-weight:900;padding:2px 8px;border-radius:6px;border:1px solid rgba(6,182,212,.45);pointer-events:none;letter-spacing:.3px}
+.btn:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
+.wm{position:absolute;bottom:8px;right:8px;background:rgba(15,23,42,.88);color:#67e8f9;font-size:9px;font-weight:800;padding:3px 8px;border-radius:6px;border:1px solid rgba(103,232,249,.35);pointer-events:none;letter-spacing:.4px}
 .logo{background:linear-gradient(90deg,#ec4899,#a78bfa,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
 @keyframes pulseCart{0%,100%{transform:scale(1)}50%{transform:scale(1.22)}}
 .pulse{animation:pulseCart .45s ease 3}
 #cart{transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1)}
 #cart.open{transform:translateX(0)}
 .hl{outline:3px solid #06b6d4;outline-offset:3px;border-radius:.6rem}
-.opt{border:1px solid var(--line);border-radius:.5rem;padding:.3rem .7rem;font-size:.78rem;cursor:pointer;transition:all .15s}
+.opt{border:1px solid var(--line);border-radius:.55rem;padding:.35rem .75rem;font-size:.78rem;cursor:pointer;transition:all .15s;background:transparent;color:var(--tx)}
 .opt.on{background:#ec4899;color:#fff;border-color:#ec4899}
 .opt:hover{border-color:#ec4899}
 .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 #ban{transition:all .4s}
-.step{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
-.step:last-child{border-bottom:none}
-.step-n{min-width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;font-weight:800;font-size:.75rem;display:flex;align-items:center;justify-content:center}
+.step-n{min-width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;font-weight:800;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 img{content-visibility:auto}
-.badge-hot{position:absolute;top:8px;left:8px;background:linear-gradient(90deg,#f97316,#ef4444);color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:6px;z-index:2}
+.badge-hot{position:absolute;top:8px;left:8px;background:linear-gradient(90deg,#f97316,#ef4444);color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;z-index:2;letter-spacing:.3px}
+.trust{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:11px;color:var(--mut)}
+.trust span{display:inline-flex;align-items:center;gap:5px}
+.card-hover{transition:transform .18s ease,box-shadow .18s ease}
+.card-hover:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.18)}
+.scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
+.scrollbar-hide::-webkit-scrollbar{display:none}
 </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -45,17 +55,32 @@ img{content-visibility:auto}
 <!-- Header -->
 <header class="sticky top-0 z-40 border-b backdrop-blur-md" style="background:color-mix(in srgb,var(--bg) 92%,transparent);border-color:var(--line)">
   <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3 justify-between">
-    <h1 class="logo text-xl md:text-2xl font-black tracking-wide select-none">TIENDA VIRTUAL AETHERIA MARKET</h1>
+    <div>
+      <h1 class="logo text-xl md:text-2xl font-black tracking-wide select-none">AETHERIA MARKET</h1>
+      <p class="text-[10px] m hidden sm:block" id="tagline">Catálogo verificado · Pago USDT BEP20 · Envío internacional</p>
+    </div>
     <input id="q" oninput="handleSearch(this.value)" class="in rounded-full md:flex-1 max-w-xl" placeholder="">
     <div class="flex gap-2 items-center">
-      <button id="lb" onclick="toggleLang()" class="c px-2.5 py-1.5 rounded-lg text-xs font-semibold">EN</button>
-      <button onclick="toggleDark()" class="c px-2.5 py-1.5 rounded-lg text-xs" title="Modo oscuro">🌓</button>
+      <button id="lb" onclick="toggleLang()" class="c px-2.5 py-1.5 rounded-lg text-xs font-semibold" title="Idioma">EN</button>
+      <button onclick="toggleDark()" class="c px-2.5 py-1.5 rounded-lg text-xs" title="Tema">🌓</button>
       <button onclick="openAdmin()" class="c px-2.5 py-1.5 rounded-lg text-xs" title="Admin">🔒</button>
+      <button type="button" onclick="contactDiscord()" class="c px-2.5 py-1.5 rounded-lg text-xs font-semibold" title="Discord" id="discordHeaderBtn">Discord</button>
+      <a id="waHeaderBtn" href="https://wa.me/528124415641" target="_blank" rel="noopener" class="c px-2.5 py-1.5 rounded-lg text-xs font-semibold" title="WhatsApp">WhatsApp</a>
       <button id="cartBtn" onclick="toggleCart()" class="btn flex items-center gap-1.5">🛒 <span id="cc">0</span></button>
     </div>
   </div>
   <nav id="nav" class="flex gap-2 overflow-x-auto px-4 pb-2.5 text-xs max-w-7xl mx-auto scrollbar-hide"></nav>
 </header>
+
+<!-- Franja de confianza -->
+<div class="max-w-7xl mx-auto px-4 mt-3">
+  <div class="trust">
+    <span id="trust1">✓ Pago en USDT (BEP20)</span>
+    <span id="trust2">✓ Confirmación por Discord / WhatsApp</span>
+    <span id="trust3">✓ Encargos y catálogo propio</span>
+    <span id="trust4">✓ Atención personalizada</span>
+  </div>
+</div>
 
 <!-- Cómo comprar -->
 <section class="max-w-7xl mx-auto px-4 mt-4 w-full">
@@ -72,14 +97,14 @@ img{content-visibility:auto}
       </div>
       <div class="flex gap-2 items-start">
         <span class="step-n">3</span>
-        <div><b id="how3t">Paga en USDT</b><p class="m" id="how3d">Envía el total a la wallet TRON que aparece.</p></div>
+        <div><b id="how3t">Paga en USDT</b><p class="m" id="how3d">Envía el total en USDT red BNB Smart Chain (BEP20).</p></div>
       </div>
       <div class="flex gap-2 items-start">
         <span class="step-n">4</span>
-        <div><b id="how4t">Confirma</b><p class="m" id="how4d">Escríbenos por Discord con el comprobante.</p></div>
+        <div><b id="how4t">Confirma</b><p class="m" id="how4d">Escríbenos por Discord o WhatsApp con el comprobante.</p></div>
       </div>
     </div>
-    <p class="text-[11px] m mt-3" id="howNote">Discord: <b style="color:var(--tx)">Aetheriamarket</b> · Envíos internacionales · Pago 100% en USDT (TRON)</p>
+    <p class="text-[11px] m mt-3" id="howNote">Discord: Aetheriamarket · WhatsApp · USDT BNB Smart Chain (BEP20)</p>
   </div>
 </section>
 
@@ -213,7 +238,7 @@ img{content-visibility:auto}
     </div>
     <div>
       <b id="payInfoTitle">💎 Pago seguro</b>
-      <p class="m mt-1" id="payInfoDesc">Solo aceptamos USDT en red TRON. Tras pagar, envía el comprobante por Discord (Aetheriamarket).</p>
+      <p class="m mt-1" id="payInfoDesc">Solo USDT en BNB Smart Chain (BEP20). Tras pagar, envía el comprobante por Discord o WhatsApp.</p>
     </div>
     <div>
       <b id="retTitle">↩️ Devoluciones</b>
@@ -258,15 +283,23 @@ img{content-visibility:auto}
     <div id="wallet" class="text-center text-[11px] p-3 rounded-xl" style="background:var(--bg)">
       <b class="text-cyan-400" id="walTitle"></b>
       <p class="m my-1" id="paySteps" style="font-size:11px;line-height:1.4">1) Copia la wallet · 2) Envía el total exacto en USDT (BEP20 / BNB) · 3) Confirma por Discord o WhatsApp</p>
+      <p class="text-cyan-400 font-extrabold text-base my-1" id="payAmountHint"></p>
       <code id="walletAddr" class="block break-all select-all my-1.5 text-[10px] p-2 rounded-lg" style="background:var(--card);border:1px dashed var(--line)">0x2441d8bbbd8e7b93A6FE371D48515c7978201C13</code>
-      <button class="opt" onclick="copyWallet()" id="copyBtn"></button>
+      <div class="flex flex-col gap-2 mt-2">
+        <button type="button" class="btn w-full" onclick="payNow()" id="payNowBtn">💳 Pagar con USDT (BEP20)</button>
+        <button type="button" class="opt w-full" onclick="copyWallet()" id="copyBtn">Copiar dirección</button>
+      </div>
       <div class="mt-2 flex flex-col items-center">
-        <img id="walletQr" class="w-24 h-24 bg-white p-1 rounded border border-cyan-400/40" alt="QR"
+        <img id="walletQr" class="w-24 h-24 bg-white p-1 rounded border border-cyan-400/40" alt="QR USDT BEP20"
           src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=0x2441d8bbbd8e7b93A6FE371D48515c7978201C13">
         <span class="text-[9px] text-cyan-400 mt-1">✓ USDT · BNB Smart Chain (BEP20)</span>
       </div>
     </div>
     <button class="btn w-full" onclick="generateReceipt()" id="payBtn"></button>
+    <div class="grid grid-cols-2 gap-2 mt-1">
+      <button type="button" class="opt w-full" onclick="contactDiscord()" id="discordPayBtn">Discord</button>
+      <a id="waPayLink" href="https://wa.me/528124415641" target="_blank" rel="noopener" class="opt w-full text-center block">WhatsApp</a>
+    </div>
   </div>
 </aside>
 
@@ -388,7 +421,7 @@ const T = {
     allsex: 'Todos los sexos', mujer: 'Mujer', hombre: 'Hombre', unisex: 'Unisex',
     allsz: 'Todas las tallas',
     asc: 'Más baratos primero', desc: 'Más costosos primero',
-    items: 'productos', catalog: 'Catálogo verificado',
+    items: 'productos', catalog: 'Catálogo',
     add: 'Añadir al carrito', upd: 'Actualizar artículo',
     size: 'Talla / Medida', color: 'Color / Estilo',
     reviews: '⭐ Valoraciones', post: 'Publicar comentario',
@@ -398,7 +431,7 @@ const T = {
     name: 'Nombre completo', age: 'Edad', addr: 'Dirección exacta de envío',
     normal: 'Envío estándar (10-25 días) +3%', express: 'Envío express (7-14 días) +8%',
     coupon: 'Código de cupón', apply: 'Aplicar',
-    pay: 'Generar recibo de pago',
+    pay: 'Confirmar pedido y ver pago',
     empty: 'Tu carrito está vacío.',
     need: 'Por favor completa nombre, edad y dirección.',
     cancel: '⚠️ Cancelación: Puedes cancelar dentro de las 24h posteriores al pago; se devuelve el 98% (se retiene 2% de gestión).',
@@ -437,7 +470,7 @@ const T = {
     allsex: 'All genders', mujer: 'Women', hombre: 'Men', unisex: 'Unisex',
     allsz: 'All sizes',
     asc: 'Cheapest first', desc: 'Most expensive first',
-    items: 'products', catalog: 'Verified catalog',
+    items: 'products', catalog: 'Catalog',
     add: 'Add to cart', upd: 'Update item',
     size: 'Size', color: 'Color / Style',
     reviews: '⭐ Reviews', post: 'Post comment',
@@ -447,7 +480,7 @@ const T = {
     name: 'Full name', age: 'Age', addr: 'Exact shipping address',
     normal: 'Standard shipping (10-25 days) +3%', express: 'Express shipping (7-14 days) +8%',
     coupon: 'Coupon code', apply: 'Apply',
-    pay: 'Generate payment receipt',
+    pay: 'Confirm order & view payment',
     empty: 'Your cart is empty.',
     need: 'Please fill in name, age and address.',
     cancel: '⚠️ Cancellation: You may cancel within 24h after payment; 98% refunded (2% management fee retained).',
@@ -694,6 +727,10 @@ function applyLang() {
   $('#walTitle').textContent = t('wal');
   $('#copyBtn').textContent = t('copy');
   $('#payBtn').textContent = t('pay');
+  const pnb = $('#payNowBtn');
+  if (pnb && !cart.length) {
+    pnb.textContent = L === 'es' ? '💳 Pagar con USDT (BEP20)' : '💳 Pay with USDT (BEP20)';
+  }
   $('#cancelWarn').textContent = t('cancel');
   $('#sizeLabel').textContent = t('size');
   $('#colorLabel').textContent = t('color');
@@ -711,6 +748,16 @@ function applyLang() {
   set('payInfoTitle','payInfoTitle'); set('payInfoDesc','payInfoDesc');
   set('retTitle','retTitle'); set('retDesc','retDesc');
   set('paySteps','paySteps');
+
+  const tag = $('#tagline');
+  if (tag) tag.textContent = L === 'es'
+    ? 'Catálogo verificado · Pago USDT BEP20 · Envío internacional'
+    : 'Verified catalog · USDT BEP20 payments · International shipping';
+  const t1 = $('#trust1'), t2 = $('#trust2'), t3 = $('#trust3'), t4 = $('#trust4');
+  if (t1) t1.textContent = L === 'es' ? '✓ Pago en USDT (BEP20)' : '✓ USDT (BEP20) payments';
+  if (t2) t2.textContent = L === 'es' ? '✓ Confirmación por Discord / WhatsApp' : '✓ Confirm via Discord / WhatsApp';
+  if (t3) t3.textContent = L === 'es' ? '✓ Encargos y catálogo propio' : '✓ Catalog & custom orders';
+  if (t4) t4.textContent = L === 'es' ? '✓ Atención personalizada' : '✓ Personalized support';
 
   // Select sexo
   const fs = $('#fs');
@@ -769,6 +816,29 @@ function contactLine() {
     : `Discord: ${d} · WhatsApp: ask via Discord`;
 }
 
+/** Abre Discord y copia el usuario de la tienda */
+function contactDiscord(ev) {
+  if (ev && ev.preventDefault) ev.preventDefault();
+  const d = CFG.discord || 'Aetheriamarket';
+  const copy = () => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(d);
+    }
+    return Promise.resolve();
+  };
+  copy().then(() => {
+    alert(
+      L === 'es'
+        ? `Usuario de Discord copiado: ${d}\n\n1) Abre Discord\n2) Agrega o busca ese usuario\n3) Envía tu pedido o comprobante de pago`
+        : `Discord username copied: ${d}\n\n1) Open Discord\n2) Add or search that user\n3) Send your order or payment proof`
+    );
+    window.open('https://discord.com/app', '_blank', 'noopener');
+  }).catch(() => {
+    alert((L === 'es' ? 'Usuario Discord: ' : 'Discord user: ') + d);
+    window.open('https://discord.com/app', '_blank', 'noopener');
+  });
+}
+
 function updateContacts() {
   const wa = (CFG.whatsapp || '').replace(/\D/g, '');
   const d = CFG.discord || 'Aetheriamarket';
@@ -778,15 +848,37 @@ function updateContacts() {
       ? `${contactLine()} · Envíos internacionales · USDT BNB Smart Chain (BEP20)`
       : `${contactLine()} · International shipping · USDT BNB Smart Chain (BEP20)`;
   }
-  // Enlaces rápidos en pie si existen
   const foot = document.querySelector('footer p.text-center');
   if (foot) {
     const waLink = wa ? ` · <a href="https://wa.me/${wa}" target="_blank" rel="noopener" class="underline">WhatsApp</a>` : '';
-    foot.innerHTML = `© 2026 Aetheria Market · Discord: <b style="color:var(--tx)">${esc(d)}</b>${waLink}`;
+    foot.innerHTML = `© 2026 Aetheria Market · <button type="button" onclick="contactDiscord()" class="underline" style="background:none;border:none;color:var(--tx);cursor:pointer;font:inherit">Discord</button>: <b style="color:var(--tx)">${esc(d)}</b>${waLink}`;
   }
+  const waHeader = $('#waHeaderBtn');
+  if (waHeader) {
+    if (wa) {
+      waHeader.href = `https://wa.me/${wa}`;
+      waHeader.setAttribute('href', `https://wa.me/${wa}`);
+      waHeader.textContent = 'WhatsApp';
+      waHeader.target = '_blank';
+      waHeader.rel = 'noopener';
+      waHeader.style.display = '';
+    } else {
+      waHeader.style.display = 'none';
+    }
+  }
+  const waPay = $('#waPayLink');
+  if (waPay && wa) {
+    waPay.href = `https://wa.me/${wa}`;
+    waPay.textContent = 'WhatsApp';
+    waPay.target = '_blank';
+    waPay.rel = 'noopener';
+  }
+  const dHead = $('#discordHeaderBtn');
+  if (dHead) dHead.textContent = 'Discord';
+  const dPay = $('#discordPayBtn');
+  if (dPay) dPay.textContent = L === 'es' ? 'Discord' : 'Discord';
   const feat = $('#featTitle');
   if (feat) feat.textContent = L === 'es' ? '🔥 Destacados y ofertas' : '🔥 Featured & deals';
-  // Actualizar textos del banner promo según idioma
   showPromo(promoIdx);
 }
 
@@ -902,25 +994,25 @@ function setCategory(c) {
 
 /* ========== TARJETA DE PRODUCTO ========== */
 function productCard(p, opts = {}) {
-  const hot = opts.hot ? `<span class="badge-hot">${L === 'es' ? 'OFERTA' : 'DEAL'}</span>` : '';
+  const hot = opts.hot ? `<span class="badge-hot">${L === 'es' ? 'DESTACADO' : 'FEATURED'}</span>` : '';
   return `
-  <article class="c rounded-2xl p-3 flex flex-col hover:shadow-lg transition-shadow">
+  <article class="c rounded-2xl p-3 flex flex-col card-hover">
     <div class="relative overflow-hidden rounded-xl mb-2 cursor-pointer" onclick="openProduct(${p.i})">
       <img src="${imgUrl(p.f)}" alt="${esc(displayName(p))}" width="400" height="208"
         class="w-full h-52 object-cover" loading="lazy" decoding="async"
-        onerror="this.src='https://placehold.co/400x400/1e293b/94a3b8?text=No+Image'">
+        onerror="this.src='https://placehold.co/400x400/1e293b/94a3b8?text=Aetheria'">
       ${hot}
-      <div class="wm">AETHERIA MARKET</div>
+      <div class="wm">AETHERIA</div>
       <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-black/65 text-white uppercase">${p.cat}</span>
-      <span class="absolute top-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded bg-pink-600 text-white">${p.sex}</span>
+      <span class="absolute top-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded bg-pink-600/95 text-white">${p.sex}</span>
     </div>
     <h3 class="font-semibold text-sm leading-tight line-clamp-2">${esc(displayName(p))}</h3>
     <div class="text-[11px] m my-1 space-y-0.5">
-      ${p.rev.slice(0, 2).map(r => `<div>${'★'.repeat(r[1])}${'☆'.repeat(5 - r[1])} "${esc(r[0])}"</div>`).join('')}
+      ${p.rev.slice(0, 2).map(r => `<div>${'★'.repeat(r[1])}${'☆'.repeat(5 - r[1])} <span class="opacity-90">"${esc(r[0])}"</span></div>`).join('')}
     </div>
     <div class="flex justify-between items-center mt-auto pt-2">
-      <b class="text-cyan-400 text-lg">${f2(p.price)} USDT</b>
-      <button class="m text-xs" onclick="openProduct(${p.i})">🔍</button>
+      <b class="text-cyan-400 text-lg tracking-tight">${f2(p.price)} <span class="text-sm font-bold">USDT</span></b>
+      <button class="m text-xs hover:text-cyan-400" onclick="openProduct(${p.i})" title="Ver">🔍</button>
     </div>
     <button class="btn mt-2 w-full" onclick="openProduct(${p.i})">${t('add')}</button>
   </article>`;
@@ -1252,6 +1344,12 @@ function drawCart() {
   if (!cart.length) {
     box.innerHTML = `<p class="text-center m py-8">${t('empty')}</p>`;
     $('#sm').innerHTML = '';
+    const hint = $('#payAmountHint');
+    if (hint) hint.textContent = '';
+    const payNow = $('#payNowBtn');
+    if (payNow) payNow.textContent = L === 'es' ? '💳 Pagar con USDT (BEP20)' : '💳 Pay with USDT (BEP20)';
+    const waBtn = $('#waPayLink');
+    if (waBtn) waBtn.style.display = 'none';
     return;
   }
 
@@ -1286,6 +1384,31 @@ function drawCart() {
   if (volumeDisc > 0) html += `<div class="flex justify-between text-emerald-400"><span>${t('vol')}</span><span>−${f2(volumeDisc)} USDT</span></div>`;
   html += `<div class="flex justify-between font-bold text-base pt-1 border-t" style="border-color:var(--line)"><span>${t('tot')}</span><span class="text-cyan-400">${f2(total)} USDT</span></div>`;
   $('#sm').innerHTML = html;
+  const hint = $('#payAmountHint');
+  if (hint) {
+    hint.textContent = (L === 'es' ? 'Total a pagar: ' : 'Amount due: ') + f2(total) + ' USDT';
+  }
+  const waBtn = $('#waPayLink');
+  if (waBtn) {
+    const wa = (CFG.whatsapp || '').replace(/\D/g, '');
+    if (wa) {
+      const msg = encodeURIComponent(
+        (L === 'es' ? 'Hola, voy a pagar / ya pagué mi pedido en Aetheria Market. Total: ' : 'Hi, I will pay / I paid my Aetheria Market order. Total: ')
+        + f2(total) + ' USDT (BEP20)'
+      );
+      waBtn.href = `https://wa.me/${wa}?text=${msg}`;
+      waBtn.style.display = 'block';
+      waBtn.textContent = 'WhatsApp';
+    } else {
+      waBtn.style.display = 'none';
+    }
+  }
+  const payNow = $('#payNowBtn');
+  if (payNow) {
+    payNow.textContent = L === 'es'
+      ? `💳 Pagar ${f2(total)} USDT (BEP20)`
+      : `💳 Pay ${f2(total)} USDT (BEP20)`;
+  }
 }
 
 function applyCoupon() {
@@ -1302,10 +1425,35 @@ function applyCoupon() {
 
 function copyWallet() {
   const w = CFG.wallet;
-  navigator.clipboard.writeText(w).then(() => {
+  return navigator.clipboard.writeText(w).then(() => {
     const btn = $('#copyBtn');
-    btn.textContent = t('copied');
-    setTimeout(() => btn.textContent = t('copy'), 1500);
+    if (btn) {
+      btn.textContent = t('copied');
+      setTimeout(() => btn.textContent = t('copy'), 1500);
+    }
+  }).catch(() => {
+    alert(CFG.wallet);
+  });
+}
+
+/** Botón principal de pago: copia wallet y guía al cliente */
+function payNow() {
+  if (!cart.length) {
+    alert(t('empty'));
+    return;
+  }
+  const { total } = calcTotals();
+  copyWallet().then(() => {
+    const msg = L === 'es'
+      ? `Dirección copiada.\n\nEnvía exactamente ${f2(total)} USDT\nRed: BNB Smart Chain (BEP20)\n\nLuego confirma por WhatsApp o Discord con el comprobante.`
+      : `Address copied.\n\nSend exactly ${f2(total)} USDT\nNetwork: BNB Smart Chain (BEP20)\n\nThen confirm on WhatsApp or Discord with the receipt.`;
+    alert(msg);
+    // Resalta wallet y QR
+    const addr = $('#walletAddr');
+    if (addr) {
+      addr.style.outline = '2px solid #22d3ee';
+      setTimeout(() => { addr.style.outline = ''; }, 2000);
+    }
   });
 }
 
