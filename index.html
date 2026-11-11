@@ -12,60 +12,104 @@
 <title>Aetheria Market | Tienda online USDT</title>
 <link rel="preconnect" href="https://cdn.tailwindcss.com">
 <script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--tx:#0f172a;--mut:#64748b;--accent:#ec4899;--accent2:#8b5cf6}
-html.dark{--bg:#0b1220;--card:#141c2e;--line:#243044;--tx:#f1f5f9;--mut:#94a3b8}
-body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;transition:background .25s,color .25s}
-.c{background:var(--card);border:1px solid var(--line);box-shadow:0 1px 0 rgba(255,255,255,.03)}
+:root{
+  --bg:#f4f6fb;--card:#ffffff;--line:#e2e8f0;--tx:#0f172a;--mut:#64748b;
+  --accent:#ec4899;--accent2:#8b5cf6;--cyan:#06b6d4;
+  --shadow:0 10px 30px rgba(15,23,42,.06);--shadow-lg:0 18px 40px rgba(15,23,42,.12)
+}
+html.dark{
+  --bg:#070b14;--card:#101827;--line:#1e2a3c;--tx:#f1f5f9;--mut:#94a3b8;
+  --shadow:0 10px 30px rgba(0,0,0,.25);--shadow-lg:0 20px 50px rgba(0,0,0,.4)
+}
+*{box-sizing:border-box}
+body{
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(236,72,153,.12), transparent 55%),
+    radial-gradient(900px 400px at 90% 0%, rgba(139,92,246,.12), transparent 50%),
+    var(--bg);
+  color:var(--tx);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  transition:background .25s,color .25s;
+  letter-spacing:.01em
+}
+.c{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow)}
 .m{color:var(--mut)}
-.in{background:var(--bg);border:1px solid var(--line);border-radius:.65rem;padding:.6rem .8rem;font-size:.85rem;width:100%;color:var(--tx);transition:border-color .15s,box-shadow .15s}
-.in:focus{outline:none;border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.2)}
-/* Selectores con contraste claro en modo claro y oscuro */
+.in{
+  background:color-mix(in srgb,var(--bg) 80%,var(--card));
+  border:1px solid var(--line);border-radius:.85rem;padding:.7rem .9rem;
+  font-size:.875rem;width:100%;color:var(--tx);transition:border-color .15s,box-shadow .15s
+}
+.in:focus{outline:none;border-color:#a78bfa;box-shadow:0 0 0 4px rgba(139,92,246,.18)}
 select.in,select.sel{
   appearance:none;-webkit-appearance:none;
-  background-color:var(--card)!important;
-  color:var(--tx)!important;
-  border:1px solid var(--line);
+  background-color:var(--card)!important;color:var(--tx)!important;border:1px solid var(--line);
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2394a3b8' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right .85rem center;padding-right:2.2rem;cursor:pointer
+  background-repeat:no-repeat;background-position:right .9rem center;padding-right:2.3rem;cursor:pointer;border-radius:.85rem
 }
 select.in option,select.sel option{background:var(--card);color:var(--tx)}
 html:not(.dark) select.in,html:not(.dark) select.sel{background-color:#fff!important;color:#0f172a!important;border-color:#cbd5e1}
-html.dark select.in,html.dark select.sel{background-color:#1a2438!important;color:#f1f5f9!important;border-color:#334155}
-.btn{background:linear-gradient(90deg,#ec4899,#8b5cf6);color:#fff;font-weight:700;border-radius:.75rem;padding:.65rem 1.15rem;font-size:.85rem;transition:transform .15s,opacity .15s,box-shadow .15s;box-shadow:0 6px 20px rgba(236,72,153,.18);min-height:44px}
-.btn:hover{box-shadow:0 8px 24px rgba(139,92,246,.28)}
-.btn:active{transform:scale(.97)}
+html.dark select.in,html.dark select.sel{background-color:#152033!important;color:#f1f5f9!important;border-color:#2a3a52}
+.btn{
+  background:linear-gradient(135deg,#f472b6 0%,#ec4899 40%,#8b5cf6 100%);
+  color:#fff;font-weight:700;border-radius:.9rem;padding:.7rem 1.2rem;font-size:.875rem;
+  transition:transform .15s,opacity .15s,box-shadow .2s;box-shadow:0 10px 24px rgba(236,72,153,.22);min-height:46px;border:none;cursor:pointer
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 14px 28px rgba(139,92,246,.3)}
+.btn:active{transform:scale(.98)}
 .btn:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
-.wm{position:absolute;bottom:8px;right:8px;background:rgba(15,23,42,.88);color:#67e8f9;font-size:9px;font-weight:800;padding:3px 8px;border-radius:6px;border:1px solid rgba(103,232,249,.35);pointer-events:none;letter-spacing:.4px}
-.logo{background:linear-gradient(90deg,#ec4899,#a78bfa,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
-@keyframes pulseCart{0%,100%{transform:scale(1)}50%{transform:scale(1.22)}}
+.wm{position:absolute;bottom:10px;right:10px;background:rgba(7,11,20,.82);backdrop-filter:blur(6px);color:#67e8f9;font-size:9px;font-weight:800;padding:4px 9px;border-radius:8px;border:1px solid rgba(103,232,249,.3);pointer-events:none;letter-spacing:.5px}
+.logo{
+  background:linear-gradient(90deg,#f472b6,#c4b5fd,#22d3ee);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 18px rgba(236,72,153,.15))
+}
+@keyframes pulseCart{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
 .pulse{animation:pulseCart .45s ease 3}
-#cart{transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);max-width:100%}
+#cart{transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);max-width:100%;border-left:1px solid var(--line)}
 #cart.open{transform:translateX(0)}
 @media(min-width:480px){#cart{max-width:28rem}}
-.cart-close{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:12px;font-size:1.25rem;border:1px solid var(--line);background:var(--bg)}
-.cart-actions{position:sticky;bottom:0;background:var(--card);padding-top:.5rem;padding-bottom:max(.75rem,env(safe-area-inset-bottom));border-top:1px solid var(--line);z-index:2}
+.cart-close{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:12px;font-size:1.2rem;border:1px solid var(--line);background:var(--bg);color:var(--tx);cursor:pointer}
+.cart-actions{position:sticky;bottom:0;background:linear-gradient(180deg,transparent,var(--card) 12%);padding-top:.75rem;padding-bottom:max(.85rem,env(safe-area-inset-bottom));border-top:1px solid var(--line);z-index:2}
 .touch-btn{min-height:48px;display:flex;align-items:center;justify-content:center;font-weight:600}
-.hl{outline:3px solid #06b6d4;outline-offset:3px;border-radius:.6rem}
-.opt{border:1px solid var(--line);border-radius:.55rem;padding:.45rem .75rem;font-size:.8rem;cursor:pointer;transition:all .15s;background:var(--bg);color:var(--tx);min-height:44px}
-.opt.on{background:#ec4899;color:#fff;border-color:#ec4899}
-.opt:hover{border-color:#ec4899}
+.hl{outline:3px solid #06b6d4;outline-offset:3px;border-radius:.7rem}
+.opt{border:1px solid var(--line);border-radius:.7rem;padding:.5rem .8rem;font-size:.8rem;cursor:pointer;transition:all .15s;background:color-mix(in srgb,var(--bg) 70%,var(--card));color:var(--tx);min-height:44px}
+.opt.on{background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(236,72,153,.25)}
+.opt:hover{border-color:#c084fc}
 .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 #ban{transition:all .4s}
-.step-n{min-width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;font-weight:800;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-n{min-width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f472b6,#8b5cf6);color:#fff;font-weight:800;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 14px rgba(236,72,153,.25)}
 img{content-visibility:auto}
-.badge-hot{position:absolute;top:8px;left:8px;background:linear-gradient(90deg,#f97316,#ef4444);color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;z-index:2;letter-spacing:.3px}
-.trust{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:11px;color:var(--mut)}
-.trust span{display:inline-flex;align-items:center;gap:5px}
-.card-hover{transition:transform .18s ease,box-shadow .18s ease}
-.card-hover:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.18)}
+.badge-hot{position:absolute;top:10px;left:10px;background:linear-gradient(90deg,#fb923c,#ef4444);color:#fff;font-size:10px;font-weight:800;padding:4px 9px;border-radius:999px;z-index:2;letter-spacing:.4px;box-shadow:0 6px 14px rgba(239,68,68,.3)}
+.trust{display:flex;flex-wrap:wrap;gap:8px 10px;font-size:11px}
+.trust span{
+  display:inline-flex;align-items:center;gap:6px;
+  background:color-mix(in srgb,var(--card) 88%,transparent);
+  border:1px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--mut);
+  box-shadow:var(--shadow)
+}
+.card-hover{transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;border-radius:1.1rem;overflow:hidden}
+.card-hover:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,#a78bfa 40%,var(--line))}
+.card-hover img,.card-hover picture img{transition:transform .35s ease}
+.card-hover:hover img,.card-hover:hover picture img{transform:scale(1.04)}
 .scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
 .scrollbar-hide::-webkit-scrollbar{display:none}
-/* Admin modal */
 #adminModal{z-index:80}
 #adminModal .admin-panel{max-height:90vh;overflow-y:auto}
 .admin-lock{opacity:.35}
 .admin-lock:hover{opacity:.85}
+.site-header{backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 80%,transparent)!important}
+.chip{border-radius:999px!important}
+.section-title{font-weight:800;letter-spacing:.02em}
+#promoBanner{min-height:150px}
+#promoBanner img{object-position:center}
+@media (max-width:640px){
+  .logo{font-size:1.15rem!important}
+  .trust{justify-content:flex-start}
+}
 </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -74,23 +118,23 @@ img{content-visibility:auto}
 <div id="ban" class="hidden text-center text-xs font-bold text-white py-1.5 tracking-wide"></div>
 
 <!-- Header -->
-<header class="sticky top-0 z-40 border-b backdrop-blur-md" style="background:color-mix(in srgb,var(--bg) 92%,transparent);border-color:var(--line)">
-  <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3 justify-between">
+<header class="sticky top-0 z-40 border-b site-header" style="border-color:var(--line)">
+  <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-wrap items-center gap-3 justify-between">
     <div>
-      <h1 class="logo text-xl md:text-2xl font-black tracking-wide select-none">AETHERIA MARKET</h1>
-      <p class="text-[10px] m hidden sm:block" id="tagline">Catálogo verificado · Pago USDT BEP20 · Envío internacional</p>
+      <h1 class="logo text-xl md:text-2xl font-black tracking-[0.04em] select-none">AETHERIA MARKET</h1>
+      <p class="text-[10px] m hidden sm:block mt-0.5" id="tagline">Catálogo verificado · Pago USDT BEP20 · Envío internacional</p>
     </div>
-    <input id="q" oninput="handleSearch(this.value)" class="in rounded-full md:flex-1 max-w-xl" placeholder="">
-    <div class="flex gap-2 items-center">
-      <button id="lb" onclick="toggleLang()" class="c px-2.5 py-1.5 rounded-lg text-xs font-semibold" title="Idioma">EN</button>
-      <button onclick="toggleDark()" class="c px-2.5 py-1.5 rounded-lg text-xs" title="Tema">🌓</button>
-      <button onclick="openAdmin()" class="c px-2.5 py-1.5 rounded-lg text-xs admin-lock" title="Admin" aria-label="Admin">🔒</button>
-      <button type="button" onclick="contactDiscord()" class="c px-2.5 py-1.5 rounded-lg text-xs font-semibold" title="Discord" id="discordHeaderBtn">Discord</button>
-      <a id="waHeaderBtn" href="https://wa.me/528124415641" target="_blank" rel="noopener" class="c px-2.5 py-1.5 rounded-lg text-xs font-semibold" title="WhatsApp">WhatsApp</a>
-      <button id="cartBtn" onclick="toggleCart()" class="btn flex items-center gap-1.5">🛒 <span id="cc">0</span></button>
+    <input id="q" oninput="handleSearch(this.value)" class="in rounded-full md:flex-1 max-w-xl shadow-sm" placeholder="">
+    <div class="flex gap-2 items-center flex-wrap justify-end">
+      <button id="lb" onclick="toggleLang()" class="c px-3 py-2 rounded-xl text-xs font-semibold" title="Idioma">EN</button>
+      <button onclick="toggleDark()" class="c px-3 py-2 rounded-xl text-xs" title="Tema">🌓</button>
+      <button onclick="openAdmin()" class="c px-3 py-2 rounded-xl text-xs admin-lock" title="Admin" aria-label="Admin">🔒</button>
+      <button type="button" onclick="contactDiscord()" class="c px-3 py-2 rounded-xl text-xs font-semibold" title="Discord" id="discordHeaderBtn">Discord</button>
+      <a id="waHeaderBtn" href="https://wa.me/528124415641" target="_blank" rel="noopener" class="c px-3 py-2 rounded-xl text-xs font-semibold" title="WhatsApp">WhatsApp</a>
+      <button id="cartBtn" onclick="toggleCart()" class="btn flex items-center gap-1.5 px-4">🛒 <span id="cc">0</span></button>
     </div>
   </div>
-  <nav id="nav" class="flex gap-2 overflow-x-auto px-4 pb-2.5 text-xs max-w-7xl mx-auto scrollbar-hide"></nav>
+  <nav id="nav" class="flex gap-2 overflow-x-auto px-4 pb-3 text-xs max-w-7xl mx-auto scrollbar-hide"></nav>
 </header>
 
 <!-- Franja de confianza -->
@@ -104,9 +148,9 @@ img{content-visibility:auto}
 </div>
 
 <!-- Cómo comprar -->
-<section class="max-w-7xl mx-auto px-4 mt-4 w-full">
-  <div class="c rounded-2xl p-4 md:p-5">
-    <b class="text-sm" id="howTitle">Cómo comprar en 4 pasos</b>
+<section class="max-w-7xl mx-auto px-4 mt-5 w-full">
+  <div class="c rounded-2xl p-4 md:p-6">
+    <b class="text-sm section-title" id="howTitle">Cómo comprar en 4 pasos</b>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3 text-xs">
       <div class="flex gap-2 items-start">
         <span class="step-n">1</span>
@@ -168,6 +212,37 @@ img{content-visibility:auto}
       </div>
       <div id="ledTable" class="mt-3 overflow-x-auto text-[11px]"></div>
     </div>
+    <div class="border-t pt-3" style="border-color:var(--line)">
+      <b class="text-xs">🎬 Videos (promo / proveedores / producto)</b>
+      <p class="text-[11px] m my-1">Pega URL de MP4 (GitHub o enlace directo) o YouTube. También puedes subir <code>promo-aetheria.mp4</code> al repo.</p>
+      <input id="vidPromoUrl" class="in mt-1" placeholder="URL video promo principal (mp4 o YouTube)">
+      <input id="vidExtraUrl" class="in mt-2" placeholder="URL video proveedor / promoción">
+      <input id="vidProductKey" class="in mt-2" placeholder="Nombre archivo producto ej: reloj inteligente.jpg">
+      <input id="vidProductUrl" class="in mt-2" placeholder="URL video de ese producto">
+      <div class="flex flex-wrap gap-2 mt-2">
+        <button type="button" class="btn" onclick="saveVideosAdmin()">Guardar videos</button>
+        <button type="button" class="opt" onclick="clearVideosAdmin()">Limpiar extras</button>
+      </div>
+      <p id="vidAdminMsg" class="text-[11px] m mt-2"></p>
+    </div>
+    <div class="border-t pt-3" style="border-color:var(--line)">
+      <b class="text-xs">💬 Discord · servidor y #catalogo-y-ofertas</b>
+      <p class="text-[11px] m my-1">Pega la invitación permanente del servidor. Luego publica productos del canal (imagen, precio, oferta, texto, referencia).</p>
+      <input id="dcInviteInput" class="in mt-1" placeholder="https://discord.gg/tu-invitacion">
+      <button type="button" class="btn mt-2" onclick="saveDiscordInvite()">Guardar invitación Discord</button>
+      <hr class="my-3" style="border-color:var(--line)">
+      <input id="dcName" class="in" placeholder="Nombre del producto">
+      <input id="dcPrice" class="in mt-2" type="number" step="0.01" min="0" placeholder="Precio USDT">
+      <input id="dcOffer" class="in mt-2" placeholder="Oferta (ej. -20% o 12.00)">
+      <input id="dcImg" class="in mt-2" placeholder="URL de imagen o nombre archivo del repo">
+      <input id="dcRef" class="in mt-2" placeholder="Referencia / SKU / link proveedor">
+      <textarea id="dcText" class="in mt-2" rows="3" placeholder="Explicación del producto (como en Discord)"></textarea>
+      <div class="flex flex-wrap gap-2 mt-2">
+        <button type="button" class="btn" onclick="discordProductAdd()">Publicar en la web</button>
+        <button type="button" class="opt" onclick="discordProductClear()">Vaciar lista Discord</button>
+      </div>
+      <p id="dcAdminMsg" class="text-[11px] m mt-2"></p>
+    </div>
   </div>
 </div>
 <!-- id adm conservado vacío por compatibilidad -->
@@ -207,12 +282,53 @@ img{content-visibility:auto}
   </div>
 </section>
 
+<!-- Video promocional + videos de proveedores -->
+<section class="max-w-7xl mx-auto px-4 mt-5 w-full">
+  <div class="c rounded-2xl p-4 md:p-5">
+    <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
+      <h2 class="font-bold border-l-4 border-cyan-400 pl-3 section-title" id="videoTitle">🎬 Videos y promociones</h2>
+      <span class="text-[11px] m" id="videoHint">Productos · proveedores · ofertas</span>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <p class="text-xs m mb-2" id="promoVidLabel">Promo oficial Aetheria Market</p>
+        <video id="promoVideo" class="w-full rounded-xl bg-black max-h-72 object-contain" controls playsinline preload="metadata">
+          <source id="promoVideoSrc" src="promo-aetheria.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div>
+        <p class="text-xs m mb-2" id="extraVidLabel">Video de proveedor / promoción</p>
+        <div id="extraVideoBox" class="w-full rounded-xl bg-black/40 min-h-[12rem] flex items-center justify-center overflow-hidden border" style="border-color:var(--line)">
+          <video id="extraVideo" class="w-full max-h-72 object-contain hidden" controls playsinline preload="metadata"></video>
+          <p id="extraVideoEmpty" class="text-xs m p-6 text-center">Pronto: videos de proveedores y lanzamientos.<br>En el panel admin 🔒 puedes pegar enlaces MP4 o YouTube.</p>
+        </div>
+        <div id="videoGallery" class="grid grid-cols-2 gap-2 mt-3"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Destacados / Ofertas -->
 <section class="max-w-7xl mx-auto px-4 mt-5 w-full">
   <div class="flex justify-between items-center mb-3">
     <h2 class="font-bold border-l-4 border-orange-500 pl-3" id="featTitle">🔥 Destacados y ofertas</h2>
   </div>
   <div id="featGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4"></div>
+</section>
+
+<!-- Catálogo desde Discord #catalogo-y-ofertas -->
+<section class="max-w-7xl mx-auto px-4 mt-5 w-full">
+  <div class="c rounded-2xl p-4 md:p-5">
+    <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+      <div>
+        <h2 class="font-bold border-l-4 border-indigo-400 pl-3 section-title" id="dcTitle">💬 Desde Discord · #catalogo-y-ofertas</h2>
+        <p class="text-xs m mt-1" id="dcDesc">Productos y ofertas publicados en el servidor oficial. Imagen, precio, oferta y referencia.</p>
+      </div>
+      <button type="button" class="btn text-sm" onclick="contactDiscord()" id="dcJoinBtn">Unirse al servidor</button>
+    </div>
+    <div id="discordGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+    <p id="discordEmpty" class="text-xs m text-center py-6 hidden">Aún no hay publicaciones del canal. El admin puede cargarlas desde el panel 🔒.</p>
+  </div>
 </section>
 
 <!-- Catálogo -->
@@ -288,42 +404,66 @@ img{content-visibility:auto}
 <!-- Overlay carrito -->
 <div id="bk" onclick="toggleCart(false)" class="fixed inset-0 bg-black/60 z-40 hidden"></div>
 
-<!-- Carrito lateral (optimizado móvil) -->
+<!-- Carrito de compras -->
 <aside id="cart" class="fixed top-0 right-0 h-full w-full z-50 c flex flex-col shadow-2xl">
   <div class="p-3 flex justify-between items-center border-b gap-2" style="border-color:var(--line)">
-    <b id="cartTitle" class="text-sm"></b>
+    <div>
+      <b id="cartTitle" class="text-sm block">🛒 Carrito de compras</b>
+      <span id="cartStepLabel" class="text-[10px] m">1 · Productos → 2 · Datos → 3 · Pago</span>
+    </div>
     <button type="button" onclick="toggleCart(false)" class="cart-close" aria-label="Cerrar carrito">✕</button>
   </div>
-  <div id="ci" class="flex-1 overflow-y-auto p-3 space-y-2"></div>
-  <div class="p-3 space-y-2 overflow-y-auto" style="max-height:55vh">
-    <input id="nm" class="in" placeholder="">
-    <div class="grid grid-cols-2 gap-2">
-      <input id="ag" type="number" min="1" class="in" placeholder="">
-      <select id="sh" class="in sel" onchange="ship=this.value;drawCart()"></select>
+
+  <div class="flex-1 overflow-y-auto">
+    <!-- Paso 1: productos -->
+    <div class="p-3 border-b" style="border-color:var(--line)">
+      <div class="flex justify-between items-center mb-2">
+        <b class="text-xs" id="cartSecItems">Tu pedido</b>
+        <button type="button" class="text-[11px] text-pink-400 font-semibold" onclick="toggleCart(false)" id="contShopBtn">Seguir comprando</button>
+      </div>
+      <div id="ci" class="space-y-2"></div>
     </div>
-    <textarea id="ad" rows="2" class="in" placeholder=""></textarea>
-    <div class="flex gap-2">
-      <input id="cp" class="in" placeholder="">
-      <button class="btn shrink-0" onclick="applyCoupon()" id="applyBtn"></button>
+
+    <!-- Paso 2: datos de envío -->
+    <div class="p-3 border-b space-y-2" style="border-color:var(--line)">
+      <b class="text-xs" id="cartSecData">Datos de envío</b>
+      <input id="nm" class="in" placeholder="Nombre completo">
+      <div class="grid grid-cols-2 gap-2">
+        <input id="ag" type="number" min="1" class="in" placeholder="Edad">
+        <select id="sh" class="in sel" onchange="ship=this.value;drawCart()"></select>
+      </div>
+      <textarea id="ad" rows="2" class="in" placeholder="Dirección exacta de envío"></textarea>
+      <div class="flex gap-2">
+        <input id="cp" class="in" placeholder="Cupón">
+        <button class="btn shrink-0" onclick="applyCoupon()" id="applyBtn">Aplicar</button>
+      </div>
     </div>
-    <div id="sm" class="text-xs font-mono space-y-1"></div>
-    <div id="wallet" class="text-center text-[11px] p-3 rounded-xl" style="background:var(--bg)">
-      <b class="text-cyan-400" id="walTitle"></b>
-      <p class="m my-1" id="paySteps" style="font-size:11px;line-height:1.4">1) Copia la wallet · 2) Envía USDT en BEP20 · 3) Confirma por WhatsApp o Discord</p>
-      <p class="text-cyan-400 font-extrabold text-base my-1" id="payAmountHint"></p>
-      <code id="walletAddr" class="block break-all select-all my-1.5 text-[10px] p-2 rounded-lg" style="background:var(--card);border:1px dashed var(--line)">0x2441d8bbbd8e7b93A6FE371D48515c7978201C13</code>
-      <div class="mt-2 flex flex-col items-center">
-        <img id="walletQr" class="w-24 h-24 bg-white p-1 rounded border border-cyan-400/40" alt="QR USDT BEP20"
-          src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=0x2441d8bbbd8e7b93A6FE371D48515c7978201C13"
-          loading="lazy" decoding="async" width="96" height="96">
-        <span class="text-[9px] text-cyan-400 mt-1">✓ USDT · BNB Smart Chain (BEP20)</span>
+
+    <!-- Paso 3: resumen y pago -->
+    <div class="p-3 space-y-2">
+      <b class="text-xs" id="cartSecPay">Resumen y pago</b>
+      <div id="sm" class="text-xs space-y-1 p-3 rounded-xl" style="background:var(--bg)"></div>
+      <div id="wallet" class="text-center text-[11px] p-3 rounded-xl" style="background:var(--bg)">
+        <b class="text-cyan-400" id="walTitle"></b>
+        <p class="m my-1" id="paySteps" style="font-size:11px;line-height:1.4">1) Copia la wallet · 2) Envía USDT en BEP20 · 3) Confirma por WhatsApp o Discord</p>
+        <p class="text-cyan-400 font-extrabold text-base my-1" id="payAmountHint"></p>
+        <code id="walletAddr" class="block break-all select-all my-1.5 text-[10px] p-2 rounded-lg" style="background:var(--card);border:1px dashed var(--line)">0x2441d8bbbd8e7b93A6FE371D48515c7978201C13</code>
+        <div class="mt-2 flex flex-col items-center">
+          <img id="walletQr" class="w-24 h-24 bg-white p-1 rounded border border-cyan-400/40" alt="QR USDT BEP20"
+            src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=0x2441d8bbbd8e7b93A6FE371D48515c7978201C13"
+            loading="lazy" decoding="async" width="96" height="96">
+          <span class="text-[9px] text-cyan-400 mt-1">✓ USDT · BNB Smart Chain (BEP20)</span>
+        </div>
       </div>
     </div>
   </div>
+
   <div class="cart-actions px-3 space-y-2">
     <button type="button" class="btn w-full touch-btn" onclick="payNow()" id="payNowBtn">💳 Pagar con USDT (BEP20)</button>
-    <button type="button" class="opt w-full touch-btn" onclick="copyWallet()" id="copyBtn">Copiar dirección</button>
-    <button class="btn w-full touch-btn" onclick="generateReceipt()" id="payBtn"></button>
+    <div class="grid grid-cols-2 gap-2">
+      <button type="button" class="opt w-full touch-btn" onclick="copyWallet()" id="copyBtn">Copiar dirección</button>
+      <button class="opt w-full touch-btn" onclick="generateReceipt()" id="payBtn">Ver recibo</button>
+    </div>
     <div class="grid grid-cols-2 gap-2">
       <button type="button" class="opt w-full touch-btn" onclick="contactDiscord()" id="discordPayBtn">Discord</button>
       <a id="waPayLink" href="https://wa.me/528124415641" target="_blank" rel="noopener" class="opt w-full touch-btn text-center">WhatsApp</a>
@@ -338,7 +478,9 @@ img{content-visibility:auto}
     <div class="grid md:grid-cols-2 gap-4">
       <div class="relative">
         <img id="mi" alt="" class="w-full h-72 object-cover rounded-xl">
+        <video id="mv" class="w-full h-72 object-cover rounded-xl hidden bg-black" controls playsinline></video>
         <div class="wm">AETHERIA MARKET</div>
+        <button type="button" id="mvToggle" class="hidden absolute bottom-3 left-3 opt text-[11px] bg-black/70 text-white border-0" onclick="toggleProductVideo()">Ver video</button>
       </div>
       <div>
         <h3 id="mn" class="font-bold text-lg"></h3>
@@ -384,62 +526,44 @@ const CFG = {
   coupon: 'AETHERIA2026',
   whatsapp: '528124415641',
   discord: 'Aetheriamarket',
+  /* Servidor oficial Discord — pega tu invitación permanente (https://discord.gg/xxxxx) */
+  discordServer: 'Servidor de Aetheria Market',
+  discordInvite: '',
+  discordChannel: '#catalogo-y-ofertas',
   /* Pago de productos: BNB Smart Chain (BEP20) */
   wallet: '0x2441d8bbbd8e7b93A6FE371D48515c7978201C13',
   network: 'BNB Smart Chain (BEP20)',
   networkShort: 'BEP20',
   /* Publicidad (se mantiene aparte) */
-  adsWallet: 'TAQ5Gnezeftivkok2mrLGWMbvhgJNaRN8f'
+  adsWallet: 'TAQ5Gnezeftivkok2mrLGWMbvhgJNaRN8f',
+  /* true solo cuando hayas subido versiones .webp de las fotos */
+  useWebp: false
 };
 
-/* Lista completa de fotos (nombres exactos de tu carpeta) */
+/* Lista exacta de fotos en el repositorio GitHub (93 archivos) */
 const IMAGES = [
-  /* Ropa interior */
-  'ropa interior de hombre.jpg','ropa interior moderna.jpg','topa interior mujer4.jpg',
-  'ropa interior hombre clasico.jpg','ropa interior mujer fina.jpg','ropa interior mujer elegante.jpg',
-  'ropa interior.jpg','conjunto de ropa interior.jpg','ropa interior estampados.jpg',
-  'ropa interior modelo estampados.jpg','conjunto interior femenino.jpg','conjunto oscuro interior femenino.jpg',
-  'conjunto elegante.jpg',
-
-  /* Playeras y tops */
-  'playera.jpg','playera oscura.jpg','playera oscura 1.jpg','playera con michi1.jpg',
-  'playera de gym1.jpg','playera chica gym3.jpg','playera retro.jpg','playera3.jpg',
-  'playera mora3.jpg','playeras deportivas femenina.jpg','blusa.jpg','blusa de chica.jpg',
-
-  /* Ropa hombre / mujer */
-  'ropa de hombre elegante.jpg','ropa de mujer.jpg','conjunto de ropa elegante hombre.jpg',
-  'conjunto de ropa de hombre.jpg','conjunto de ropa de hombre 2.jpg','conjunto de ropa de mujer.jpg',
-  'monos de hombre.jpg','monos de chica.jpg','mono moderno.jpg','mono deportivo unisex.jpg',
-  'conjunto deportivo hombre.jpg','ropa para gym mujer.jpg','licras de gym mujer.jpg',
-  'ropa.deportiva.jpg','ropa.deportiva chica.jpg',
-
-  /* Jeans y pantalones */
-  'jeans clásico.jpg','jeans claro.jpg','jeans ancho claro1.jpg','jeans corte moderno3.jpg',
-  'pantalón ancho de mujer.jpg','shorts hombre1.jpg','shorts para hombre.jpg',
-
-  /* Abrigos y sudaderas */
-  'abrigo elegante chica.jpg','abrigos.jpg','sudadera festiva.jpg','sudadera car0.jpg',
-  'sudadera retro6.jpg','disfraz.jpg',
-
-  /* Vestidos */
-  'vestido.jpg','vestido elegante 11.jpg','vestido elegante 2.jpg','vestido elegante 3.jpg','vestido elegante 4.jpg',
-
-  /* Zapatos y tenis */
-  'tenis.jpg','tenis moderno.jpg','tenis de mujer.jpg','zapatilla.jpg','zapatillas1.jpg',
-  'zapatillas GJ2.jpg','zapato.jpg','zapato de vestir4.jpg',
-
-  /* Relojes */
-  'reloj elegante.jpg','reloj estilo clásico.jpg','reloj inteligente.jpg','relojes 3.jpg',
-  'relojes varios.jpg','relojes4.jpg',
-
-  /* Perfumes */
-  'perfume.jpg','perfume 2.jpg','perfume clásico.jpg','perfume1.jpg','perfume7.jpg','perfume8.jpg',
-  'perfume 9.jpg','perfume 10.jpg','perfume 11.jpg','perfume 12.jpg','perfume 13.jpg',
-  'perfume 14.jpg','perfume 15.jpg','perfume 16.jpg','perfume16.jpg','perfume arabe.jpg','perfume 76.jpg',
-
-  /* Cosméticos y accesorios */
-  'set de cosméticos.jpg','cosméticos ojos.jpg','cosméticos bases.jpg','cosméticos delineador.jpg',
-  'anillos7.jpg','cadena.jpg','cadena fina .jpg','prendas9.jpg','prendas 1.jpg'
+  'abrigo elegante chica.jpg','abrigos.jpg','anillos7.jpg','blusa de chica.jpg','blusa.jpg',
+  'cadena fina .jpg','cadena.jpg','conjunto de ropa de hombre 2.jpg','conjunto de ropa de hombre.jpg',
+  'conjunto de ropa de mujer.jpg','conjunto de ropa elegante hombre.jpg','conjunto de ropa interior.jpg',
+  'conjunto deportivo hombre.jpg','conjunto interior femenino.jpg','cosméticos bases.jpg',
+  'cosméticos delineador.jpg','cosméticos ojos.jpg','disfraz.jpg','jeans ancho claro1.jpg',
+  'jeans claro.jpg','jeans clásico.jpg','jeans corte moderno3.jpg','licras de gym mujer.jpg',
+  'mono deportivo unisex.jpg','mono moderno.jpg','monos de chica.jpg','monos de hombre.jpg',
+  'pantalón ancho de mujer.jpg','perfume 10.jpg','perfume 11.jpg','perfume 12.jpg','perfume 13.jpg',
+  'perfume 14.jpg','perfume 15.jpg','perfume 16.jpg','perfume 2.jpg','perfume 76.jpg','perfume 9.jpg',
+  'perfume arabe.jpg','perfume clásico.jpg','perfume.jpg','perfume1.jpg','perfume7.jpg','perfume8.jpg',
+  'playera chica gym3.jpg','playera con michi1.jpg','playera de gym1.jpg','playera mora3.jpg',
+  'playera oscura 1.jpg','playera oscura.jpg','playera retro.jpg','playera.jpg','playera3.jpg',
+  'playeras deportivas femenina.jpg','prendas 1.jpg','prendas9.jpg','reloj elegante.jpg',
+  'reloj estilo clásico.jpg','reloj inteligente.jpg','relojes 3.jpg','relojes varios.jpg','relojes4.jpg',
+  'ropa de hombre elegante.jpg','ropa de mujer.jpg','ropa interior de hombre.jpg',
+  'ropa interior estampados.jpg','ropa interior hombre clasico.jpg','ropa interior modelo estampados.jpg',
+  'ropa interior moderna.jpg','ropa interior mujer elegante.jpg','ropa interior mujer fina.jpg',
+  'ropa interior.jpg','ropa para gym mujer.jpg','ropa.deportiva chica.jpg','ropa.deportiva.jpg',
+  'set de cosméticos.jpg','shorts hombre1.jpg','shorts para hombre.jpg','sudadera car0.jpg',
+  'sudadera festiva.jpg','sudadera retro6.jpg','tenis de mujer.jpg','tenis moderno.jpg','tenis.jpg',
+  'topa interior mujer4.jpg','vestido elegante 11.jpg','vestido elegante 2.jpg','vestido elegante 3.jpg',
+  'zapatilla.jpg','zapatillas GJ2.jpg','zapatillas1.jpg','zapato de vestir4.jpg','zapato.jpg'
 ];
 
 /* ========== TRADUCCIONES ========== */
@@ -455,7 +579,16 @@ const T = {
     reviews: '⭐ Valoraciones', post: 'Publicar comentario',
     cmph: 'Tu opinión (máx. 300 caracteres)...',
     bad: 'Comentario eliminado automáticamente por contener palabras prohibidas.',
-    cartT: '🛒 Mi carrito',
+    cartT: '🛒 Carrito de compras',
+    cartStep: '1 · Productos → 2 · Datos → 3 · Pago',
+    cartItems: 'Tu pedido',
+    cartData: 'Datos de envío',
+    cartPay: 'Resumen y pago',
+    contShop: 'Seguir comprando',
+    remove: 'Eliminar',
+    lineTotal: 'Subtotal',
+    emptyHint: 'Tu carrito está vacío. Añade productos del catálogo.',
+
     name: 'Nombre completo', age: 'Edad', addr: 'Dirección exacta de envío',
     normal: 'Envío estándar (10-25 días) +3%', express: 'Envío express (7-14 días) +8%',
     coupon: 'Código de cupón', apply: 'Aplicar',
@@ -504,7 +637,15 @@ const T = {
     reviews: '⭐ Reviews', post: 'Post comment',
     cmph: 'Your opinion (max. 300 characters)...',
     bad: 'Comment removed automatically for using prohibited language.',
-    cartT: '🛒 My cart',
+    cartT: '🛒 Shopping cart',
+    cartStep: '1 · Items → 2 · Details → 3 · Payment',
+    cartItems: 'Your order',
+    cartData: 'Shipping details',
+    cartPay: 'Summary & payment',
+    contShop: 'Continue shopping',
+    remove: 'Remove',
+    lineTotal: 'Line total',
+    emptyHint: 'Your cart is empty. Add products from the catalog.',
     name: 'Full name', age: 'Age', addr: 'Exact shipping address',
     normal: 'Standard shipping (10-25 days) +3%', express: 'Express shipping (7-14 days) +8%',
     coupon: 'Coupon code', apply: 'Apply',
@@ -656,11 +797,9 @@ const nz = s => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLow
 const hs = s => [...String(s)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const f2 = n => Number(n).toFixed(2);
-/* Imágenes: soporta WebP (+ fallback JPG/PNG) */
+/* Imágenes: JPG/PNG estable; WebP solo si CFG.useWebp = true */
 const IMG_EXT = /\.(jpe?g|png|webp|gif)$/i;
-function imgBase(f) {
-  return String(f).replace(IMG_EXT, '');
-}
+function imgBase(f) { return String(f).replace(IMG_EXT, ''); }
 function imgExt(f) {
   const m = String(f).match(IMG_EXT);
   return m ? m[0].toLowerCase() : '.jpg';
@@ -671,42 +810,45 @@ function imgUrl(f, forceExt) {
   const ext = forceExt || imgExt(f);
   return folder + encodeURIComponent(base + ext);
 }
-function imgWebpUrl(f) { return imgUrl(f, '.webp'); }
-function imgFallbackUrl(f) {
+function imgPrimaryUrl(f) {
   const e = imgExt(f);
-  if (e === '.webp') return imgUrl(f, '.jpg');
+  if (e === '.webp') return imgUrl(f, '.webp');
   return imgUrl(f, e === '.png' ? '.png' : '.jpg');
 }
-/** <picture> con WebP primero y JPG/PNG de respaldo */
+function imgWebpUrl(f) { return imgUrl(f, '.webp'); }
 function pictureTag(f, cls, extra = '') {
-  const webp = imgWebpUrl(f);
-  const fallback = imgFallbackUrl(f);
+  const primary = imgPrimaryUrl(f);
   const ph = 'https://placehold.co/400x400/1e293b/94a3b8?text=Aetheria';
-  return `<picture>
-    <source srcset="${webp}" type="image/webp">
-    <img src="${fallback}" class="${cls}" ${extra}
-      onerror="if(!this.dataset.err){this.dataset.err=1;this.src='${fallback}';}else if(this.dataset.err==1){this.dataset.err=2;this.src='${imgUrl(f)}';}else{this.src='${ph}';}">
-  </picture>`;
+  if (CFG.useWebp) {
+    return `<picture>
+      <source srcset="${imgWebpUrl(f)}" type="image/webp">
+      <img src="${primary}" class="${cls}" ${extra} loading="lazy" decoding="async"
+        onerror="this.onerror=null;this.src='${ph}';">
+    </picture>`;
+  }
+  return `<img src="${primary}" class="${cls}" ${extra} loading="lazy" decoding="async"
+    onerror="this.onerror=null;this.src='${ph}';">`;
 }
 function setImgWithWebp(el, f) {
   if (!el) return;
-  const webp = imgWebpUrl(f);
-  const fallback = imgFallbackUrl(f);
-  // Preferir webp; si falla, JPG/PNG
-  el.onerror = function () {
-    if (this.dataset.stage === 'webp') {
-      this.dataset.stage = 'fallback';
-      this.src = fallback;
-    } else if (this.dataset.stage === 'fallback') {
-      this.dataset.stage = 'orig';
-      this.src = imgUrl(f);
-    } else {
-      this.onerror = null;
-      this.src = 'https://placehold.co/400x400/1e293b/94a3b8?text=Aetheria';
-    }
-  };
-  el.dataset.stage = 'webp';
-  el.src = webp;
+  const primary = imgPrimaryUrl(f);
+  const ph = 'https://placehold.co/400x400/1e293b/94a3b8?text=Aetheria';
+  if (CFG.useWebp) {
+    el.dataset.stage = 'webp';
+    el.onerror = function () {
+      if (this.dataset.stage === 'webp') {
+        this.dataset.stage = 'jpg';
+        this.src = primary;
+      } else {
+        this.onerror = null;
+        this.src = ph;
+      }
+    };
+    el.src = imgWebpUrl(f);
+  } else {
+    el.onerror = function () { this.onerror = null; this.src = ph; };
+    el.src = primary;
+  }
 }
 
 /* ========== CONSTRUCCIÓN DE PRODUCTOS ========== */
@@ -779,6 +921,10 @@ function load() {
   const qr = $('#walletQr') || document.querySelector('#wallet img');
   if (qr) qr.src = 'https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=' + encodeURIComponent(w);
   applyLang();
+  loadVideos();
+  renderDiscordCatalog();
+  const inv = getDiscordInvite();
+  if ($('#dcInviteInput') && inv) $('#dcInviteInput').value = inv;
 }
 
 function applyLang() {
@@ -798,6 +944,12 @@ function applyLang() {
   $('#qj').placeholder = t('compph');
   $('#compBtn').textContent = t('send');
   $('#cartTitle').textContent = t('cartT');
+  const setTxt = (id, key) => { const el = $(id); if (el && t(key)) el.textContent = t(key); };
+  setTxt('cartStepLabel', 'cartStep');
+  setTxt('cartSecItems', 'cartItems');
+  setTxt('cartSecData', 'cartData');
+  setTxt('cartSecPay', 'cartPay');
+  setTxt('contShopBtn', 'contShop');
   $('#nm').placeholder = t('name');
   $('#ag').placeholder = t('age');
   $('#ad').placeholder = t('addr');
@@ -805,7 +957,7 @@ function applyLang() {
   $('#applyBtn').textContent = t('apply');
   $('#walTitle').textContent = t('wal');
   $('#copyBtn').textContent = t('copy');
-  $('#payBtn').textContent = t('pay');
+  $('#payBtn').textContent = L === 'es' ? 'Ver recibo' : 'View receipt';
   const pnb = $('#payNowBtn');
   if (pnb && !cart.length) {
     pnb.textContent = L === 'es' ? '💳 Pagar con USDT (BEP20)' : '💳 Pay with USDT (BEP20)';
@@ -895,10 +1047,16 @@ function contactLine() {
     : `Discord: ${d} · WhatsApp: ask via Discord`;
 }
 
-/** Abre Discord y copia el usuario de la tienda */
+/** Abre el servidor oficial Discord (o copia usuario si no hay invitación) */
 function contactDiscord(ev) {
   if (ev && ev.preventDefault) ev.preventDefault();
+  const invite = getDiscordInvite();
   const d = CFG.discord || 'Aetheriamarket';
+  const server = CFG.discordServer || 'Servidor de Aetheria Market';
+  if (invite) {
+    window.open(invite, '_blank', 'noopener');
+    return;
+  }
   const copy = () => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       return navigator.clipboard.writeText(d);
@@ -908,14 +1066,124 @@ function contactDiscord(ev) {
   copy().then(() => {
     alert(
       L === 'es'
-        ? `Usuario de Discord copiado: ${d}\n\n1) Abre Discord\n2) Agrega o busca ese usuario\n3) Envía tu pedido o comprobante de pago`
-        : `Discord username copied: ${d}\n\n1) Open Discord\n2) Add or search that user\n3) Send your order or payment proof`
+        ? `Servidor: ${server}\nUsuario: ${d}\nCanal: ${CFG.discordChannel || '#catalogo-y-ofertas'}\n\nAún no hay link de invitación en la web.\nEn Admin 🔒 pega tu enlace discord.gg permanente.\nMientras tanto se abrió Discord.`
+        : `Server: ${server}\nUser: ${d}\nChannel: ${CFG.discordChannel || '#catalogo-y-ofertas'}\n\nNo invite link on the site yet.\nPaste your permanent discord.gg link in Admin 🔒.`
     );
     window.open('https://discord.com/app', '_blank', 'noopener');
   }).catch(() => {
-    alert((L === 'es' ? 'Usuario Discord: ' : 'Discord user: ') + d);
     window.open('https://discord.com/app', '_blank', 'noopener');
   });
+}
+
+function getDiscordInvite() {
+  try {
+    const s = localStorage.getItem('aetheria_discord_invite');
+    if (s && /^https?:\/\/(discord\.gg|discord\.com\/invite)\//i.test(s)) return s;
+  } catch (e) {}
+  if (CFG.discordInvite && /^https?:\/\//i.test(CFG.discordInvite)) return CFG.discordInvite;
+  return '';
+}
+
+const DC_KEY = 'aetheria_discord_catalog_v1';
+
+function getDiscordCatalog() {
+  try { return JSON.parse(localStorage.getItem(DC_KEY) || '[]'); }
+  catch (e) { return []; }
+}
+
+function setDiscordCatalog(arr) {
+  localStorage.setItem(DC_KEY, JSON.stringify(arr));
+}
+
+function saveDiscordInvite() {
+  const u = ($('#dcInviteInput')?.value || '').trim();
+  if (!/^https?:\/\/(discord\.gg|discord\.com\/invite)\//i.test(u)) {
+    alert(L === 'es' ? 'Pega un enlace válido de Discord (discord.gg/...).' : 'Paste a valid Discord invite link.');
+    return;
+  }
+  localStorage.setItem('aetheria_discord_invite', u);
+  CFG.discordInvite = u;
+  const msg = $('#dcAdminMsg');
+  if (msg) msg.textContent = L === 'es' ? '✔ Invitación guardada. El botón Discord abrirá el servidor.' : '✔ Invite saved.';
+}
+
+function discordProductAdd() {
+  const name = ($('#dcName')?.value || '').trim();
+  const price = parseFloat($('#dcPrice')?.value || '0');
+  const offer = ($('#dcOffer')?.value || '').trim();
+  const img = ($('#dcImg')?.value || '').trim();
+  const ref = ($('#dcRef')?.value || '').trim();
+  const text = ($('#dcText')?.value || '').trim();
+  if (!name || !(price > 0)) {
+    alert(L === 'es' ? 'Nombre y precio son obligatorios.' : 'Name and price are required.');
+    return;
+  }
+  const arr = getDiscordCatalog();
+  arr.unshift({
+    id: Date.now(),
+    name,
+    price: f2(price),
+    offer,
+    img,
+    ref,
+    text,
+    channel: CFG.discordChannel || '#catalogo-y-ofertas',
+    date: new Date().toISOString()
+  });
+  setDiscordCatalog(arr.slice(0, 40));
+  ['dcName','dcPrice','dcOffer','dcImg','dcRef','dcText'].forEach(id => {
+    if ($(id)) $(id).value = '';
+  });
+  renderDiscordCatalog();
+  const msg = $('#dcAdminMsg');
+  if (msg) msg.textContent = L === 'es' ? '✔ Producto publicado en la sección Discord.' : '✔ Product published on Discord section.';
+}
+
+function discordProductClear() {
+  if (!confirm(L === 'es' ? '¿Vaciar productos de Discord en la web?' : 'Clear Discord products on the site?')) return;
+  setDiscordCatalog([]);
+  renderDiscordCatalog();
+}
+
+function discordImgSrc(img) {
+  if (!img) return 'https://placehold.co/400x400/1e293b/94a3b8?text=Discord';
+  if (/^https?:\/\//i.test(img)) return img;
+  return imgUrl(img);
+}
+
+function renderDiscordCatalog() {
+  const grid = $('#discordGrid');
+  const empty = $('#discordEmpty');
+  if (!grid) return;
+  const arr = getDiscordCatalog();
+  if (!arr.length) {
+    grid.innerHTML = '';
+    if (empty) empty.classList.remove('hidden');
+    return;
+  }
+  if (empty) empty.classList.add('hidden');
+  grid.innerHTML = arr.map(item => {
+    const offerHtml = item.offer
+      ? `<span class="badge-hot" style="position:static;display:inline-block;margin-bottom:6px">${esc(item.offer)}</span>`
+      : '';
+    return `
+    <article class="c rounded-2xl p-3 flex flex-col card-hover">
+      <div class="relative overflow-hidden rounded-xl mb-2">
+        <img src="${esc(discordImgSrc(item.img))}" alt="${esc(item.name)}" class="w-full h-48 object-cover" loading="lazy" decoding="async"
+          onerror="this.src='https://placehold.co/400x400/1e293b/94a3b8?text=Discord'">
+        <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-600 text-white">Discord</span>
+      </div>
+      ${offerHtml}
+      <h3 class="font-semibold text-sm leading-snug">${esc(item.name)}</h3>
+      <p class="text-[11px] m mt-1 line-clamp-2">${esc(item.text || '')}</p>
+      ${item.ref ? `<p class="text-[10px] m mt-1">Ref: ${esc(item.ref)}</p>` : ''}
+      <div class="flex justify-between items-center mt-auto pt-2">
+        <b class="text-cyan-400 text-lg">${esc(item.price)} USDT</b>
+        <button type="button" class="opt text-[11px]" style="min-height:36px" onclick="contactDiscord()">${L==='es'?'Pedir en Discord':'Order on Discord'}</button>
+      </div>
+      <p class="text-[10px] m mt-2">${esc(item.channel || '#catalogo-y-ofertas')}</p>
+    </article>`;
+  }).join('');
 }
 
 function updateContacts() {
@@ -958,6 +1226,25 @@ function updateContacts() {
   if (dPay) dPay.textContent = L === 'es' ? 'Discord' : 'Discord';
   const feat = $('#featTitle');
   if (feat) feat.textContent = L === 'es' ? '🔥 Destacados y ofertas' : '🔥 Featured & deals';
+  const vt = $('#videoTitle');
+  if (vt) vt.textContent = L === 'es' ? '🎬 Videos y promociones' : '🎬 Videos & promotions';
+  const vh = $('#videoHint');
+  if (vh) vh.textContent = L === 'es' ? 'Productos · proveedores · ofertas' : 'Products · suppliers · deals';
+  const pvl = $('#promoVidLabel');
+  if (pvl) pvl.textContent = L === 'es' ? 'Promo oficial Aetheria Market' : 'Official Aetheria Market promo';
+  const evl = $('#extraVidLabel');
+  if (evl) evl.textContent = L === 'es' ? 'Video de proveedor / promoción' : 'Supplier / promo video';
+  const dct = $('#dcTitle');
+  if (dct) dct.textContent = L === 'es'
+    ? `💬 Desde Discord · ${CFG.discordChannel || '#catalogo-y-ofertas'}`
+    : `💬 From Discord · ${CFG.discordChannel || '#catalogo-y-ofertas'}`;
+  const dcd = $('#dcDesc');
+  if (dcd) dcd.textContent = L === 'es'
+    ? `Productos y ofertas del ${CFG.discordServer || 'servidor oficial'}. Imagen, precio, oferta y referencia.`
+    : `Products and deals from ${CFG.discordServer || 'the official server'}. Image, price, offer and reference.`;
+  const dcj = $('#dcJoinBtn');
+  if (dcj) dcj.textContent = L === 'es' ? 'Unirse al servidor' : 'Join the server';
+  renderDiscordCatalog();
   showPromo(promoIdx);
 }
 
@@ -1075,23 +1362,25 @@ function setCategory(c) {
 function productCard(p, opts = {}) {
   const hot = opts.hot ? `<span class="badge-hot">${L === 'es' ? 'DESTACADO' : 'FEATURED'}</span>` : '';
   return `
-  <article class="c rounded-2xl p-3 flex flex-col card-hover">
-    <div class="relative overflow-hidden rounded-xl mb-2 cursor-pointer" onclick="openProduct(${p.i})">
-      ${pictureTag(p.f, 'w-full h-52 object-cover', `alt="${esc(displayName(p))}" width="400" height="208" loading="lazy" decoding="async" sizes="(max-width:640px) 50vw, 25vw"`)}
+  <article class="c rounded-2xl p-2.5 flex flex-col card-hover">
+    <div class="relative overflow-hidden rounded-xl mb-3 cursor-pointer" onclick="openProduct(${p.i})">
+      ${pictureTag(p.f, 'w-full h-56 object-cover', `alt="${esc(displayName(p))}" width="400" height="224" loading="lazy" decoding="async" sizes="(max-width:640px) 50vw, 25vw"`)}
       ${hot}
       <div class="wm">AETHERIA</div>
-      <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-black/65 text-white uppercase">${p.cat}</span>
-      <span class="absolute top-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded bg-pink-600/95 text-white">${p.sex}</span>
+      <span class="absolute top-2.5 left-2.5 text-[10px] font-bold px-2.5 py-1 rounded-full bg-black/55 backdrop-blur text-white uppercase tracking-wide">${p.cat}</span>
+      <span class="absolute top-2.5 right-2.5 text-[10px] font-bold px-2.5 py-1 rounded-full bg-pink-600/90 text-white">${p.sex}</span>
     </div>
-    <h3 class="font-semibold text-sm leading-tight line-clamp-2">${esc(displayName(p))}</h3>
-    <div class="text-[11px] m my-1 space-y-0.5">
-      ${p.rev.slice(0, 2).map(r => `<div>${'★'.repeat(r[1])}${'☆'.repeat(5 - r[1])} <span class="opacity-90">"${esc(r[0])}"</span></div>`).join('')}
+    <div class="px-1 flex flex-col flex-1">
+      <h3 class="font-semibold text-sm leading-snug line-clamp-2 min-h-[2.5rem]">${esc(displayName(p))}</h3>
+      <div class="text-[11px] m my-1.5 space-y-0.5">
+        ${p.rev.slice(0, 2).map(r => `<div class="flex gap-1"><span class="text-amber-400">${'★'.repeat(r[1])}${'☆'.repeat(5 - r[1])}</span> <span class="opacity-90">"${esc(r[0])}"</span></div>`).join('')}
+      </div>
+      <div class="flex justify-between items-end mt-auto pt-1">
+        <b class="text-cyan-400 text-[1.2rem] tracking-tight leading-none">${f2(p.price)} <span class="text-xs font-bold opacity-90">USDT</span></b>
+        <button class="m text-xs hover:text-cyan-400" onclick="openProduct(${p.i})" title="Ver">🔍</button>
+      </div>
+      <button class="btn mt-3 w-full" onclick="openProduct(${p.i})">${t('add')}</button>
     </div>
-    <div class="flex justify-between items-center mt-auto pt-2">
-      <b class="text-cyan-400 text-lg tracking-tight">${f2(p.price)} <span class="text-sm font-bold">USDT</span></b>
-      <button class="m text-xs hover:text-cyan-400" onclick="openProduct(${p.i})" title="Ver">🔍</button>
-    </div>
-    <button class="btn mt-2 w-full" onclick="openProduct(${p.i})">${t('add')}</button>
   </article>`;
 }
 
@@ -1311,8 +1600,29 @@ function closeModal() {
 
 function drawModal() {
   const p = P[sel.i];
-  setImgWithWebp($('#mi'), p.f);
-  $('#mi').style.filter = COL[sel.c][2];
+  const mi = $('#mi');
+  const mv = $('#mv');
+  const tog = $('#mvToggle');
+  setImgWithWebp(mi, p.f);
+  if (mi) {
+    mi.style.filter = COL[sel.c][2];
+    mi.classList.remove('hidden');
+  }
+  if (mv) {
+    mv.classList.add('hidden');
+    mv.removeAttribute('src');
+  }
+  const vUrl = productVideoUrl(p.f);
+  if (tog) {
+    if (vUrl) {
+      tog.classList.remove('hidden');
+      tog.textContent = L === 'es' ? 'Ver video' : 'Watch video';
+      tog.dataset.url = vUrl;
+    } else {
+      tog.classList.add('hidden');
+      tog.dataset.url = '';
+    }
+  }
   $('#mn').textContent = displayName(p);
   $('#mp').textContent = f2(p.price) + ' USDT';
   $('#ms').innerHTML = p.sizes.map(s =>
@@ -1328,6 +1638,25 @@ function drawModal() {
   $('#mr').innerHTML = allRev.map(r =>
     `<div>${'★'.repeat(r[1])}${'☆'.repeat(5 - r[1])} ${esc(r[0])}</div>`
   ).join('');
+}
+
+function toggleProductVideo() {
+  const mi = $('#mi');
+  const mv = $('#mv');
+  const tog = $('#mvToggle');
+  if (!mv || !tog || !tog.dataset.url) return;
+  if (mv.classList.contains('hidden')) {
+    mv.src = tog.dataset.url;
+    mv.classList.remove('hidden');
+    if (mi) mi.classList.add('hidden');
+    tog.textContent = L === 'es' ? 'Ver foto' : 'View photo';
+    mv.play?.().catch(() => {});
+  } else {
+    mv.pause?.();
+    mv.classList.add('hidden');
+    if (mi) mi.classList.remove('hidden');
+    tog.textContent = L === 'es' ? 'Ver video' : 'Watch video';
+  }
 }
 
 function postComment() {
@@ -1419,7 +1748,11 @@ function drawCart() {
   $('#cc').textContent = cart.reduce((a, i) => a + i.q, 0);
   const box = $('#ci');
   if (!cart.length) {
-    box.innerHTML = `<p class="text-center m py-8">${t('empty')}</p>`;
+    box.innerHTML = `<div class="text-center py-10 px-4">
+      <div class="text-3xl mb-2">🛒</div>
+      <p class="m text-sm">${t('emptyHint') || t('empty')}</p>
+      <button type="button" class="btn mt-4" onclick="toggleCart(false)">${t('contShop') || 'OK'}</button>
+    </div>`;
     $('#sm').innerHTML = '';
     const hint = $('#payAmountHint');
     if (hint) hint.textContent = '';
@@ -1433,33 +1766,37 @@ function drawCart() {
   box.innerHTML = cart.map((item, i) => {
     const p = P.find(x => x.f === item.f);
     if (!p) return '';
+    const line = p.price * item.q;
     return `
-    <div class="flex gap-2 c rounded-xl p-2 items-center">
-      ${pictureTag(p.f, 'w-14 h-14 object-cover rounded-lg', `style="filter:${COL[item.c][2]}" width="56" height="56" loading="lazy" decoding="async"`)}
+    <div class="flex gap-3 c rounded-xl p-2.5 items-start">
+      ${pictureTag(p.f, 'w-16 h-16 object-cover rounded-lg shrink-0', `style="filter:${COL[item.c][2]}" width="64" height="64" loading="lazy" decoding="async"`)}
       <div class="flex-1 min-w-0">
-        <div class="text-xs font-semibold truncate">${esc(displayName(p))}</div>
-        <div class="text-[10px] m">${item.s} · ${COL[item.c][L === 'es' ? 0 : 1]}</div>
-        <div class="text-cyan-400 text-sm font-bold">${f2(p.price)} USDT</div>
-      </div>
-      <div class="flex flex-col items-center gap-1">
-        <div class="flex items-center gap-1">
-          <button class="opt" onclick="changeQty(${i},-1)">−</button>
-          <span class="text-sm w-5 text-center">${item.q}</span>
-          <button class="opt" onclick="changeQty(${i},1)">+</button>
+        <div class="text-xs font-semibold leading-snug line-clamp-2">${esc(displayName(p))}</div>
+        <div class="text-[10px] m mt-0.5">${item.s} · ${COL[item.c][L === 'es' ? 0 : 1]} · ${f2(p.price)} USDT c/u</div>
+        <div class="flex items-center justify-between mt-2 gap-2">
+          <div class="flex items-center gap-1">
+            <button type="button" class="opt px-2" style="min-height:36px" onclick="changeQty(${i},-1)">−</button>
+            <span class="text-sm font-bold w-7 text-center">${item.q}</span>
+            <button type="button" class="opt px-2" style="min-height:36px" onclick="changeQty(${i},1)">+</button>
+          </div>
+          <div class="text-right">
+            <div class="text-cyan-400 text-sm font-extrabold">${f2(line)} USDT</div>
+            <button type="button" class="text-[10px] text-red-400" onclick="removeItem(${i})">${t('remove') || '✕'}</button>
+          </div>
         </div>
-        <button class="text-[10px] text-red-400" onclick="removeItem(${i})">✕</button>
       </div>
     </div>`;
   }).join('');
 
-  const { sub, tax, delivery, couponDisc, volumeDisc, total } = calcTotals();
+  const { sub, tax, delivery, couponDisc, volumeDisc, total, totalItems } = calcTotals();
   let html = `
+    <div class="flex justify-between m"><span>${L==='es'?'Artículos':'Items'}</span><span>${totalItems}</span></div>
     <div class="flex justify-between"><span>${t('sub')}</span><span>${f2(sub)} USDT</span></div>
     <div class="flex justify-between"><span>${t('imp')}</span><span>${f2(tax)} USDT</span></div>
     <div class="flex justify-between"><span>${t('ent')}</span><span>${f2(delivery)} USDT</span></div>`;
   if (couponDisc > 0) html += `<div class="flex justify-between text-emerald-400"><span>${t('cup')}</span><span>−${f2(couponDisc)} USDT</span></div>`;
   if (volumeDisc > 0) html += `<div class="flex justify-between text-emerald-400"><span>${t('vol')}</span><span>−${f2(volumeDisc)} USDT</span></div>`;
-  html += `<div class="flex justify-between font-bold text-base pt-1 border-t" style="border-color:var(--line)"><span>${t('tot')}</span><span class="text-cyan-400">${f2(total)} USDT</span></div>`;
+  html += `<div class="flex justify-between font-bold text-base pt-2 mt-1 border-t" style="border-color:var(--line)"><span>${t('tot')}</span><span class="text-cyan-400">${f2(total)} USDT</span></div>`;
   $('#sm').innerHTML = html;
   const hint = $('#payAmountHint');
   if (hint) {
@@ -1741,6 +2078,7 @@ function openAdmin() {
       m.classList.add('flex');
     }
     ledgerRender();
+    loadVideos();
   } else if (key !== null) {
     alert(L === 'es' ? 'Clave incorrecta.' : 'Wrong key.');
   }
@@ -1752,6 +2090,167 @@ function closeAdmin() {
     m.classList.add('hidden');
     m.classList.remove('flex');
   }
+}
+
+/* ========== VIDEOS PROMO / PROVEEDORES / PRODUCTO ========== */
+const VIDEOS_KEY = 'aetheria_videos_v1';
+
+function getVideosCfg() {
+  try { return JSON.parse(localStorage.getItem(VIDEOS_KEY) || '{}'); }
+  catch (e) { return {}; }
+}
+
+function setVideosCfg(o) {
+  localStorage.setItem(VIDEOS_KEY, JSON.stringify(o));
+}
+
+function ytEmbed(url) {
+  const m = String(url).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{6,})/);
+  return m ? `https://www.youtube.com/embed/${m[1]}` : null;
+}
+
+function applyPromoVideo(url) {
+  const v = $('#promoVideo');
+  const src = $('#promoVideoSrc');
+  if (!v) return;
+  const u = (url || 'promo-aetheria.mp4').trim();
+  const yt = ytEmbed(u);
+  if (yt) {
+    // reemplazar por iframe
+    const wrap = v.parentElement;
+    if (wrap && !wrap.querySelector('iframe.promo-yt')) {
+      v.classList.add('hidden');
+      const ifr = document.createElement('iframe');
+      ifr.className = 'promo-yt w-full rounded-xl aspect-video';
+      ifr.src = yt;
+      ifr.setAttribute('allowfullscreen', '');
+      ifr.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      wrap.appendChild(ifr);
+    } else {
+      const ifr = wrap.querySelector('iframe.promo-yt');
+      if (ifr) ifr.src = yt;
+      v.classList.add('hidden');
+    }
+  } else {
+    const ifr = v.parentElement && v.parentElement.querySelector('iframe.promo-yt');
+    if (ifr) ifr.remove();
+    v.classList.remove('hidden');
+    if (src) src.src = u;
+    v.src = u;
+    v.load();
+  }
+}
+
+function applyExtraVideo(url) {
+  const v = $('#extraVideo');
+  const empty = $('#extraVideoEmpty');
+  const box = $('#extraVideoBox');
+  if (!v || !empty) return;
+  const u = (url || '').trim();
+  if (!u) {
+    v.classList.add('hidden');
+    empty.classList.remove('hidden');
+    const old = box && box.querySelector('iframe.extra-yt');
+    if (old) old.remove();
+    return;
+  }
+  const yt = ytEmbed(u);
+  empty.classList.add('hidden');
+  if (yt) {
+    v.classList.add('hidden');
+    let ifr = box.querySelector('iframe.extra-yt');
+    if (!ifr) {
+      ifr = document.createElement('iframe');
+      ifr.className = 'extra-yt w-full rounded-xl aspect-video';
+      ifr.setAttribute('allowfullscreen', '');
+      ifr.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      box.appendChild(ifr);
+    }
+    ifr.src = yt;
+  } else {
+    const ifr = box.querySelector('iframe.extra-yt');
+    if (ifr) ifr.remove();
+    v.classList.remove('hidden');
+    v.src = u;
+    v.load();
+  }
+}
+
+function renderVideoGallery() {
+  const g = $('#videoGallery');
+  if (!g) return;
+  const cfg = getVideosCfg();
+  const list = cfg.gallery || [];
+  if (!list.length) {
+    g.innerHTML = '';
+    return;
+  }
+  g.innerHTML = list.map((item, i) => `
+    <button type="button" class="opt text-[11px] truncate" onclick="playGalleryVideo(${i})" title="${esc(item.url)}">
+      ▶ ${esc(item.title || ('Video ' + (i + 1)))}
+    </button>`).join('');
+}
+
+function playGalleryVideo(i) {
+  const cfg = getVideosCfg();
+  const item = (cfg.gallery || [])[i];
+  if (item) applyExtraVideo(item.url);
+}
+
+function saveVideosAdmin() {
+  const promo = ($('#vidPromoUrl')?.value || '').trim();
+  const extra = ($('#vidExtraUrl')?.value || '').trim();
+  const pKey = ($('#vidProductKey')?.value || '').trim();
+  const pUrl = ($('#vidProductUrl')?.value || '').trim();
+  const cfg = getVideosCfg();
+  if (promo) cfg.promo = promo;
+  if (extra) {
+    cfg.extra = extra;
+    cfg.gallery = cfg.gallery || [];
+    if (!cfg.gallery.some(x => x.url === extra)) {
+      cfg.gallery.unshift({ title: 'Proveedor / promo', url: extra });
+      cfg.gallery = cfg.gallery.slice(0, 12);
+    }
+  }
+  if (pKey && pUrl) {
+    cfg.products = cfg.products || {};
+    cfg.products[pKey] = pUrl;
+    cfg.gallery = cfg.gallery || [];
+    cfg.gallery.unshift({ title: pKey.replace(/\.[^.]+$/, ''), url: pUrl });
+    cfg.gallery = cfg.gallery.slice(0, 12);
+  }
+  setVideosCfg(cfg);
+  loadVideos();
+  const msg = $('#vidAdminMsg');
+  if (msg) msg.textContent = L === 'es' ? '✔ Videos guardados en este navegador.' : '✔ Videos saved on this browser.';
+}
+
+function clearVideosAdmin() {
+  const cfg = getVideosCfg();
+  cfg.extra = '';
+  cfg.gallery = [];
+  cfg.products = {};
+  setVideosCfg(cfg);
+  if ($('#vidExtraUrl')) $('#vidExtraUrl').value = '';
+  if ($('#vidProductKey')) $('#vidProductKey').value = '';
+  if ($('#vidProductUrl')) $('#vidProductUrl').value = '';
+  loadVideos();
+  const msg = $('#vidAdminMsg');
+  if (msg) msg.textContent = L === 'es' ? 'Videos extra eliminados.' : 'Extra videos cleared.';
+}
+
+function loadVideos() {
+  const cfg = getVideosCfg();
+  applyPromoVideo(cfg.promo || 'promo-aetheria.mp4');
+  applyExtraVideo(cfg.extra || '');
+  renderVideoGallery();
+  if ($('#vidPromoUrl') && cfg.promo) $('#vidPromoUrl').value = cfg.promo;
+  if ($('#vidExtraUrl') && cfg.extra) $('#vidExtraUrl').value = cfg.extra;
+}
+
+function productVideoUrl(f) {
+  const cfg = getVideosCfg();
+  return (cfg.products && (cfg.products[f] || cfg.products[imgBase(f)])) || '';
 }
 
 function processShein() {
@@ -1791,6 +2290,8 @@ const FAQ = {
   es: [
     ['📝 Inscribirse / Nuevo Cliente', 'Para registrarte realiza tu primera compra llenando tus datos en el carrito.'],
     ['⚡ Compra rápida y Envío exprés', 'Normal (15-30 días) +3%. Compra exprés (5-8 días) +8%.'],
+    ['🔎 Buscar con proveedores (CJ / SheIn)', 'Si no encuentras un producto en el catálogo, búscala en la página del proveedor (CJ Dropshipping o SheIn). Luego envíanos por WhatsApp o Discord: 1) enlace o nombre, 2) talla/color, 3) tu dirección. Nosotros lo compramos, lo subimos a la tienda si hace falta y te lo enviamos. El bot te enviará el link de pago con la wallet USDT (BEP20) y el total. Pagas y mandas el comprobante por WhatsApp o Discord.'],
+    ['💳 Link de pago', 'Cuando confirmes tu pedido (catálogo o proveedor), el bot te enviará el link de pago: dirección de wallet USDT en red BNB Smart Chain (BEP20), el monto exacto y el QR. También puedes abrirlo desde el carrito con el botón «Pagar con USDT».'],
     ['🏷️ Cupones y Descuentos', 'Cupón AETHERIA2026 (−2%). Pedidos >100 USDT con >3 artículos tienen −3.4% extra.'],
     ['🕒 Cancelaciones (24h)', 'Puedes cancelar dentro de las 24h posteriores al pago con devolución del 98%.'],
     ['🎉 Fechas importantes', 'La tienda cambia de ambiente automáticamente según la festividad.'],
@@ -1799,6 +2300,8 @@ const FAQ = {
   en: [
     ['📝 Register / New Customer', 'To register place your first order filling your data in the cart.'],
     ['⚡ Fast buy & Express Shipping', 'Standard (15-30 days) +3%. Express (5-8 days) +8%.'],
+    ['🔎 Search with suppliers (CJ / SheIn)', 'If an item is not in the catalog, search it on the supplier site (CJ Dropshipping or SheIn). Then message us on WhatsApp or Discord with: 1) link or name, 2) size/color, 3) your address. We buy it, add it to the store if needed, and ship it. The bot will send you the payment link with the USDT wallet (BEP20) and total. Pay and send the proof on WhatsApp or Discord.'],
+    ['💳 Payment link', 'When you confirm your order (catalog or supplier), the bot will send you the payment link: USDT wallet on BNB Smart Chain (BEP20), exact amount, and QR. You can also open it from the cart with «Pay with USDT».'],
     ['🏷️ Coupons & Discounts', 'Coupon AETHERIA2026 (−2%). Orders >100 USDT with >3 items get −3.4% off.'],
     ['🕒 Cancellations (24h)', 'You may cancel within 24h of payment with a 98% refund.'],
     ['🎉 Special Dates', 'The store changes theme automatically for holidays.'],
@@ -1829,7 +2332,27 @@ function showBotMenu() {
 
 function botAnswer(i) {
   if (i === FAQ[L].length - 1) return startTour(0);
-  $('#bm').innerHTML = `<p>${FAQ[L][i][1]}</p>`;
+  let html = `<p>${FAQ[L][i][1]}</p>`;
+  // Link de pago que "envía" el bot
+  const title = FAQ[L][i][0] || '';
+  if (/pago|payment|proveedor|supplier|CJ|SheIn|USDT|carrito|cart/i.test(title + FAQ[L][i][1])) {
+    const total = cart.length ? f2(calcTotals().total) : null;
+    const payMsg = L === 'es'
+      ? `Link de pago Aetheria Market<br>
+         <b>Red:</b> BNB Smart Chain (BEP20)<br>
+         <b>Wallet:</b> <code class="break-all text-[10px]">${CFG.wallet}</code><br>
+         ${total ? `<b>Total carrito:</b> ${total} USDT<br>` : ''}
+         <button type="button" class="btn mt-2 w-full text-sm" onclick="toggleCart(true)">Abrir carrito / pagar</button>
+         <a class="opt mt-2 w-full text-center block" href="https://wa.me/${(CFG.whatsapp||'').replace(/\D/g,'')}?text=${encodeURIComponent('Hola, necesito el link de pago de mi pedido en Aetheria Market')}" target="_blank" rel="noopener">Pedir link por WhatsApp</a>`
+      : `Aetheria Market payment link<br>
+         <b>Network:</b> BNB Smart Chain (BEP20)<br>
+         <b>Wallet:</b> <code class="break-all text-[10px]">${CFG.wallet}</code><br>
+         ${total ? `<b>Cart total:</b> ${total} USDT<br>` : ''}
+         <button type="button" class="btn mt-2 w-full text-sm" onclick="toggleCart(true)">Open cart / pay</button>
+         <a class="opt mt-2 w-full text-center block" href="https://wa.me/${(CFG.whatsapp||'').replace(/\D/g,'')}?text=${encodeURIComponent('Hi, I need the payment link for my Aetheria Market order')}" target="_blank" rel="noopener">Request link on WhatsApp</a>`;
+    html += `<div class="mt-3 p-3 rounded-xl text-xs" style="background:var(--bg);border:1px solid var(--line)">${payMsg}</div>`;
+  }
+  $('#bm').innerHTML = html;
 }
 
 function startTour(i) {
