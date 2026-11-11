@@ -92,13 +92,32 @@ img{content-visibility:auto}
 
 <!-- Panel Admin (oculto) -->
 <section id="adm" class="hidden max-w-2xl mx-auto px-4 mt-4 w-full">
-  <div class="c rounded-2xl p-4 border-2 border-pink-500/50">
-    <b class="text-xs text-pink-400">🔒 Panel Administrador · SheIn Importer</b>
-    <div class="flex gap-2 mt-2">
-      <input id="su" class="in" placeholder="Pegar URL de SheIn...">
-      <button class="btn" onclick="processShein()">Procesar</button>
+  <div class="c rounded-2xl p-4 border-2 border-pink-500/50 space-y-4">
+    <b class="text-xs text-pink-400">🔒 Panel Administrador</b>
+    <div>
+      <p class="text-[11px] m mb-1">SheIn Importer</p>
+      <div class="flex gap-2">
+        <input id="su" class="in" placeholder="Pegar URL de SheIn...">
+        <button class="btn" onclick="processShein()">Procesar</button>
+      </div>
+      <p id="ss" class="text-[11px] m mt-2"></p>
     </div>
-    <p id="ss" class="text-[11px] m mt-2"></p>
+    <div class="border-t pt-3" style="border-color:var(--line)">
+      <b class="text-xs">📒 Contabilidad de pagos (solo admin)</b>
+      <p class="text-[11px] m my-1">Registra pagos confirmados. Se guardan en este navegador y puedes exportar Excel (CSV).</p>
+      <div class="grid sm:grid-cols-2 gap-2 mt-2">
+        <input id="ledName" class="in" placeholder="Nombre del cliente">
+        <input id="ledProduct" class="in" placeholder="Producto(s)">
+        <input id="ledAmount" type="number" step="0.01" min="0" class="in" placeholder="Cantidad USDT">
+        <input id="ledTx" class="in" placeholder="TxID / referencia (opcional)">
+      </div>
+      <div class="flex flex-wrap gap-2 mt-2">
+        <button class="btn" onclick="ledgerAdd()">Registrar pago</button>
+        <button class="opt" onclick="ledgerExport()">Descargar Excel (CSV)</button>
+        <button class="opt" onclick="ledgerClear()">Vaciar registro</button>
+      </div>
+      <div id="ledTable" class="mt-3 overflow-x-auto text-[11px]"></div>
+    </div>
   </div>
 </section>
 
@@ -174,7 +193,7 @@ img{content-visibility:auto}
       <button class="btn" onclick="calcAd()">=</button>
     </div>
     <p id="ar" class="text-sm font-bold text-cyan-400 mt-2"></p>
-    <p class="text-[11px] m mt-2">Monedero USDT (Red TRON · App Keeper):</p>
+    <p class="text-[11px] m mt-2">Monedero publicidad (aparte del pago de productos):</p>
     <code class="text-[10px] break-all select-all">TAQ5Gnezeftivkok2mrLGWMbvhgJNaRN8f</code>
   </div>
   <div class="c rounded-2xl p-4">
@@ -238,13 +257,13 @@ img{content-visibility:auto}
     <div id="sm" class="text-xs font-mono space-y-1"></div>
     <div id="wallet" class="text-center text-[11px] p-3 rounded-xl" style="background:var(--bg)">
       <b class="text-cyan-400" id="walTitle"></b>
-      <p class="m my-1" id="paySteps" style="font-size:11px;line-height:1.4">1) Copia la wallet · 2) Envía el total exacto en USDT (TRON) · 3) Confirma por Discord con el comprobante</p>
-      <code id="walletAddr" class="block break-all select-all my-1.5 text-[10px] p-2 rounded-lg" style="background:var(--card);border:1px dashed var(--line)">TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3</code>
+      <p class="m my-1" id="paySteps" style="font-size:11px;line-height:1.4">1) Copia la wallet · 2) Envía el total exacto en USDT (BEP20 / BNB) · 3) Confirma por Discord o WhatsApp</p>
+      <code id="walletAddr" class="block break-all select-all my-1.5 text-[10px] p-2 rounded-lg" style="background:var(--card);border:1px dashed var(--line)">0x2441d8bbbd8e7b93A6FE371D48515c7978201C13</code>
       <button class="opt" onclick="copyWallet()" id="copyBtn"></button>
       <div class="mt-2 flex flex-col items-center">
-        <img class="w-24 h-24 bg-white p-1 rounded border border-cyan-400/40" alt="QR"
-          src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3">
-        <span class="text-[9px] text-cyan-400 mt-1">✓ QR verificación de usuario real</span>
+        <img id="walletQr" class="w-24 h-24 bg-white p-1 rounded border border-cyan-400/40" alt="QR"
+          src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=0x2441d8bbbd8e7b93A6FE371D48515c7978201C13">
+        <span class="text-[9px] text-cyan-400 mt-1">✓ USDT · BNB Smart Chain (BEP20)</span>
       </div>
     </div>
     <button class="btn w-full" onclick="generateReceipt()" id="payBtn"></button>
@@ -300,12 +319,16 @@ img{content-visibility:auto}
 /* ========== CONFIG ========== */
 const CFG = {
   folder: '',
-  key: 'Rist2026',
+  key: 'Aristi2026',
   coupon: 'AETHERIA2026',
-  /* Pon tu número con código de país, sin + ni espacios. Ej: 584121234567 */
-  whatsapp: '',
+  whatsapp: '528124415641',
   discord: 'Aetheriamarket',
-  wallet: 'TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3'
+  /* Pago de productos: BNB Smart Chain (BEP20) */
+  wallet: '0x2441d8bbbd8e7b93A6FE371D48515c7978201C13',
+  network: 'BNB Smart Chain (BEP20)',
+  networkShort: 'BEP20',
+  /* Publicidad (se mantiene aparte) */
+  adsWallet: 'TAQ5Gnezeftivkok2mrLGWMbvhgJNaRN8f'
 };
 
 /* Lista completa de fotos (nombres exactos de tu carpeta) */
@@ -379,7 +402,7 @@ const T = {
     empty: 'Tu carrito está vacío.',
     need: 'Por favor completa nombre, edad y dirección.',
     cancel: '⚠️ Cancelación: Puedes cancelar dentro de las 24h posteriores al pago; se devuelve el 98% (se retiene 2% de gestión).',
-    wal: 'Billetera USDT (red TRON · TRC20)',
+    wal: 'Billetera USDT · BNB Smart Chain (BEP20)',
     copy: 'Copiar dirección', copied: '¡Copiado!',
     sub: 'Importe del producto', imp: 'IMPSV (Impuesto 5%)', ent: 'Impuesto de entrega',
     cup: 'Cupón (−2%)', vol: 'Descuento por volumen (−3.4%)', tot: 'TOTAL A PAGAR',
@@ -401,13 +424,13 @@ const T = {
     howTitle: 'Cómo comprar en 4 pasos',
     how1t: 'Elige', how1d: 'Busca o navega el catálogo y añade al carrito.',
     how2t: 'Datos', how2d: 'Indica nombre, edad y dirección de envío.',
-    how3t: 'Paga en USDT', how3d: 'Envía el total a la wallet TRON que aparece.',
-    how4t: 'Confirma', how4d: 'Escríbenos por Discord con el comprobante.',
-    howNote: 'Discord: Aetheriamarket · Envíos internacionales · Pago 100% en USDT (TRON)',
+    how3t: 'Paga en USDT', how3d: 'Envía el total en USDT red BNB Smart Chain (BEP20).',
+    how4t: 'Confirma', how4d: 'Escríbenos por Discord o WhatsApp con el comprobante.',
+    howNote: 'Discord: Aetheriamarket · WhatsApp disponible · Pago USDT BEP20',
     shipTitle: '📦 Envíos', shipDesc: 'Envío estándar y express. Tiempos estimados: 10–25 días (estándar) / 7–14 días (express), según destino.',
-    payInfoTitle: '💎 Pago seguro', payInfoDesc: 'Solo aceptamos USDT en red TRON. Tras pagar, envía el comprobante por Discord (Aetheriamarket).',
+    payInfoTitle: '💎 Pago seguro', payInfoDesc: 'Solo USDT en BNB Smart Chain (BEP20). Tras pagar, envía el comprobante por Discord o WhatsApp.',
     retTitle: '↩️ Devoluciones', retDesc: 'Cancelación dentro de las 24 h posteriores al pago (2% de gestión). Luego el cliente gestiona reclamaciones con el transportista.',
-    paySteps: '1) Copia la wallet · 2) Envía el total exacto en USDT (TRON) · 3) Confirma por Discord con el comprobante'
+    paySteps: '1) Copia la wallet · 2) Envía el total exacto en USDT (BEP20 / BNB) · 3) Confirma por Discord o WhatsApp'
   },
   en: {
     search: 'Search perfume, watch, clothes, cosmetics...',
@@ -428,7 +451,7 @@ const T = {
     empty: 'Your cart is empty.',
     need: 'Please fill in name, age and address.',
     cancel: '⚠️ Cancellation: You may cancel within 24h after payment; 98% refunded (2% management fee retained).',
-    wal: 'USDT wallet (TRON · TRC20)',
+    wal: 'USDT wallet · BNB Smart Chain (BEP20)',
     copy: 'Copy address', copied: 'Copied!',
     sub: 'Product amount', imp: 'IMPSV Tax (5%)', ent: 'Delivery tax',
     cup: 'Coupon (−2%)', vol: 'Volume discount (−3.4%)', tot: 'TOTAL DUE',
@@ -450,13 +473,13 @@ const T = {
     howTitle: 'How to buy in 4 steps',
     how1t: 'Choose', how1d: 'Search or browse the catalog and add to cart.',
     how2t: 'Details', how2d: 'Enter your name, age and shipping address.',
-    how3t: 'Pay in USDT', how3d: 'Send the exact total to the TRON wallet shown.',
-    how4t: 'Confirm', how4d: 'Message us on Discord with the payment proof.',
-    howNote: 'Discord: Aetheriamarket · International shipping · 100% USDT (TRON) payments',
+    how3t: 'Pay in USDT', how3d: 'Send the total in USDT on BNB Smart Chain (BEP20).',
+    how4t: 'Confirm', how4d: 'Message us on Discord or WhatsApp with the payment proof.',
+    howNote: 'Discord: Aetheriamarket · WhatsApp available · USDT BEP20 payments',
     shipTitle: '📦 Shipping', shipDesc: 'Standard and express available. Estimated: 10–25 days (standard) / 7–14 days (express), depending on destination.',
-    payInfoTitle: '💎 Secure payment', payInfoDesc: 'We only accept USDT on TRON. After paying, send the receipt via Discord (Aetheriamarket).',
+    payInfoTitle: '💎 Secure payment', payInfoDesc: 'USDT only on BNB Smart Chain (BEP20). After paying, send the receipt via Discord or WhatsApp.',
     retTitle: '↩️ Returns', retDesc: 'Cancel within 24h after payment (2% admin fee). After that, claims are handled with the carrier.',
-    paySteps: '1) Copy the wallet · 2) Send the exact total in USDT (TRON) · 3) Confirm on Discord with proof'
+    paySteps: '1) Copy the wallet · 2) Send the exact total in USDT (BEP20 / BNB) · 3) Confirm on Discord or WhatsApp'
   }
 };
 
@@ -638,10 +661,10 @@ function displayName(p) {
 function load() {
   P = IMAGES.map((f, i) => buildProduct(f, i));
   cart = cart.filter(item => P.some(p => p.f === item.f));
-  const w = CFG.wallet || 'TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3';
+  const w = CFG.wallet;
   const waEl = $('#walletAddr');
   if (waEl) waEl.textContent = w;
-  const qr = document.querySelector('#wallet img');
+  const qr = $('#walletQr') || document.querySelector('#wallet img');
   if (qr) qr.src = 'https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=' + encodeURIComponent(w);
   applyLang();
 }
@@ -752,8 +775,8 @@ function updateContacts() {
   const note = $('#howNote');
   if (note) {
     note.innerHTML = L === 'es'
-      ? `${contactLine()} · Envíos internacionales · Pago 100% en USDT (TRON)`
-      : `${contactLine()} · International shipping · 100% USDT (TRON) payments`;
+      ? `${contactLine()} · Envíos internacionales · USDT BNB Smart Chain (BEP20)`
+      : `${contactLine()} · International shipping · USDT BNB Smart Chain (BEP20)`;
   }
   // Enlaces rápidos en pie si existen
   const foot = document.querySelector('footer p.text-center');
@@ -1278,7 +1301,7 @@ function applyCoupon() {
 }
 
 function copyWallet() {
-  const w = CFG.wallet || 'TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3';
+  const w = CFG.wallet;
   navigator.clipboard.writeText(w).then(() => {
     const btn = $('#copyBtn');
     btn.textContent = t('copied');
@@ -1300,19 +1323,32 @@ function generateReceipt() {
   }
 
   const { sub, tax, delivery, couponDisc, volumeDisc, total } = calcTotals();
+  const products = cart.map(item => {
+    const p = P.find(x => x.f === item.f);
+    return p ? `${displayName(p)} (${item.s}) x${item.q}` : '';
+  }).filter(Boolean).join('; ');
   let itemsHtml = cart.map(item => {
     const p = P.find(x => x.f === item.f);
     return p ? `<div>• ${esc(displayName(p))} (${item.s}) ×${item.q} = ${f2(p.price * item.q)} USDT</div>` : '';
   }).join('');
 
-  const wallet = CFG.wallet || 'TVAS4UkAGaUx6UuaFxq2DAvkDskJiHevn3';
+  const wallet = CFG.wallet;
+  const net = CFG.network || 'BNB Smart Chain (BEP20)';
   const wa = (CFG.whatsapp || '').replace(/\D/g, '');
   const d = CFG.discord || 'Aetheriamarket';
+  const msg = `Hola, generé un pedido en Aetheria Market.\nCliente: ${name}\nTotal: ${f2(total)} USDT (${net})\nProductos: ${products}`;
   const contactHtml = wa
-    ? `<a class="btn inline-block mt-2" href="https://wa.me/${wa}?text=${encodeURIComponent('Hola, ya pagué mi pedido en Aetheria Market. Total: ' + f2(total) + ' USDT')}" target="_blank" rel="noopener">WhatsApp</a>
+    ? `<a class="btn inline-block mt-2" href="https://wa.me/${wa}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp</a>
        <span class="m text-xs mx-2">o</span>
        <span class="text-xs">Discord: <b>${esc(d)}</b></span>`
-    : `<p class="text-xs mt-2">Discord: <b>${esc(d)}</b> ${L === 'es' ? '(envía captura del pago)' : '(send payment screenshot)'}</p>`;
+    : `<p class="text-xs mt-2">Discord: <b>${esc(d)}</b></p>`;
+
+  // Guarda borrador local (el admin registra el pago confirmado en Contabilidad)
+  try {
+    const drafts = JSON.parse(localStorage.getItem('aetheria_drafts') || '[]');
+    drafts.unshift({ name, age, addr, products, total: f2(total), network: net, date: new Date().toISOString() });
+    localStorage.setItem('aetheria_drafts', JSON.stringify(drafts.slice(0, 50)));
+  } catch (e) {}
 
   $('#rb').innerHTML = `
     <div class="mb-2 text-emerald-400 font-bold">${L === 'es' ? '✅ Pedido generado' : '✅ Order created'}</div>
@@ -1331,11 +1367,12 @@ function generateReceipt() {
     <div class="mt-3 p-3 rounded-xl text-left text-[11px]" style="background:var(--bg);border:1px solid var(--line)">
       <b>${L === 'es' ? 'Siguiente paso — Pago' : 'Next step — Payment'}</b>
       <ol class="mt-1 ml-4 list-decimal space-y-1 m">
-        <li>${L === 'es' ? 'Copia la wallet USDT (TRON / TRC20)' : 'Copy the USDT wallet (TRON / TRC20)'}</li>
-        <li>${L === 'es' ? 'Envía exactamente' : 'Send exactly'} <b style="color:var(--tx)">${f2(total)} USDT</b></li>
-        <li>${L === 'es' ? 'Mándanos el comprobante por Discord' : 'Send us the receipt on Discord'}${wa ? (L === 'es' ? ' o WhatsApp' : ' or WhatsApp') : ''}</li>
+        <li>${L === 'es' ? 'Copia la wallet USDT · red BNB Smart Chain (BEP20)' : 'Copy the USDT wallet · BNB Smart Chain (BEP20)'}</li>
+        <li>${L === 'es' ? 'Envía exactamente' : 'Send exactly'} <b style="color:var(--tx)">${f2(total)} USDT</b> (${net})</li>
+        <li>${L === 'es' ? 'Mándanos el comprobante por Discord o WhatsApp' : 'Send us the proof on Discord or WhatsApp'}</li>
       </ol>
       <p class="break-all select-all font-mono mt-2 text-[10px] p-2 rounded-lg" style="background:var(--card)">${wallet}</p>
+      <p class="text-[10px] m mt-1">${L === 'es' ? '⚠️ Solo red BEP20. Otra red = pérdida de fondos.' : '⚠️ BEP20 only. Wrong network = lost funds.'}</p>
       ${contactHtml}
     </div>
     <p class="text-amber-500 mt-2 text-[11px]">${t('cancel')}</p>`;
@@ -1377,18 +1414,114 @@ function calcAd() {
   $('#ar').textContent = f2(p) + ' USDT' + (disc ? (L === 'es' ? ' (−1.5% desc. >5 días)' : ' (−1.5% off >5 days)') : '');
 }
 
-/* ========== ADMIN ========== */
+/* ========== ADMIN + CONTABILIDAD ========== */
+const LEDGER_KEY = 'aetheria_ledger_v1';
+
+function getLedger() {
+  try { return JSON.parse(localStorage.getItem(LEDGER_KEY) || '[]'); }
+  catch (e) { return []; }
+}
+
+function setLedger(arr) {
+  localStorage.setItem(LEDGER_KEY, JSON.stringify(arr));
+}
+
+function ledgerAdd() {
+  const name = ($('#ledName')?.value || '').trim();
+  const product = ($('#ledProduct')?.value || '').trim();
+  const amount = parseFloat($('#ledAmount')?.value || '0');
+  const tx = ($('#ledTx')?.value || '').trim();
+  if (!name || !product || !(amount > 0)) {
+    alert(L === 'es' ? 'Completa nombre, producto y cantidad.' : 'Fill name, product and amount.');
+    return;
+  }
+  const now = new Date();
+  const row = {
+    id: now.getTime(),
+    name,
+    product,
+    amount: f2(amount),
+    tx,
+    date: now.toLocaleDateString('es-MX'),
+    time: now.toLocaleTimeString('es-MX'),
+    iso: now.toISOString(),
+    network: CFG.networkShort || 'BEP20'
+  };
+  const arr = getLedger();
+  arr.unshift(row);
+  setLedger(arr);
+  if ($('#ledName')) $('#ledName').value = '';
+  if ($('#ledProduct')) $('#ledProduct').value = '';
+  if ($('#ledAmount')) $('#ledAmount').value = '';
+  if ($('#ledTx')) $('#ledTx').value = '';
+  ledgerRender();
+}
+
+function ledgerRender() {
+  const box = $('#ledTable');
+  if (!box) return;
+  const arr = getLedger();
+  if (!arr.length) {
+    box.innerHTML = `<p class="m">${L === 'es' ? 'Sin pagos registrados aún.' : 'No payments recorded yet.'}</p>`;
+    return;
+  }
+  const rows = arr.map(r => `
+    <tr style="border-bottom:1px solid var(--line)">
+      <td class="p-1">${esc(r.date)} ${esc(r.time)}</td>
+      <td class="p-1">${esc(r.name)}</td>
+      <td class="p-1">${esc(r.product)}</td>
+      <td class="p-1 text-cyan-400 font-bold">${esc(r.amount)} USDT</td>
+      <td class="p-1 m">${esc(r.tx || '—')}</td>
+    </tr>`).join('');
+  box.innerHTML = `
+    <table class="w-full text-left">
+      <thead><tr class="m">
+        <th class="p-1">Fecha/Hora</th><th class="p-1">Cliente</th><th class="p-1">Producto</th><th class="p-1">Monto</th><th class="p-1">TxID</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <p class="m mt-2">${arr.length} registro(s) · Total: <b style="color:var(--tx)">${f2(arr.reduce((s, r) => s + parseFloat(r.amount || 0), 0))} USDT</b></p>`;
+}
+
+function ledgerExport() {
+  const arr = getLedger();
+  if (!arr.length) {
+    alert(L === 'es' ? 'No hay datos para exportar.' : 'Nothing to export.');
+    return;
+  }
+  const header = 'Fecha,Hora,Cliente,Producto,Monto_USDT,Red,TxID\n';
+  const body = arr.map(r =>
+    `"${r.date}","${r.time}","${(r.name || '').replace(/"/g, '""')}","${(r.product || '').replace(/"/g, '""')}","${r.amount}","${r.network || 'BEP20'}","${(r.tx || '').replace(/"/g, '""')}"`
+  ).join('\n');
+  const blob = new Blob(['\ufeff' + header + body], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'aetheria-contabilidad-' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function ledgerClear() {
+  if (!confirm(L === 'es' ? '¿Borrar todos los registros de este navegador?' : 'Clear all records on this browser?')) return;
+  setLedger([]);
+  ledgerRender();
+}
+
 function openAdmin() {
   const key = prompt(L === 'es' ? 'Clave de Administrador:' : 'Admin Key:');
   if (key === CFG.key) {
     $('#adm').classList.remove('hidden');
+    ledgerRender();
+    $('#adm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else if (key !== null) {
+    alert(L === 'es' ? 'Clave incorrecta.' : 'Wrong key.');
   }
 }
 
 function processShein() {
   const u = $('#su').value.trim();
   $('#ss').textContent = /shein/i.test(u)
-    ? (L === 'es' ? '✔ URL procesada. Sube la foto a la carpeta Img con el nombre del producto.' : '✔ URL processed. Upload the photo to the Img folder with the product name.')
+    ? (L === 'es' ? '✔ URL procesada. Sube la foto al repositorio con el nombre del producto.' : '✔ URL processed. Upload the photo to the repo with the product name.')
     : (L === 'es' ? '✗ URL no válida' : '✗ Invalid URL');
 }
 
