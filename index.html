@@ -152,6 +152,83 @@ img{content-visibility:auto}
   .logo{font-size:1.15rem!important}
   .trust{justify-content:flex-start}
 }
+/* Hero promocional dinámico + imágenes rotando */
+.hero-promo{
+  position:relative;overflow:hidden;border-radius:1.25rem;
+  min-height:168px;
+  background:linear-gradient(120deg,#1a1030 0%,#2a1450 35%,#0f2744 70%,#1a1030 100%);
+  background-size:200% 200%;
+  animation:gradientShift 10s ease infinite;
+  border:1px solid rgba(167,139,250,.25);
+  box-shadow:0 16px 40px rgba(139,92,246,.18)
+}
+.hero-promo::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(500px 180px at 15% 40%, rgba(236,72,153,.25), transparent 60%),
+    radial-gradient(400px 160px at 85% 60%, rgba(34,211,238,.18), transparent 55%);
+  pointer-events:none;z-index:0
+}
+.hero-marquee{
+  position:relative;z-index:1;overflow:hidden;height:54px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)
+}
+.hero-marquee-track{
+  display:flex;gap:10px;width:max-content;
+  animation:heroMarquee 28s linear infinite;
+  padding:8px 0
+}
+.hero-marquee-track img{
+  width:40px;height:40px;object-fit:cover;border-radius:10px;
+  border:1px solid rgba(255,255,255,.18);flex-shrink:0;
+  box-shadow:0 4px 12px rgba(0,0,0,.35)
+}
+@keyframes heroMarquee{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+.hero-slide{
+  display:none;align-items:center;gap:16px;padding:14px 16px 18px;position:relative;z-index:1;min-height:114px
+}
+.hero-slide.on{display:flex;animation:fadeUp .4s ease}
+.hero-rotator{
+  position:relative;width:100px;height:100px;flex-shrink:0;border-radius:1.1rem;overflow:hidden;
+  border:2px solid rgba(255,255,255,.16);box-shadow:0 10px 24px rgba(0,0,0,.4)
+}
+.hero-rotator img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transform:scale(1.08);
+  transition:opacity .55s ease,transform .8s ease
+}
+.hero-rotator img.on{opacity:1;transform:scale(1)}
+.hero-kicker{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#f9a8d4;margin-bottom:4px}
+.hero-title{font-size:1.05rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:4px}
+.hero-text{font-size:12px;color:#cbd5e1;line-height:1.35;max-width:42rem}
+.hero-wa{
+  display:inline-flex;align-items:center;gap:6px;margin-top:8px;
+  background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.45);
+  color:#86efac;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;
+  text-decoration:none;transition:transform .2s,background .2s
+}
+.hero-wa:hover{transform:translateY(-1px);background:rgba(37,211,102,.25)}
+.hero-dots{position:absolute;right:12px;bottom:10px;display:flex;gap:6px;z-index:2}
+.hero-dots button{
+  width:7px;height:7px;border-radius:999px;border:none;padding:0;cursor:pointer;
+  background:rgba(255,255,255,.3);transition:transform .2s,background .2s
+}
+.hero-dots button.on{background:#f472b6;transform:scale(1.25)}
+@media (max-width:640px){
+  .hero-promo{min-height:150px}
+  .hero-slide{gap:12px;padding:12px 12px 16px}
+  .hero-rotator{width:78px;height:78px}
+  .hero-title{font-size:.95rem}
+  .hero-marquee{height:46px}
+  .hero-marquee-track img{width:34px;height:34px}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-marquee-track{animation:none}
+}
 </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -178,6 +255,17 @@ img{content-visibility:auto}
   </div>
   <nav id="nav" class="flex gap-2 overflow-x-auto px-4 pb-3 text-xs max-w-7xl mx-auto scrollbar-hide"></nav>
 </header>
+
+<!-- Banner dinámico de promociones (bajo el buscador) -->
+<section class="max-w-7xl mx-auto px-4 mt-3 w-full">
+  <div class="hero-promo" id="heroPromo">
+    <div class="hero-marquee" aria-hidden="true">
+      <div class="hero-marquee-track" id="heroMarquee"></div>
+    </div>
+    <div id="heroSlides"></div>
+    <div class="hero-dots" id="heroDots" aria-label="Promociones"></div>
+  </div>
+</section>
 
 <!-- Franja de confianza -->
 <div class="max-w-7xl mx-auto px-4 mt-3">
@@ -966,6 +1054,7 @@ function load() {
   loadVideos();
   renderDiscordCatalog();
   fetchDiscordCatalogJson();
+  renderHeroPromo(true);
   const inv = getDiscordInvite();
   if ($('#dcInviteInput') && inv) $('#dcInviteInput').value = inv;
   // Sombra del header al hacer scroll
@@ -1332,6 +1421,134 @@ function updateContacts() {
   if (dcj) dcj.textContent = L === 'es' ? 'Unirse al servidor' : 'Join the server';
   renderDiscordCatalog();
   showPromo(promoIdx);
+  renderHeroPromo(true);
+}
+
+/* ========== HERO PROMO DINÁMICO (bajo buscador) ========== */
+let heroIdx = 0;
+let heroTimer = null;
+let heroImgTimer = null;
+let heroImgIdx = 0;
+
+function heroImagePool() {
+  const files = [
+    'zapatillas GJ2.jpg','reloj inteligente.jpg','perfume1.jpg','vestido elegante 11.jpg',
+    'ropa de hombre elegante.jpg','tenis moderno.jpg','perfume clásico.jpg','reloj elegante.jpg',
+    'blusa de chica.jpg','conjunto de ropa de mujer.jpg','anillos7.jpg','cadena.jpg'
+  ];
+  const toUrl = (f) => (typeof imgPrimaryUrl === 'function' ? imgPrimaryUrl(f) : imgUrl(f));
+  return files.map(toUrl);
+}
+
+function heroSlidesData() {
+  const wa = (CFG.whatsapp || '528124415641').replace(/\D/g, '');
+  const waLabel = '+' + wa;
+  const pool = heroImagePool();
+  const group = (a, b, c) => [pool[a], pool[b], pool[c]];
+  if (L === 'es') {
+    return [
+      { kicker: 'WhatsApp oficial', title: 'Pide por WhatsApp ahora',
+        text: `Escríbenos al ${waLabel}. Tallas, encargos y confirmación de pago USDT.`,
+        imgs: group(0, 1, 2), wa: true },
+      { kicker: 'Nuevos productos', title: 'Zapatillas, relojes y más',
+        text: 'Novedades en el catálogo. Pago en USDT BEP20 y envío internacional.',
+        imgs: group(0, 1, 4), wa: true },
+      { kicker: 'Nueva línea', title: 'Línea elegante 2026 en camino',
+        text: 'Vestidos, conjuntos y accesorios premium. Reserva por WhatsApp o Discord.',
+        imgs: group(3, 4, 8), wa: true },
+      { kicker: 'Promoción', title: 'Perfumes y moda con oferta',
+        text: 'Cupón AETHERIA2026 (−2%). Pedidos grandes con descuento extra.',
+        imgs: group(2, 6, 7), wa: true },
+      { kicker: 'Encargos', title: '¿No está en el catálogo? Lo conseguimos',
+        text: 'Busca en CJ o SheIn y mándanos el link por WhatsApp.',
+        imgs: group(5, 9, 10), wa: true }
+    ];
+  }
+  return [
+    { kicker: 'Official WhatsApp', title: 'Message us on WhatsApp',
+      text: `Chat ${waLabel}. Sizes, custom orders and USDT payment help.`,
+      imgs: group(0, 1, 2), wa: true },
+    { kicker: 'New arrivals', title: 'Sneakers, watches & more',
+      text: 'Fresh picks in the catalog. Pay with USDT BEP20.',
+      imgs: group(0, 1, 4), wa: true },
+    { kicker: 'New line', title: 'Elegant 2026 line coming soon',
+      text: 'Dresses, sets and premium accessories. Reserve on WhatsApp or Discord.',
+      imgs: group(3, 4, 8), wa: true },
+    { kicker: 'Promo', title: 'Perfumes & fashion deals',
+      text: 'Coupon AETHERIA2026 (−2%). Bigger orders get extra savings.',
+      imgs: group(2, 6, 7), wa: true },
+    { kicker: 'Custom orders', title: 'Not in the catalog? We’ll get it',
+      text: 'Find it on CJ or SheIn and send the link on WhatsApp.',
+      imgs: group(5, 9, 10), wa: true }
+  ];
+}
+
+function buildHeroMarquee() {
+  const track = $('#heroMarquee');
+  if (!track) return;
+  const pool = heroImagePool();
+  // Duplicar para loop infinito
+  const list = [...pool, ...pool, ...pool];
+  track.innerHTML = list.map(src =>
+    `<img src="${esc(src)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`
+  ).join('');
+}
+
+function renderHeroPromo(reset) {
+  const box = $('#heroSlides');
+  const dots = $('#heroDots');
+  if (!box || !dots) return;
+  const slides = heroSlidesData();
+  const wa = (CFG.whatsapp || '528124415641').replace(/\D/g, '');
+  if (reset) { heroIdx = 0; heroImgIdx = 0; }
+  buildHeroMarquee();
+  box.innerHTML = slides.map((s, i) => `
+    <div class="hero-slide ${i === heroIdx ? 'on' : ''}" data-i="${i}">
+      <div class="hero-rotator" data-rotator="${i}">
+        ${(s.imgs || []).map((src, k) =>
+          `<img src="${esc(src)}" alt="" class="${k === 0 ? 'on' : ''}" loading="lazy" decoding="async"
+            onerror="this.src='https://placehold.co/120x120/1e293b/94a3b8?text=Aetheria'">`
+        ).join('')}
+      </div>
+      <div class="min-w-0 flex-1">
+        <div class="hero-kicker">${esc(s.kicker)}</div>
+        <div class="hero-title">${esc(s.title)}</div>
+        <div class="hero-text">${esc(s.text)}</div>
+        ${s.wa ? `<a class="hero-wa" href="https://wa.me/${wa}" target="_blank" rel="noopener">WhatsApp ${wa}</a>` : ''}
+      </div>
+    </div>
+  `).join('');
+  dots.innerHTML = slides.map((_, i) =>
+    `<button type="button" class="${i === heroIdx ? 'on' : ''}" aria-label="Slide ${i + 1}" onclick="heroGo(${i})"></button>`
+  ).join('');
+  if (heroTimer) clearInterval(heroTimer);
+  if (heroImgTimer) clearInterval(heroImgTimer);
+  heroTimer = setInterval(() => heroGo((heroIdx + 1) % slides.length), 5000);
+  heroImgTimer = setInterval(heroRotateImages, 2200);
+}
+
+function heroRotateImages() {
+  const active = $('#heroSlides .hero-slide.on .hero-rotator');
+  if (!active) return;
+  const imgs = [...active.querySelectorAll('img')];
+  if (imgs.length < 2) return;
+  heroImgIdx = (heroImgIdx + 1) % imgs.length;
+  imgs.forEach((img, k) => img.classList.toggle('on', k === heroImgIdx));
+}
+
+function heroGo(i) {
+  const slides = $$('#heroSlides .hero-slide');
+  const dots = $$('#heroDots button');
+  if (!slides.length) return;
+  heroIdx = ((i % slides.length) + slides.length) % slides.length;
+  heroImgIdx = 0;
+  slides.forEach((el, k) => el.classList.toggle('on', k === heroIdx));
+  dots.forEach((el, k) => el.classList.toggle('on', k === heroIdx));
+  // reset rotator on new slide
+  const rot = slides[heroIdx]?.querySelector('.hero-rotator');
+  if (rot) {
+    [...rot.querySelectorAll('img')].forEach((img, k) => img.classList.toggle('on', k === 0));
+  }
 }
 
 /* ========== BANNER IA (promoción automática de productos) ========== */
