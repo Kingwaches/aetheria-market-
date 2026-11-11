@@ -20,7 +20,19 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,-apple-sys
 .m{color:var(--mut)}
 .in{background:var(--bg);border:1px solid var(--line);border-radius:.65rem;padding:.6rem .8rem;font-size:.85rem;width:100%;color:var(--tx);transition:border-color .15s,box-shadow .15s}
 .in:focus{outline:none;border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.2)}
-.btn{background:linear-gradient(90deg,#ec4899,#8b5cf6);color:#fff;font-weight:700;border-radius:.75rem;padding:.6rem 1.15rem;font-size:.85rem;transition:transform .15s,opacity .15s,box-shadow .15s;box-shadow:0 6px 20px rgba(236,72,153,.18)}
+/* Selectores con contraste claro en modo claro y oscuro */
+select.in,select.sel{
+  appearance:none;-webkit-appearance:none;
+  background-color:var(--card)!important;
+  color:var(--tx)!important;
+  border:1px solid var(--line);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2394a3b8' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right .85rem center;padding-right:2.2rem;cursor:pointer
+}
+select.in option,select.sel option{background:var(--card);color:var(--tx)}
+html:not(.dark) select.in,html:not(.dark) select.sel{background-color:#fff!important;color:#0f172a!important;border-color:#cbd5e1}
+html.dark select.in,html.dark select.sel{background-color:#1a2438!important;color:#f1f5f9!important;border-color:#334155}
+.btn{background:linear-gradient(90deg,#ec4899,#8b5cf6);color:#fff;font-weight:700;border-radius:.75rem;padding:.65rem 1.15rem;font-size:.85rem;transition:transform .15s,opacity .15s,box-shadow .15s;box-shadow:0 6px 20px rgba(236,72,153,.18);min-height:44px}
 .btn:hover{box-shadow:0 8px 24px rgba(139,92,246,.28)}
 .btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
@@ -28,10 +40,14 @@ body{background:var(--bg);color:var(--tx);font-family:Inter,system-ui,-apple-sys
 .logo{background:linear-gradient(90deg,#ec4899,#a78bfa,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
 @keyframes pulseCart{0%,100%{transform:scale(1)}50%{transform:scale(1.22)}}
 .pulse{animation:pulseCart .45s ease 3}
-#cart{transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1)}
+#cart{transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);max-width:100%}
 #cart.open{transform:translateX(0)}
+@media(min-width:480px){#cart{max-width:28rem}}
+.cart-close{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:12px;font-size:1.25rem;border:1px solid var(--line);background:var(--bg)}
+.cart-actions{position:sticky;bottom:0;background:var(--card);padding-top:.5rem;padding-bottom:max(.75rem,env(safe-area-inset-bottom));border-top:1px solid var(--line);z-index:2}
+.touch-btn{min-height:48px;display:flex;align-items:center;justify-content:center;font-weight:600}
 .hl{outline:3px solid #06b6d4;outline-offset:3px;border-radius:.6rem}
-.opt{border:1px solid var(--line);border-radius:.55rem;padding:.35rem .75rem;font-size:.78rem;cursor:pointer;transition:all .15s;background:transparent;color:var(--tx)}
+.opt{border:1px solid var(--line);border-radius:.55rem;padding:.45rem .75rem;font-size:.8rem;cursor:pointer;transition:all .15s;background:var(--bg);color:var(--tx);min-height:44px}
 .opt.on{background:#ec4899;color:#fff;border-color:#ec4899}
 .opt:hover{border-color:#ec4899}
 .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -45,6 +61,11 @@ img{content-visibility:auto}
 .card-hover:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.18)}
 .scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
 .scrollbar-hide::-webkit-scrollbar{display:none}
+/* Admin modal */
+#adminModal{z-index:80}
+#adminModal .admin-panel{max-height:90vh;overflow-y:auto}
+.admin-lock{opacity:.35}
+.admin-lock:hover{opacity:.85}
 </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -63,7 +84,7 @@ img{content-visibility:auto}
     <div class="flex gap-2 items-center">
       <button id="lb" onclick="toggleLang()" class="c px-2.5 py-1.5 rounded-lg text-xs font-semibold" title="Idioma">EN</button>
       <button onclick="toggleDark()" class="c px-2.5 py-1.5 rounded-lg text-xs" title="Tema">🌓</button>
-      <button onclick="openAdmin()" class="c px-2.5 py-1.5 rounded-lg text-xs" title="Admin">🔒</button>
+      <button onclick="openAdmin()" class="c px-2.5 py-1.5 rounded-lg text-xs admin-lock" title="Admin" aria-label="Admin">🔒</button>
       <button type="button" onclick="contactDiscord()" class="c px-2.5 py-1.5 rounded-lg text-xs font-semibold" title="Discord" id="discordHeaderBtn">Discord</button>
       <a id="waHeaderBtn" href="https://wa.me/528124415641" target="_blank" rel="noopener" class="c px-2.5 py-1.5 rounded-lg text-xs font-semibold" title="WhatsApp">WhatsApp</a>
       <button id="cartBtn" onclick="toggleCart()" class="btn flex items-center gap-1.5">🛒 <span id="cc">0</span></button>
@@ -110,17 +131,21 @@ img{content-visibility:auto}
 
 <!-- Filtros -->
 <section class="max-w-7xl mx-auto px-4 mt-4 w-full grid grid-cols-1 sm:grid-cols-3 gap-2">
-  <select id="fs" class="in" onchange="renderCatalog()"></select>
-  <select id="fz" class="in" onchange="renderCatalog()"></select>
-  <select id="fo" class="in" onchange="renderCatalog()"></select>
+  <select id="fs" class="in sel" onchange="renderCatalog()"></select>
+  <select id="fz" class="in sel" onchange="renderCatalog()"></select>
+  <select id="fo" class="in sel" onchange="renderCatalog()"></select>
 </section>
 
-<!-- Panel Admin (oculto) -->
-<section id="adm" class="hidden max-w-2xl mx-auto px-4 mt-4 w-full">
-  <div class="c rounded-2xl p-4 border-2 border-pink-500/50 space-y-4">
-    <b class="text-xs text-pink-400">🔒 Panel Administrador</b>
+<!-- Admin: modal oculto, solo con clave -->
+<div id="adminModal" class="fixed inset-0 hidden items-center justify-center p-3 bg-black/70" onclick="if(event.target===this)closeAdmin()">
+  <div class="c rounded-2xl p-4 w-full max-w-lg admin-panel border-2 border-pink-500/40 space-y-4 relative" onclick="event.stopPropagation()">
+    <div class="flex justify-between items-center">
+      <b class="text-sm text-pink-400">🔒 Panel de administración</b>
+      <button type="button" class="cart-close" onclick="closeAdmin()" aria-label="Cerrar">✕</button>
+    </div>
+    <p class="text-[11px] m">Acceso restringido. Los clientes no ven este panel.</p>
     <div>
-      <p class="text-[11px] m mb-1">SheIn Importer</p>
+      <p class="text-[11px] font-semibold mb-1">SheIn Importer</p>
       <div class="flex gap-2">
         <input id="su" class="in" placeholder="Pegar URL de SheIn...">
         <button class="btn" onclick="processShein()">Procesar</button>
@@ -128,8 +153,8 @@ img{content-visibility:auto}
       <p id="ss" class="text-[11px] m mt-2"></p>
     </div>
     <div class="border-t pt-3" style="border-color:var(--line)">
-      <b class="text-xs">📒 Contabilidad de pagos (solo admin)</b>
-      <p class="text-[11px] m my-1">Registra pagos confirmados. Se guardan en este navegador y puedes exportar Excel (CSV).</p>
+      <b class="text-xs">📒 Contabilidad de pagos</b>
+      <p class="text-[11px] m my-1">Registra pagos confirmados. Exporta a Excel (CSV). Solo en este navegador.</p>
       <div class="grid sm:grid-cols-2 gap-2 mt-2">
         <input id="ledName" class="in" placeholder="Nombre del cliente">
         <input id="ledProduct" class="in" placeholder="Producto(s)">
@@ -144,7 +169,9 @@ img{content-visibility:auto}
       <div id="ledTable" class="mt-3 overflow-x-auto text-[11px]"></div>
     </div>
   </div>
-</section>
+</div>
+<!-- id adm conservado vacío por compatibilidad -->
+<div id="adm" class="hidden"></div>
 
 <!-- Encargo SheIn -->
 <section class="max-w-3xl mx-auto px-4 mt-4 w-full">
@@ -208,7 +235,7 @@ img{content-visibility:auto}
     <b class="text-sm" id="adsTitle"></b>
     <p class="text-xs m my-2" id="adsDesc"></p>
     <div class="flex gap-2">
-      <select id="au" class="in">
+      <select id="au" class="in sel">
         <option value="min">/ min</option>
         <option value="hora">/ hora</option>
         <option value="dia">/ día</option>
@@ -261,44 +288,45 @@ img{content-visibility:auto}
 <!-- Overlay carrito -->
 <div id="bk" onclick="toggleCart(false)" class="fixed inset-0 bg-black/60 z-40 hidden"></div>
 
-<!-- Carrito lateral -->
-<aside id="cart" class="fixed top-0 right-0 h-full w-full max-w-md z-50 c flex flex-col shadow-2xl">
-  <div class="p-3 flex justify-between items-center border-b" style="border-color:var(--line)">
-    <b id="cartTitle"></b>
-    <button onclick="toggleCart(false)" class="text-xl leading-none">✕</button>
+<!-- Carrito lateral (optimizado móvil) -->
+<aside id="cart" class="fixed top-0 right-0 h-full w-full z-50 c flex flex-col shadow-2xl">
+  <div class="p-3 flex justify-between items-center border-b gap-2" style="border-color:var(--line)">
+    <b id="cartTitle" class="text-sm"></b>
+    <button type="button" onclick="toggleCart(false)" class="cart-close" aria-label="Cerrar carrito">✕</button>
   </div>
   <div id="ci" class="flex-1 overflow-y-auto p-3 space-y-2"></div>
-  <div class="p-3 border-t space-y-2 overflow-y-auto max-h-[58vh]" style="border-color:var(--line)">
+  <div class="p-3 space-y-2 overflow-y-auto" style="max-height:55vh">
     <input id="nm" class="in" placeholder="">
     <div class="grid grid-cols-2 gap-2">
       <input id="ag" type="number" min="1" class="in" placeholder="">
-      <select id="sh" class="in" onchange="ship=this.value;drawCart()"></select>
+      <select id="sh" class="in sel" onchange="ship=this.value;drawCart()"></select>
     </div>
     <textarea id="ad" rows="2" class="in" placeholder=""></textarea>
     <div class="flex gap-2">
       <input id="cp" class="in" placeholder="">
-      <button class="btn" onclick="applyCoupon()" id="applyBtn"></button>
+      <button class="btn shrink-0" onclick="applyCoupon()" id="applyBtn"></button>
     </div>
     <div id="sm" class="text-xs font-mono space-y-1"></div>
     <div id="wallet" class="text-center text-[11px] p-3 rounded-xl" style="background:var(--bg)">
       <b class="text-cyan-400" id="walTitle"></b>
-      <p class="m my-1" id="paySteps" style="font-size:11px;line-height:1.4">1) Copia la wallet · 2) Envía el total exacto en USDT (BEP20 / BNB) · 3) Confirma por Discord o WhatsApp</p>
+      <p class="m my-1" id="paySteps" style="font-size:11px;line-height:1.4">1) Copia la wallet · 2) Envía USDT en BEP20 · 3) Confirma por WhatsApp o Discord</p>
       <p class="text-cyan-400 font-extrabold text-base my-1" id="payAmountHint"></p>
       <code id="walletAddr" class="block break-all select-all my-1.5 text-[10px] p-2 rounded-lg" style="background:var(--card);border:1px dashed var(--line)">0x2441d8bbbd8e7b93A6FE371D48515c7978201C13</code>
-      <div class="flex flex-col gap-2 mt-2">
-        <button type="button" class="btn w-full" onclick="payNow()" id="payNowBtn">💳 Pagar con USDT (BEP20)</button>
-        <button type="button" class="opt w-full" onclick="copyWallet()" id="copyBtn">Copiar dirección</button>
-      </div>
       <div class="mt-2 flex flex-col items-center">
         <img id="walletQr" class="w-24 h-24 bg-white p-1 rounded border border-cyan-400/40" alt="QR USDT BEP20"
-          src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=0x2441d8bbbd8e7b93A6FE371D48515c7978201C13">
+          src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=0x2441d8bbbd8e7b93A6FE371D48515c7978201C13"
+          loading="lazy" decoding="async" width="96" height="96">
         <span class="text-[9px] text-cyan-400 mt-1">✓ USDT · BNB Smart Chain (BEP20)</span>
       </div>
     </div>
-    <button class="btn w-full" onclick="generateReceipt()" id="payBtn"></button>
-    <div class="grid grid-cols-2 gap-2 mt-1">
-      <button type="button" class="opt w-full" onclick="contactDiscord()" id="discordPayBtn">Discord</button>
-      <a id="waPayLink" href="https://wa.me/528124415641" target="_blank" rel="noopener" class="opt w-full text-center block">WhatsApp</a>
+  </div>
+  <div class="cart-actions px-3 space-y-2">
+    <button type="button" class="btn w-full touch-btn" onclick="payNow()" id="payNowBtn">💳 Pagar con USDT (BEP20)</button>
+    <button type="button" class="opt w-full touch-btn" onclick="copyWallet()" id="copyBtn">Copiar dirección</button>
+    <button class="btn w-full touch-btn" onclick="generateReceipt()" id="payBtn"></button>
+    <div class="grid grid-cols-2 gap-2">
+      <button type="button" class="opt w-full touch-btn" onclick="contactDiscord()" id="discordPayBtn">Discord</button>
+      <a id="waPayLink" href="https://wa.me/528124415641" target="_blank" rel="noopener" class="opt w-full touch-btn text-center">WhatsApp</a>
     </div>
   </div>
 </aside>
@@ -628,7 +656,58 @@ const nz = s => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLow
 const hs = s => [...String(s)].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const f2 = n => Number(n).toFixed(2);
-const imgUrl = f => (CFG.folder ? CFG.folder + '/' : '') + encodeURIComponent(f);
+/* Imágenes: soporta WebP (+ fallback JPG/PNG) */
+const IMG_EXT = /\.(jpe?g|png|webp|gif)$/i;
+function imgBase(f) {
+  return String(f).replace(IMG_EXT, '');
+}
+function imgExt(f) {
+  const m = String(f).match(IMG_EXT);
+  return m ? m[0].toLowerCase() : '.jpg';
+}
+function imgUrl(f, forceExt) {
+  const folder = CFG.folder ? CFG.folder + '/' : '';
+  const base = imgBase(f);
+  const ext = forceExt || imgExt(f);
+  return folder + encodeURIComponent(base + ext);
+}
+function imgWebpUrl(f) { return imgUrl(f, '.webp'); }
+function imgFallbackUrl(f) {
+  const e = imgExt(f);
+  if (e === '.webp') return imgUrl(f, '.jpg');
+  return imgUrl(f, e === '.png' ? '.png' : '.jpg');
+}
+/** <picture> con WebP primero y JPG/PNG de respaldo */
+function pictureTag(f, cls, extra = '') {
+  const webp = imgWebpUrl(f);
+  const fallback = imgFallbackUrl(f);
+  const ph = 'https://placehold.co/400x400/1e293b/94a3b8?text=Aetheria';
+  return `<picture>
+    <source srcset="${webp}" type="image/webp">
+    <img src="${fallback}" class="${cls}" ${extra}
+      onerror="if(!this.dataset.err){this.dataset.err=1;this.src='${fallback}';}else if(this.dataset.err==1){this.dataset.err=2;this.src='${imgUrl(f)}';}else{this.src='${ph}';}">
+  </picture>`;
+}
+function setImgWithWebp(el, f) {
+  if (!el) return;
+  const webp = imgWebpUrl(f);
+  const fallback = imgFallbackUrl(f);
+  // Preferir webp; si falla, JPG/PNG
+  el.onerror = function () {
+    if (this.dataset.stage === 'webp') {
+      this.dataset.stage = 'fallback';
+      this.src = fallback;
+    } else if (this.dataset.stage === 'fallback') {
+      this.dataset.stage = 'orig';
+      this.src = imgUrl(f);
+    } else {
+      this.onerror = null;
+      this.src = 'https://placehold.co/400x400/1e293b/94a3b8?text=Aetheria';
+    }
+  };
+  el.dataset.stage = 'webp';
+  el.src = webp;
+}
 
 /* ========== CONSTRUCCIÓN DE PRODUCTOS ========== */
 function buildProduct(f, i) {
@@ -940,8 +1019,8 @@ function showPromo(i) {
   const label = $('#promoLabel');
   const badge = $('#promoBadge');
   if (img) {
-    img.src = imgUrl(p.f);
     img.alt = displayName(p);
+    setImgWithWebp(img, p.f);
   }
   if (name) name.textContent = displayName(p);
   if (text) text.textContent = promoPhrase(p);
@@ -998,9 +1077,7 @@ function productCard(p, opts = {}) {
   return `
   <article class="c rounded-2xl p-3 flex flex-col card-hover">
     <div class="relative overflow-hidden rounded-xl mb-2 cursor-pointer" onclick="openProduct(${p.i})">
-      <img src="${imgUrl(p.f)}" alt="${esc(displayName(p))}" width="400" height="208"
-        class="w-full h-52 object-cover" loading="lazy" decoding="async"
-        onerror="this.src='https://placehold.co/400x400/1e293b/94a3b8?text=Aetheria'">
+      ${pictureTag(p.f, 'w-full h-52 object-cover', `alt="${esc(displayName(p))}" width="400" height="208" loading="lazy" decoding="async" sizes="(max-width:640px) 50vw, 25vw"`)}
       ${hot}
       <div class="wm">AETHERIA</div>
       <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded bg-black/65 text-white uppercase">${p.cat}</span>
@@ -1234,7 +1311,7 @@ function closeModal() {
 
 function drawModal() {
   const p = P[sel.i];
-  $('#mi').src = imgUrl(p.f);
+  setImgWithWebp($('#mi'), p.f);
   $('#mi').style.filter = COL[sel.c][2];
   $('#mn').textContent = displayName(p);
   $('#mp').textContent = f2(p.price) + ' USDT';
@@ -1358,7 +1435,7 @@ function drawCart() {
     if (!p) return '';
     return `
     <div class="flex gap-2 c rounded-xl p-2 items-center">
-      <img src="${imgUrl(p.f)}" class="w-14 h-14 object-cover rounded-lg" style="filter:${COL[item.c][2]}">
+      ${pictureTag(p.f, 'w-14 h-14 object-cover rounded-lg', `style="filter:${COL[item.c][2]}" width="56" height="56" loading="lazy" decoding="async"`)}
       <div class="flex-1 min-w-0">
         <div class="text-xs font-semibold truncate">${esc(displayName(p))}</div>
         <div class="text-[10px] m">${item.s} · ${COL[item.c][L === 'es' ? 0 : 1]}</div>
@@ -1658,11 +1735,22 @@ function ledgerClear() {
 function openAdmin() {
   const key = prompt(L === 'es' ? 'Clave de Administrador:' : 'Admin Key:');
   if (key === CFG.key) {
-    $('#adm').classList.remove('hidden');
+    const m = $('#adminModal');
+    if (m) {
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
     ledgerRender();
-    $('#adm').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } else if (key !== null) {
     alert(L === 'es' ? 'Clave incorrecta.' : 'Wrong key.');
+  }
+}
+
+function closeAdmin() {
+  const m = $('#adminModal');
+  if (m) {
+    m.classList.add('hidden');
+    m.classList.remove('flex');
   }
 }
 
