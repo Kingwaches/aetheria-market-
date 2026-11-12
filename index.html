@@ -1080,14 +1080,14 @@ function setImgWithWebp(el, f) {
 
 /* ========== CONSTRUCCIÓN DE PRODUCTOS ========== */
 function buildProduct(f, i) {
-  const base = f.replace(/\.[^.]+$/, '').replace(/\s+/g, ' ').trim();
-  const n = nz(base);
-  const H = hs(base);
+  const fileBase = f.replace(/\.[^.]+$/, '').replace(/\s+/g, ' ').trim();
+  const n = nz(fileBase);
+  const H = hs(fileBase);
   const cat = (RULES.find(r => r[0].test(n)) || [0, 'ropa'])[1];
   const sex = /mujer|chica|dama|femen|vestido/.test(n) ? 'Mujer'
             : /hombre|chico|caballero|masculin/.test(n) ? 'Hombre' : 'Unisex';
 
-  const nameEs = base.charAt(0).toUpperCase() + base.slice(1);
+  const nameEs = fileBase.charAt(0).toUpperCase() + fileBase.slice(1);
   let nameEn = nameEs
     .replace(/ropa interior/gi, 'Underwear')
     .replace(/mujer/gi, 'Women')
@@ -1119,14 +1119,14 @@ function buildProduct(f, i) {
   if (/inteligente|smart/.test(n)) [lo, hi] = [28, 48];
   if (cat === 'interior' && /fina|elegan|conjunto|modelo/.test(n)) { lo = 4.5; hi = 12; }
   // Precio base competitivo
-  let base = Math.round((lo + (H % 1000) / 1000 * (hi - lo)) * 2) / 2;
-  if (base < 2.5) base = 2.5;
+  let priceBase = Math.round((lo + (H % 1000) / 1000 * (hi - lo)) * 2) / 2;
+  if (priceBase < 2.5) priceBase = 2.5;
 
   // Rebajas: ~35% de productos con descuento 12–28%
   const onSale = (H % 10) <= 3;
   const discPct = onSale ? (12 + (H % 17)) : 0;
-  const oldPrice = onSale ? base : null;
-  let price = onSale ? Math.round(base * (1 - discPct / 100) * 2) / 2 : base;
+  const oldPrice = onSale ? priceBase : null;
+  let price = onSale ? Math.round(priceBase * (1 - discPct / 100) * 2) / 2 : priceBase;
   if (price < 2) price = 2;
 
   const sizes = ['zapatos'].includes(cat)
@@ -1688,11 +1688,11 @@ function heroSlidesData() {
 function buildHeroMarquee() {
   const track = $('#heroMarquee');
   if (!track) return;
-  const pool = heroImagePool();
-  // Duplicar para loop infinito
-  const list = [...pool, ...pool, ...pool];
+  const pool = heroImagePool().slice(0, 8);
+  // Duplicar una vez para loop infinito (menos peso)
+  const list = [...pool, ...pool];
   track.innerHTML = list.map(src =>
-    `<img src="${esc(src)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`
+    `<img src="${esc(src)}" alt="" loading="lazy" decoding="async" width="36" height="36" onerror="this.style.display='none'">`
   ).join('');
 }
 
@@ -1930,11 +1930,13 @@ function smartMatch(p, query) {
   return false;
 }
 
-function renderCatalog() {
-  const q = nz($('#q').value);
-  const sx = $('#fs').value;
-  const sz = $('#fz').value;
-  const o = $('#fo').value;
+let catalogLimit = 24;
+function renderCatalog(resetLimit) {
+  if (resetLimit !== false) catalogLimit = 24;
+  const q = nz($('#q')?.value || '');
+  const sx = $('#fs')?.value || 'todos';
+  const sz = $('#fz')?.value || 'todas';
+  const o = $('#fo')?.value || 'asc';
 
   let list = P.filter(p =>
     (cat === 'todos' || p.cat === cat) &&
@@ -1945,7 +1947,15 @@ function renderCatalog() {
 
   list.sort((a, b) => o === 'asc' ? a.price - b.price : b.price - a.price);
 
-  $('#grid').innerHTML = list.map(productCard).join('');
+  const shown = list.slice(0, catalogLimit);
+  const more = list.length > shown.length;
+  $('#grid').innerHTML = shown.map(productCard).join('') + (more
+    ? `<div class="col-span-full flex justify-center py-4">
+        <button type="button" class="btn" onclick="catalogLimit+=24;renderCatalog(false)">
+          ${L === 'es' ? 'Ver más productos' : 'Show more'} (${list.length - shown.length})
+        </button>
+      </div>`
+    : '');
   $('#cnt').textContent = list.length + ' ' + t('items');
 }
 
