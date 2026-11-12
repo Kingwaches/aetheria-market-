@@ -17,214 +17,187 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f4f6fb;--card:#ffffff;--line:#e2e8f0;--tx:#0f172a;--mut:#64748b;
-  --accent:#ec4899;--accent2:#8b5cf6;--cyan:#06b6d4;
-  --shadow:0 10px 30px rgba(15,23,42,.06);--shadow-lg:0 18px 40px rgba(15,23,42,.12)
+  --bg:#fafafa;--card:#ffffff;--line:#ececec;--tx:#171717;--mut:#737373;
+  --accent:#111111;--accent2:#525252;--cyan:#0a0a0a;
+  --shadow:0 1px 2px rgba(0,0,0,.04);--shadow-lg:0 12px 40px rgba(0,0,0,.08)
 }
 html.dark{
-  --bg:#070b14;--card:#101827;--line:#1e2a3c;--tx:#f1f5f9;--mut:#94a3b8;
-  --shadow:0 10px 30px rgba(0,0,0,.25);--shadow-lg:0 20px 50px rgba(0,0,0,.4)
+  --bg:#0a0a0a;--card:#141414;--line:#262626;--tx:#fafafa;--mut:#a3a3a3;
+  --accent:#fafafa;--accent2:#d4d4d4;--cyan:#e5e5e5;
+  --shadow:0 1px 2px rgba(0,0,0,.4);--shadow-lg:0 16px 48px rgba(0,0,0,.45)
 }
 *{box-sizing:border-box}
 body{
-  background:
-    radial-gradient(1200px 500px at 10% -10%, rgba(236,72,153,.12), transparent 55%),
-    radial-gradient(900px 400px at 90% 0%, rgba(139,92,246,.12), transparent 50%),
-    var(--bg);
+  background:var(--bg);
   color:var(--tx);
   font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  transition:background .25s,color .25s;
-  letter-spacing:.01em
+  transition:background .3s,color .3s;
+  letter-spacing:-.01em;
+  font-weight:400
 }
 .c{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow)}
 .m{color:var(--mut)}
 .in{
-  background:color-mix(in srgb,var(--bg) 80%,var(--card));
-  border:1px solid var(--line);border-radius:.85rem;padding:.7rem .9rem;
-  font-size:.875rem;width:100%;color:var(--tx);transition:border-color .15s,box-shadow .15s
+  background:var(--card);
+  border:1px solid var(--line);border-radius:.75rem;padding:.7rem .95rem;
+  font-size:.875rem;width:100%;color:var(--tx);transition:border-color .2s,box-shadow .2s
 }
-.in:focus{outline:none;border-color:#a78bfa;box-shadow:0 0 0 4px rgba(139,92,246,.18)}
+.in:focus{outline:none;border-color:#a3a3a3;box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+html.dark .in:focus{border-color:#525252;box-shadow:0 0 0 3px rgba(255,255,255,.06)}
 select.in,select.sel{
   appearance:none;-webkit-appearance:none;
   background-color:var(--card)!important;color:var(--tx)!important;border:1px solid var(--line);
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2394a3b8' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right .9rem center;padding-right:2.3rem;cursor:pointer;border-radius:.85rem
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23a3a3a3' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right .9rem center;padding-right:2.3rem;cursor:pointer;border-radius:.75rem
 }
 select.in option,select.sel option{background:var(--card);color:var(--tx)}
-html:not(.dark) select.in,html:not(.dark) select.sel{background-color:#fff!important;color:#0f172a!important;border-color:#cbd5e1}
-html.dark select.in,html.dark select.sel{background-color:#152033!important;color:#f1f5f9!important;border-color:#2a3a52}
+html:not(.dark) select.in,html:not(.dark) select.sel{background-color:#fff!important;color:#171717!important;border-color:#e5e5e5}
+html.dark select.in,html.dark select.sel{background-color:#141414!important;color:#fafafa!important;border-color:#262626}
 .btn{
-  background:linear-gradient(135deg,#f472b6 0%,#ec4899 40%,#8b5cf6 100%);
-  color:#fff;font-weight:700;border-radius:.9rem;padding:.7rem 1.2rem;font-size:.875rem;
-  transition:transform .15s,opacity .15s,box-shadow .2s;box-shadow:0 10px 24px rgba(236,72,153,.22);min-height:46px;border:none;cursor:pointer
+  background:var(--tx);color:var(--bg);font-weight:600;border-radius:.75rem;padding:.7rem 1.25rem;font-size:.85rem;
+  transition:opacity .2s,transform .15s,box-shadow .2s;box-shadow:none;min-height:44px;border:none;cursor:pointer;
+  letter-spacing:.01em
 }
-.btn:hover{transform:translateY(-1px);box-shadow:0 14px 28px rgba(139,92,246,.3)}
+.btn:hover{opacity:.88}
 .btn:active{transform:scale(.98)}
-.btn:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
-.wm{position:absolute;bottom:10px;right:10px;background:rgba(7,11,20,.82);backdrop-filter:blur(6px);color:#67e8f9;font-size:9px;font-weight:800;padding:4px 9px;border-radius:8px;border:1px solid rgba(103,232,249,.3);pointer-events:none;letter-spacing:.5px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.wm{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);color:#fff;font-size:9px;font-weight:600;padding:4px 8px;border-radius:6px;pointer-events:none;letter-spacing:.4px;border:none}
 .logo{
-  background:linear-gradient(90deg,#f472b6,#c4b5fd,#22d3ee);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 0 18px rgba(236,72,153,.15))
+  color:var(--tx);font-weight:700;letter-spacing:.06em;
+  background:none;-webkit-background-clip:unset;background-clip:unset;filter:none
 }
-@keyframes pulseCart{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
-.pulse{animation:pulseCart .45s ease 3}
-#cart{transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.2,1);max-width:100%;border-left:1px solid var(--line)}
+html.dark .logo{color:#fafafa}
+@keyframes pulseCart{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.pulse{animation:pulseCart .4s ease 2}
+#cart{transform:translateX(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1);max-width:100%;border-left:1px solid var(--line)}
 #cart.open{transform:translateX(0)}
-@media(min-width:480px){#cart{max-width:28rem}}
-.cart-close{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:12px;font-size:1.2rem;border:1px solid var(--line);background:var(--bg);color:var(--tx);cursor:pointer}
-.cart-actions{position:sticky;bottom:0;background:linear-gradient(180deg,transparent,var(--card) 12%);padding-top:.75rem;padding-bottom:max(.85rem,env(safe-area-inset-bottom));border-top:1px solid var(--line);z-index:2}
-.touch-btn{min-height:48px;display:flex;align-items:center;justify-content:center;font-weight:600}
-.hl{outline:3px solid #06b6d4;outline-offset:3px;border-radius:.7rem}
-.opt{border:1px solid var(--line);border-radius:.7rem;padding:.5rem .8rem;font-size:.8rem;cursor:pointer;transition:all .15s;background:color-mix(in srgb,var(--bg) 70%,var(--card));color:var(--tx);min-height:44px}
-.opt.on{background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(236,72,153,.25)}
-.opt:hover{border-color:#c084fc}
+@media(min-width:480px){#cart{max-width:26rem}}
+.cart-close{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:1.1rem;border:1px solid var(--line);background:var(--bg);color:var(--tx);cursor:pointer}
+.cart-actions{position:sticky;bottom:0;background:var(--card);padding-top:.75rem;padding-bottom:max(.85rem,env(safe-area-inset-bottom));border-top:1px solid var(--line);z-index:2}
+.touch-btn{min-height:46px;display:flex;align-items:center;justify-content:center;font-weight:600}
+.hl{outline:2px solid var(--tx);outline-offset:3px;border-radius:.6rem}
+.opt{border:1px solid var(--line);border-radius:.65rem;padding:.45rem .75rem;font-size:.8rem;cursor:pointer;transition:all .15s;background:var(--card);color:var(--tx);min-height:42px}
+.opt.on{background:var(--tx);color:var(--bg);border-color:var(--tx);box-shadow:none}
+.opt:hover{border-color:#a3a3a3}
 .line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 #ban{transition:all .4s}
-.step-n{min-width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f472b6,#8b5cf6);color:#fff;font-weight:800;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 14px rgba(236,72,153,.25)}
+.step-n{min-width:26px;height:26px;border-radius:50%;background:var(--tx);color:var(--bg);font-weight:700;font-size:.7rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:none}
 img{content-visibility:auto}
-.badge-hot{position:absolute;top:10px;left:10px;background:linear-gradient(90deg,#fb923c,#ef4444);color:#fff;font-size:10px;font-weight:800;padding:4px 9px;border-radius:999px;z-index:2;letter-spacing:.4px;box-shadow:0 6px 14px rgba(239,68,68,.3);animation:badgePop .5s cubic-bezier(.2,1.4,.4,1) both}
-.trust{display:flex;flex-wrap:wrap;gap:8px 10px;font-size:11px}
+.badge-hot{position:absolute;top:10px;left:10px;background:var(--tx);color:var(--bg);font-size:10px;font-weight:600;padding:4px 9px;border-radius:999px;z-index:2;letter-spacing:.3px;box-shadow:none;animation:none}
+.trust{display:flex;flex-wrap:wrap;gap:8px;font-size:11px}
 .trust span{
   display:inline-flex;align-items:center;gap:6px;
-  background:color-mix(in srgb,var(--card) 88%,transparent);
+  background:var(--card);
   border:1px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--mut);
-  box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s,box-shadow .2s;
-  animation:fadeUp .5s ease both
+  box-shadow:none;transition:border-color .2s
 }
-.trust span:nth-child(1){animation-delay:.05s}
-.trust span:nth-child(2){animation-delay:.1s}
-.trust span:nth-child(3){animation-delay:.15s}
-.trust span:nth-child(4){animation-delay:.2s}
-.trust span:hover{transform:translateY(-2px);border-color:#c084fc;box-shadow:0 8px 20px rgba(139,92,246,.15)}
-.card-hover{transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s ease,border-color .28s ease;border-radius:1.1rem;overflow:hidden}
-.card-hover:hover{transform:translateY(-6px) scale(1.01);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,#a78bfa 45%,var(--line))}
-.card-hover img,.card-hover picture img{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-.card-hover:hover img,.card-hover:hover picture img{transform:scale(1.06)}
+.trust span:hover{border-color:#a3a3a3}
+.card-hover{transition:transform .25s ease,box-shadow .25s ease;border-radius:1rem;overflow:hidden}
+.card-hover:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.card-hover img,.card-hover picture img{transition:transform .4s ease}
+.card-hover:hover img,.card-hover:hover picture img{transform:scale(1.03)}
 .scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
 .scrollbar-hide::-webkit-scrollbar{display:none}
 #adminModal{z-index:80}
-#adminModal .admin-panel{max-height:90vh;overflow-y:auto;animation:modalIn .28s cubic-bezier(.2,.9,.2,1)}
+#adminModal .admin-panel{max-height:90vh;overflow-y:auto;animation:modalIn .25s ease}
 .admin-lock{opacity:.35;transition:opacity .2s}
 .admin-lock:hover{opacity:.85}
-.site-header{backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 80%,transparent)!important;transition:box-shadow .25s}
-.site-header.scrolled{box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.site-header{backdrop-filter:blur(12px);background:color-mix(in srgb,var(--bg) 88%,transparent)!important;transition:box-shadow .25s}
+.site-header.scrolled{box-shadow:0 1px 0 var(--line)}
 .chip{border-radius:999px!important}
-.section-title{font-weight:800;letter-spacing:.02em}
-#promoBanner{min-height:150px;transition:transform .3s ease,box-shadow .3s ease}
-#promoBanner:hover{transform:translateY(-2px)}
+.section-title{font-weight:600;letter-spacing:-.01em}
+#promoBanner{min-height:140px;transition:opacity .3s}
 #promoBanner img{object-position:center}
-/* ===== Animaciones ===== */
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+/* ===== Animaciones suaves ===== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes modalIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes badgePop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
-@keyframes softFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-@keyframes shimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
-@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-@keyframes navIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-.anim-in{animation:fadeUp .55s cubic-bezier(.2,.8,.2,1) both}
-.anim-card{animation:fadeUp .5s cubic-bezier(.2,.8,.2,1) both}
-#nav .opt,#nav button{animation:navIn .4s ease both;transition:transform .2s,box-shadow .2s,background .2s,border-color .2s}
-#nav .opt:hover,#nav button:hover{transform:translateY(-2px)}
-.logo{
-  background-size:200% auto;
-  animation:gradientShift 6s ease infinite
-}
-.btn{position:relative;overflow:hidden}
-.btn::after{
-  content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.25) 50%,transparent 70%);
-  transform:translateX(-120%);transition:none
-}
-.btn:hover::after{animation:shimmer .9s ease}
-#modal{animation:fadeIn .2s ease}
-#modal .c{animation:modalIn .3s cubic-bezier(.2,.9,.2,1)}
-#bk{transition:opacity .25s ease}
-#cart{transition:transform .38s cubic-bezier(.2,.85,.2,1)}
-.step-n{transition:transform .2s}
-.c:hover .step-n{transform:scale(1.08)}
-#promoVideo,#extraVideo{transition:box-shadow .3s ease,transform .3s ease;border-radius:1rem}
-#promoVideo:hover{box-shadow:0 12px 40px rgba(139,92,246,.2)}
+@keyframes modalIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes softFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes navIn{from{opacity:0}to{opacity:1}}
+.anim-in{animation:fadeUp .45s ease both}
+.anim-card{animation:fadeUp .4s ease both}
+#nav .opt,#nav button{animation:none;transition:border-color .15s,background .15s,color .15s}
+#nav .opt:hover,#nav button:hover{transform:none}
+#modal{animation:fadeIn .15s ease}
+#modal .c{animation:modalIn .25s ease}
+#bk{transition:opacity .2s ease}
+#cart{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+#promoVideo,#extraVideo{border-radius:.85rem}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 @media (max-width:640px){
-  .logo{font-size:1.15rem!important}
+  .logo{font-size:1.1rem!important}
   .trust{justify-content:flex-start}
 }
-/* Hero promocional dinámico + imágenes rotando */
+/* Hero minimal */
 .hero-promo{
-  position:relative;overflow:hidden;border-radius:1.25rem;
-  min-height:168px;
-  background:linear-gradient(120deg,#1a1030 0%,#2a1450 35%,#0f2744 70%,#1a1030 100%);
-  background-size:200% 200%;
-  animation:gradientShift 10s ease infinite;
-  border:1px solid rgba(167,139,250,.25);
-  box-shadow:0 16px 40px rgba(139,92,246,.18)
+  position:relative;overflow:hidden;border-radius:1rem;
+  min-height:150px;
+  background:var(--card);
+  border:1px solid var(--line);
+  box-shadow:var(--shadow)
 }
-.hero-promo::before{
-  content:"";position:absolute;inset:0;
-  background:
-    radial-gradient(500px 180px at 15% 40%, rgba(236,72,153,.25), transparent 60%),
-    radial-gradient(400px 160px at 85% 60%, rgba(34,211,238,.18), transparent 55%);
-  pointer-events:none;z-index:0
-}
+.hero-promo::before{display:none}
 .hero-marquee{
-  position:relative;z-index:1;overflow:hidden;height:54px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-  mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)
+  position:relative;z-index:1;overflow:hidden;height:48px;
+  border-bottom:1px solid var(--line);
+  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)
 }
 .hero-marquee-track{
-  display:flex;gap:10px;width:max-content;
-  animation:heroMarquee 28s linear infinite;
-  padding:8px 0
+  display:flex;gap:8px;width:max-content;
+  animation:heroMarquee 32s linear infinite;
+  padding:6px 0
 }
 .hero-marquee-track img{
-  width:40px;height:40px;object-fit:cover;border-radius:10px;
-  border:1px solid rgba(255,255,255,.18);flex-shrink:0;
-  box-shadow:0 4px 12px rgba(0,0,0,.35)
+  width:36px;height:36px;object-fit:cover;border-radius:8px;
+  border:1px solid var(--line);flex-shrink:0
 }
 @keyframes heroMarquee{
   from{transform:translateX(0)}
   to{transform:translateX(-50%)}
 }
 .hero-slide{
-  display:none;align-items:center;gap:16px;padding:14px 16px 18px;position:relative;z-index:1;min-height:114px
+  display:none;align-items:center;gap:16px;padding:14px 16px 18px;position:relative;z-index:1;min-height:110px
 }
-.hero-slide.on{display:flex;animation:fadeUp .4s ease}
+.hero-slide.on{display:flex;animation:fadeUp .35s ease}
 .hero-rotator{
-  position:relative;width:100px;height:100px;flex-shrink:0;border-radius:1.1rem;overflow:hidden;
-  border:2px solid rgba(255,255,255,.16);box-shadow:0 10px 24px rgba(0,0,0,.4)
+  position:relative;width:92px;height:92px;flex-shrink:0;border-radius:.85rem;overflow:hidden;
+  border:1px solid var(--line)
 }
 .hero-rotator img{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:0;transform:scale(1.08);
-  transition:opacity .55s ease,transform .8s ease
+  opacity:0;transition:opacity .5s ease
 }
-.hero-rotator img.on{opacity:1;transform:scale(1)}
-.hero-kicker{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#f9a8d4;margin-bottom:4px}
-.hero-title{font-size:1.05rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:4px}
-.hero-text{font-size:12px;color:#cbd5e1;line-height:1.35;max-width:42rem}
+.hero-rotator img.on{opacity:1}
+.hero-kicker{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-bottom:4px}
+.hero-title{font-size:1.05rem;font-weight:600;color:var(--tx);line-height:1.25;margin-bottom:4px;letter-spacing:-.02em}
+.hero-text{font-size:12px;color:var(--mut);line-height:1.4;max-width:40rem}
 .hero-wa{
   display:inline-flex;align-items:center;gap:6px;margin-top:8px;
-  background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.45);
-  color:#86efac;font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;
-  text-decoration:none;transition:transform .2s,background .2s
+  background:var(--tx);border:none;
+  color:var(--bg);font-size:12px;font-weight:600;padding:7px 14px;border-radius:999px;
+  text-decoration:none;transition:opacity .2s
 }
-.hero-wa:hover{transform:translateY(-1px);background:rgba(37,211,102,.25)}
+.hero-wa:hover{opacity:.85}
 .hero-dots{position:absolute;right:12px;bottom:10px;display:flex;gap:6px;z-index:2}
 .hero-dots button{
-  width:7px;height:7px;border-radius:999px;border:none;padding:0;cursor:pointer;
-  background:rgba(255,255,255,.3);transition:transform .2s,background .2s
+  width:6px;height:6px;border-radius:999px;border:none;padding:0;cursor:pointer;
+  background:var(--line);transition:background .2s,transform .2s
 }
-.hero-dots button.on{background:#f472b6;transform:scale(1.25)}
+.hero-dots button.on{background:var(--tx);transform:scale(1.2)}
+/* Precios y acentos legibles en minimal */
+.text-cyan-400,.text-cyan-400 *{color:var(--tx)!important}
+.text-pink-400{color:var(--mut)!important}
+.text-amber-400,.text-amber-500{color:var(--mut)!important}
+.text-emerald-400{color:var(--mut)!important}
 @media (max-width:640px){
-  .hero-promo{min-height:150px}
-  .hero-slide{gap:12px;padding:12px 12px 16px}
-  .hero-rotator{width:78px;height:78px}
+  .hero-promo{min-height:140px}
+  .hero-slide{gap:12px;padding:12px}
+  .hero-rotator{width:72px;height:72px}
   .hero-title{font-size:.95rem}
-  .hero-marquee{height:46px}
-  .hero-marquee-track img{width:34px;height:34px}
+  .hero-marquee{height:42px}
+  .hero-marquee-track img{width:32px;height:32px}
 }
 @media (prefers-reduced-motion:reduce){
   .hero-marquee-track{animation:none}
@@ -240,7 +213,7 @@ img{content-visibility:auto}
 <header class="sticky top-0 z-40 border-b site-header" style="border-color:var(--line)">
   <div class="max-w-7xl mx-auto px-4 py-3.5 flex flex-wrap items-center gap-3 justify-between">
     <div>
-      <h1 class="logo text-xl md:text-2xl font-black tracking-[0.04em] select-none">AETHERIA MARKET</h1>
+      <h1 class="logo text-xl md:text-2xl font-semibold tracking-[0.08em] select-none">AETHERIA MARKET</h1>
       <p class="text-[10px] m hidden sm:block mt-0.5" id="tagline">Catálogo verificado · Pago USDT BEP20 · Envío internacional</p>
     </div>
     <input id="q" oninput="handleSearch(this.value)" class="in rounded-full md:flex-1 max-w-xl shadow-sm" placeholder="">
@@ -277,29 +250,42 @@ img{content-visibility:auto}
   </div>
 </div>
 
-<!-- Cómo comprar -->
-<section class="max-w-7xl mx-auto px-4 mt-5 w-full anim-in">
-  <div class="c rounded-2xl p-4 md:p-6">
-    <b class="text-sm section-title" id="howTitle">Cómo comprar en 4 pasos</b>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3 text-xs">
-      <div class="flex gap-2 items-start">
-        <span class="step-n">1</span>
-        <div><b id="how1t">Elige</b><p class="m" id="how1d">Busca o navega el catálogo y añade al carrito.</p></div>
+<!-- Black Friday countdown -->
+<section class="max-w-7xl mx-auto px-4 mt-3 w-full">
+  <div id="bfBanner" class="c rounded-xl px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <b class="text-sm" id="bfTitle">Black Friday</b>
+      <p class="text-xs m mt-0.5" id="bfText">Ofertas anticipadas activas. La cuenta regresiva sigue abajo.</p>
+    </div>
+    <div class="flex items-center gap-2 text-center">
+      <div class="px-2.5 py-1 rounded-lg" style="background:var(--bg);border:1px solid var(--line)">
+        <div class="text-base font-semibold tabular-nums" id="bfDays">0</div>
+        <div class="text-[10px] m" id="bfDaysLbl">días</div>
       </div>
-      <div class="flex gap-2 items-start">
-        <span class="step-n">2</span>
-        <div><b id="how2t">Datos</b><p class="m" id="how2d">Indica nombre, edad y dirección de envío.</p></div>
+      <div class="px-2.5 py-1 rounded-lg" style="background:var(--bg);border:1px solid var(--line)">
+        <div class="text-base font-semibold tabular-nums" id="bfHours">0</div>
+        <div class="text-[10px] m" id="bfHoursLbl">hrs</div>
       </div>
-      <div class="flex gap-2 items-start">
-        <span class="step-n">3</span>
-        <div><b id="how3t">Paga en USDT</b><p class="m" id="how3d">Envía el total en USDT red BNB Smart Chain (BEP20).</p></div>
-      </div>
-      <div class="flex gap-2 items-start">
-        <span class="step-n">4</span>
-        <div><b id="how4t">Confirma</b><p class="m" id="how4d">Escríbenos por Discord o WhatsApp con el comprobante.</p></div>
+      <div class="px-2.5 py-1 rounded-lg" style="background:var(--bg);border:1px solid var(--line)">
+        <div class="text-base font-semibold tabular-nums" id="bfMins">0</div>
+        <div class="text-[10px] m" id="bfMinsLbl">min</div>
       </div>
     </div>
-    <p class="text-[11px] m mt-3" id="howNote">Discord: Aetheriamarket · WhatsApp · USDT BNB Smart Chain (BEP20)</p>
+  </div>
+</section>
+
+<!-- Cómo comprar (compacto) -->
+<section class="max-w-7xl mx-auto px-4 mt-3 w-full anim-in">
+  <div class="c rounded-xl px-4 py-3">
+    <p class="text-xs m" id="howNote">
+      <b class="text-[var(--tx)]" id="howTitle">Cómo comprar:</b>
+      <span id="how1t">elige</span> ·
+      <span id="how2t">datos</span> ·
+      <span id="how3t">paga USDT (BEP20)</span> ·
+      <span id="how4t">confirma por WhatsApp/Discord</span>
+    </p>
+    <span class="hidden" id="how1d"></span><span class="hidden" id="how2d"></span>
+    <span class="hidden" id="how3d"></span><span class="hidden" id="how4d"></span>
   </div>
 </section>
 
@@ -844,11 +830,12 @@ const RULES = [
   [/vestido|elegante|gala|traje|vestir/, 'elegante']
 ];
 
+/* Rangos de precio más competitivos (USDT) */
 const PR = {
-  perfumes: [12, 45], relojes: [15, 55], joyas: [8, 28], gafas: [8, 22],
-  cremas: [9, 25], cosmeticos: [6, 22], ropa: [8, 35], deportiva: [10, 32],
-  zapatos: [18, 55], elegante: [20, 60], abrigos: [22, 55], eventos: [12, 40],
-  interior: [3, 12]
+  perfumes: [9, 32], relojes: [12, 42], joyas: [6, 20], gafas: [6, 16],
+  cremas: [7, 18], cosmeticos: [5, 16], ropa: [6, 26], deportiva: [8, 24],
+  zapatos: [14, 42], elegante: [15, 45], abrigos: [16, 42], eventos: [9, 30],
+  interior: [2.5, 9]
 };
 
 const COL = [
@@ -1018,12 +1005,19 @@ function buildProduct(f, i) {
     .replace(/gym|deporte/gi, 'Sport')
     .replace(/disfraz/gi, 'Costume');
 
-  let [lo, hi] = PR[cat] || [8, 30];
-  if (/inteligente|smart/.test(n)) [lo, hi] = [35, 65];
-  if (cat === 'interior' && /fina|elegan|conjunto|modelo/.test(n)) { lo = 6; hi = 16; }
-  // Precios más realistas (mín. 2.5 USDT)
-  let price = Math.round((lo + (H % 1000) / 1000 * (hi - lo)) * 2) / 2;
-  if (price < 2.5) price = 2.5;
+  let [lo, hi] = PR[cat] || [6, 22];
+  if (/inteligente|smart/.test(n)) [lo, hi] = [28, 48];
+  if (cat === 'interior' && /fina|elegan|conjunto|modelo/.test(n)) { lo = 4.5; hi = 12; }
+  // Precio base competitivo
+  let base = Math.round((lo + (H % 1000) / 1000 * (hi - lo)) * 2) / 2;
+  if (base < 2.5) base = 2.5;
+
+  // Rebajas: ~35% de productos con descuento 12–28%
+  const onSale = (H % 10) <= 3;
+  const discPct = onSale ? (12 + (H % 17)) : 0;
+  const oldPrice = onSale ? base : null;
+  let price = onSale ? Math.round(base * (1 - discPct / 100) * 2) / 2 : base;
+  if (price < 2) price = 2;
 
   const sizes = ['zapatos'].includes(cat)
     ? ['38', '39', '40', '41', '42', '43']
@@ -1034,7 +1028,7 @@ function buildProduct(f, i) {
   const pool = RV[POOL[cat] || 'R'];
   const rev = [0, 1, 2].map(k => pool[(H + k * 3) % pool.length]);
 
-  return { i, f, nameEs, nameEn, cat, sex, price, sizes, rev };
+  return { i, f, nameEs, nameEn, cat, sex, price, oldPrice, discPct, onSale, sizes, rev };
 }
 
 function displayName(p) {
@@ -1055,6 +1049,7 @@ function load() {
   renderDiscordCatalog();
   fetchDiscordCatalogJson();
   renderHeroPromo(true);
+  startBlackFridayCountdown();
   const inv = getDiscordInvite();
   if ($('#dcInviteInput') && inv) $('#dcInviteInput').value = inv;
   // Sombra del header al hacer scroll
@@ -1066,6 +1061,52 @@ function load() {
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+}
+
+/* ========== BLACK FRIDAY COUNTDOWN ========== */
+/** Black Friday 2026 = viernes 27 nov 2026 */
+const BF_DATE = new Date('2026-11-27T00:00:00');
+let bfTimer = null;
+
+function startBlackFridayCountdown() {
+  const tick = () => {
+    const now = new Date();
+    let diff = BF_DATE - now;
+    const title = $('#bfTitle');
+    const text = $('#bfText');
+    const dEl = $('#bfDays'), hEl = $('#bfHours'), mEl = $('#bfMins');
+    const dL = $('#bfDaysLbl'), hL = $('#bfHoursLbl'), mL = $('#bfMinsLbl');
+    if (diff <= 0) {
+      if (title) title.textContent = L === 'es' ? 'Black Friday — HOY' : 'Black Friday — TODAY';
+      if (text) text.textContent = L === 'es'
+        ? '¡Es Black Friday! Aprovecha las rebajas del catálogo.'
+        : 'It\'s Black Friday! Grab the deals in the catalog.';
+      if (dEl) dEl.textContent = '0';
+      if (hEl) hEl.textContent = '0';
+      if (mEl) mEl.textContent = '0';
+      return;
+    }
+    const days = Math.floor(diff / 86400000);
+    diff -= days * 86400000;
+    const hours = Math.floor(diff / 3600000);
+    diff -= hours * 3600000;
+    const mins = Math.floor(diff / 60000);
+    if (dEl) dEl.textContent = String(days);
+    if (hEl) hEl.textContent = String(hours);
+    if (mEl) mEl.textContent = String(mins);
+    if (dL) dL.textContent = L === 'es' ? 'días' : 'days';
+    if (hL) hL.textContent = L === 'es' ? 'hrs' : 'hrs';
+    if (mL) mL.textContent = L === 'es' ? 'min' : 'min';
+    if (title) title.textContent = L === 'es' ? 'Black Friday se acerca' : 'Black Friday is coming';
+    if (text) {
+      text.textContent = L === 'es'
+        ? `Faltan ${days} día${days === 1 ? '' : 's'}. Ya hay artículos en rebaja en el catálogo.`
+        : `${days} day${days === 1 ? '' : 's'} left. Sale items are already in the catalog.`;
+    }
+  };
+  tick();
+  if (bfTimer) clearInterval(bfTimer);
+  bfTimer = setInterval(tick, 30000);
 }
 
 function applyLang() {
@@ -1422,6 +1463,7 @@ function updateContacts() {
   renderDiscordCatalog();
   showPromo(promoIdx);
   renderHeroPromo(true);
+  startBlackFridayCountdown();
 }
 
 /* ========== HERO PROMO DINÁMICO (bajo buscador) ========== */
@@ -1445,40 +1487,45 @@ function heroSlidesData() {
   const waLabel = '+' + wa;
   const pool = heroImagePool();
   const group = (a, b, c) => [pool[a], pool[b], pool[c]];
+  const daysLeft = Math.max(0, Math.ceil((BF_DATE - new Date()) / 86400000));
   if (L === 'es') {
     return [
-      { kicker: 'WhatsApp oficial', title: 'Pide por WhatsApp ahora',
-        text: `Escríbenos al ${waLabel}. Tallas, encargos y confirmación de pago USDT.`,
+      { kicker: 'Black Friday', title: daysLeft > 0 ? `Faltan ${daysLeft} días` : '¡Es hoy!',
+        text: daysLeft > 0
+          ? 'Black Friday 27 nov. Ya hay rebajas anticipadas en el catálogo.'
+          : 'Black Friday activo. Aprovecha las ofertas del catálogo.',
         imgs: group(0, 1, 2), wa: true },
-      { kicker: 'Nuevos productos', title: 'Zapatillas, relojes y más',
-        text: 'Novedades en el catálogo. Pago en USDT BEP20 y envío internacional.',
-        imgs: group(0, 1, 4), wa: true },
-      { kicker: 'Nueva línea', title: 'Línea elegante 2026 en camino',
-        text: 'Vestidos, conjuntos y accesorios premium. Reserva por WhatsApp o Discord.',
-        imgs: group(3, 4, 8), wa: true },
-      { kicker: 'Promoción', title: 'Perfumes y moda con oferta',
-        text: 'Cupón AETHERIA2026 (−2%). Pedidos grandes con descuento extra.',
+      { kicker: 'Rebajas', title: 'Artículos con hasta −28%',
+        text: 'Precios más competitivos y productos en oferta marcados en el catálogo.',
         imgs: group(2, 6, 7), wa: true },
-      { kicker: 'Encargos', title: '¿No está en el catálogo? Lo conseguimos',
-        text: 'Busca en CJ o SheIn y mándanos el link por WhatsApp.',
+      { kicker: 'WhatsApp', title: 'Pide por WhatsApp',
+        text: `Escríbenos al ${waLabel}. Tallas, encargos y pago USDT.`,
+        imgs: group(0, 1, 4), wa: true },
+      { kicker: 'Novedades', title: 'Zapatillas, relojes y moda',
+        text: 'Catálogo actualizado. Pago en USDT BEP20.',
+        imgs: group(3, 4, 8), wa: true },
+      { kicker: 'Encargos', title: '¿No está en el catálogo?',
+        text: 'Mándanos el link de CJ o SheIn por WhatsApp y lo conseguimos.',
         imgs: group(5, 9, 10), wa: true }
     ];
   }
   return [
-    { kicker: 'Official WhatsApp', title: 'Message us on WhatsApp',
-      text: `Chat ${waLabel}. Sizes, custom orders and USDT payment help.`,
+    { kicker: 'Black Friday', title: daysLeft > 0 ? `${daysLeft} days left` : 'It\'s today!',
+      text: daysLeft > 0
+        ? 'Black Friday is Nov 27. Early sale items are already live.'
+        : 'Black Friday is on. Grab the deals in the catalog.',
       imgs: group(0, 1, 2), wa: true },
-    { kicker: 'New arrivals', title: 'Sneakers, watches & more',
-      text: 'Fresh picks in the catalog. Pay with USDT BEP20.',
-      imgs: group(0, 1, 4), wa: true },
-    { kicker: 'New line', title: 'Elegant 2026 line coming soon',
-      text: 'Dresses, sets and premium accessories. Reserve on WhatsApp or Discord.',
-      imgs: group(3, 4, 8), wa: true },
-    { kicker: 'Promo', title: 'Perfumes & fashion deals',
-      text: 'Coupon AETHERIA2026 (−2%). Bigger orders get extra savings.',
+    { kicker: 'Sale', title: 'Items up to −28% off',
+      text: 'More competitive prices and marked sale products in the catalog.',
       imgs: group(2, 6, 7), wa: true },
-    { kicker: 'Custom orders', title: 'Not in the catalog? We’ll get it',
-      text: 'Find it on CJ or SheIn and send the link on WhatsApp.',
+    { kicker: 'WhatsApp', title: 'Order on WhatsApp',
+      text: `Message ${waLabel}. Sizes, custom orders and USDT payment.`,
+      imgs: group(0, 1, 4), wa: true },
+    { kicker: 'New', title: 'Sneakers, watches & fashion',
+      text: 'Updated catalog. Pay with USDT on BEP20.',
+      imgs: group(3, 4, 8), wa: true },
+    { kicker: 'Custom', title: 'Not in the catalog?',
+      text: 'Send a CJ or SheIn link on WhatsApp and we’ll get it.',
       imgs: group(5, 9, 10), wa: true }
   ];
 }
@@ -1663,25 +1710,31 @@ function setCategory(c) {
 
 /* ========== TARJETA DE PRODUCTO ========== */
 function productCard(p, opts = {}) {
-  const hot = opts.hot ? `<span class="badge-hot">${L === 'es' ? 'DESTACADO' : 'FEATURED'}</span>` : '';
+  const saleBadge = p.onSale
+    ? `<span class="badge-hot">−${p.discPct}%</span>`
+    : (opts.hot ? `<span class="badge-hot">${L === 'es' ? 'DESTACADO' : 'FEATURED'}</span>` : '');
   const delay = opts.delay != null ? opts.delay : Math.min((p.i || 0) % 12, 11) * 0.04;
+  const priceHtml = p.onSale
+    ? `<div class="leading-tight">
+        <span class="text-[11px] m line-through">${f2(p.oldPrice)} USDT</span>
+        <b class="block text-[1.15rem] tracking-tight">${f2(p.price)} <span class="text-xs font-semibold">USDT</span></b>
+      </div>`
+    : `<b class="text-[1.15rem] tracking-tight leading-none">${f2(p.price)} <span class="text-xs font-semibold opacity-90">USDT</span></b>`;
   return `
   <article class="c rounded-2xl p-2.5 flex flex-col card-hover anim-card" style="animation-delay:${delay}s">
     <div class="relative overflow-hidden rounded-xl mb-3 cursor-pointer" onclick="openProduct(${p.i})">
       ${pictureTag(p.f, 'w-full h-56 object-cover', `alt="${esc(displayName(p))}" width="400" height="224" loading="lazy" decoding="async" sizes="(max-width:640px) 50vw, 25vw"`)}
-      ${hot}
+      ${saleBadge}
       <div class="wm">AETHERIA</div>
-      <span class="absolute top-2.5 left-2.5 text-[10px] font-bold px-2.5 py-1 rounded-full bg-black/55 backdrop-blur text-white uppercase tracking-wide">${p.cat}</span>
-      <span class="absolute top-2.5 right-2.5 text-[10px] font-bold px-2.5 py-1 rounded-full bg-pink-600/90 text-white">${p.sex}</span>
+      <span class="absolute top-2.5 left-2.5 text-[10px] font-medium px-2.5 py-1 rounded-full bg-black/50 backdrop-blur text-white uppercase tracking-wide">${p.cat}</span>
     </div>
     <div class="px-1 flex flex-col flex-1">
-      <h3 class="font-semibold text-sm leading-snug line-clamp-2 min-h-[2.5rem]">${esc(displayName(p))}</h3>
-      <div class="text-[11px] m my-1.5 space-y-0.5">
-        ${p.rev.slice(0, 2).map(r => `<div class="flex gap-1"><span class="text-amber-400">${'★'.repeat(r[1])}${'☆'.repeat(5 - r[1])}</span> <span class="opacity-90">"${esc(r[0])}"</span></div>`).join('')}
+      <h3 class="font-medium text-sm leading-snug line-clamp-2 min-h-[2.4rem]">${esc(displayName(p))}</h3>
+      <div class="text-[11px] m my-1.5">
+        ${p.rev.slice(0, 1).map(r => `<div class="flex gap-1"><span>${'★'.repeat(r[1])}${'☆'.repeat(5 - r[1])}</span></div>`).join('')}
       </div>
       <div class="flex justify-between items-end mt-auto pt-1">
-        <b class="text-cyan-400 text-[1.2rem] tracking-tight leading-none">${f2(p.price)} <span class="text-xs font-bold opacity-90">USDT</span></b>
-        <button class="m text-xs hover:text-cyan-400" onclick="openProduct(${p.i})" title="Ver">🔍</button>
+        ${priceHtml}
       </div>
       <button class="btn mt-3 w-full" onclick="openProduct(${p.i})">${t('add')}</button>
     </div>
@@ -1691,10 +1744,10 @@ function productCard(p, opts = {}) {
 function renderFeatured() {
   const box = $('#featGrid');
   if (!box || !P.length) return;
-  // Destacados: mezcla de categorías, precio medio-alto, máx 4
+  // Destacados: prioriza rebajas + variedad de categorías
   const picks = [];
   const catsSeen = new Set();
-  const sorted = [...P].sort((a, b) => b.price - a.price);
+  const sorted = [...P].sort((a, b) => (b.onSale - a.onSale) || (b.discPct - a.discPct) || (a.price - b.price));
   for (const p of sorted) {
     if (picks.length >= 4) break;
     if (catsSeen.has(p.cat) && picks.length < 3) continue;
@@ -1928,7 +1981,11 @@ function drawModal() {
     }
   }
   $('#mn').textContent = displayName(p);
-  $('#mp').textContent = f2(p.price) + ' USDT';
+  if (p.onSale && p.oldPrice) {
+    $('#mp').innerHTML = `<span class="text-sm m line-through mr-2">${f2(p.oldPrice)} USDT</span>${f2(p.price)} USDT <span class="text-xs font-semibold">−${p.discPct}%</span>`;
+  } else {
+    $('#mp').textContent = f2(p.price) + ' USDT';
+  }
   $('#ms').innerHTML = p.sizes.map(s =>
     `<button class="opt ${s === sel.s ? 'on' : ''}" onclick="sel.s='${s}';drawModal()">${s}</button>`
   ).join('');
