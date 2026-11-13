@@ -1,3 +1,4 @@
+<!-- Aetheria Market v2.0 — 13 nov 2026 — Nombres y precios fijos en PRICE_TABLE / NAME_TABLE. Contacto único: WhatsApp. -->
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
@@ -55,8 +56,8 @@
   "offers": {
     "@type": "AggregateOffer",
     "priceCurrency": "USD",
-    "lowPrice": "2.50",
-    "highPrice": "55.00",
+    "lowPrice": "2.00",
+    "highPrice": "44.50",
     "offerCount": "93"
   },
   "hasOfferCatalog": {
@@ -74,31 +75,38 @@
     {
       "@type": "Question",
       "name": "¿Puedo pagar con USDT en Aetheria Market?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Sí. Aetheria Market acepta pago en USDT (Tether) exclusivamente en la red BNB Smart Chain (BEP20). Tras pagar, confirma por WhatsApp o Discord con el comprobante."
-      }
+      "acceptedAnswer": {"@type": "Answer", "text": "Sí. Aetheria Market acepta pago en USDT (Tether) exclusivamente en la red BNB Smart Chain (BEP20). Tras pagar, confirma por WhatsApp con el comprobante y tu número de pedido."}
     },
     {
       "@type": "Question",
       "name": "¿Qué red de USDT debo usar?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Solo BNB Smart Chain (BEP20). No se aceptan USDT en TRC20, ERC20 u otras redes para evitar pérdidas de fondos."
-      }
+      "acceptedAnswer": {"@type": "Answer", "text": "Solo BNB Smart Chain (BEP20). No se aceptan USDT en TRC20, ERC20 u otras redes para evitar pérdidas de fondos."}
     },
     {
       "@type": "Question",
       "name": "¿Cómo compro si no tengo USDT?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Puedes adquirir USDT en un exchange o solicitar ayuda por WhatsApp. Luego pagas tu pedido en la tienda en red BEP20 y envías el comprobante."
-      }
+      "acceptedAnswer": {"@type": "Answer", "text": "Puedes adquirir USDT en un exchange o solicitar ayuda por WhatsApp. Luego pagas tu pedido en la tienda en red BEP20 y envías el comprobante."}
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto tarda el envío?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Envío estándar: 10 a 25 días (+3%). Envío exprés: 7 a 14 días (+8%). Los tiempos son estimados según destino."}
+    },
+    {
+      "@type": "Question",
+      "name": "¿Puedo cancelar mi pedido?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Sí, dentro de las 24 horas posteriores al pago, con devolución del 98% (se retiene 2% por gestión). Escríbenos por WhatsApp con tu número de pedido."}
+    },
+    {
+      "@type": "Question",
+      "name": "¿Hacen encargos de Shein o CJ Dropshipping?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Sí. Envíanos el enlace del artículo por WhatsApp. El encargo tiene un cargo de gestión del 35% sobre el precio y tarda de 11 a 15 días. Aetheria Market no está afiliada a Shein ni a CJ Dropshipping."}
     }
   ]
 }
 </script>
 <link rel="preconnect" href="https://cdn.tailwindcss.com">
+<link rel="preconnect" href="https://api.qrserver.com">
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -298,6 +306,19 @@ img{content-visibility:auto}
 @media (prefers-reduced-motion:reduce){
   .hero-marquee-track{animation:none}
 }
+
+/* ===== v2.0: errores de formulario, FAQ y botón flotante WhatsApp ===== */
+.in.err{border-color:#dc2626!important;box-shadow:0 0 0 3px rgba(220,38,38,.15)!important}
+#cartErr{display:none}
+#cartErr.show{display:block}
+.faq-item summary{cursor:pointer;list-style:none}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:'+';float:right;font-weight:700;color:var(--mut)}
+.faq-item[open ] summary::after{content:'−'}
+.faq-item{transition:border-color .2s}
+.wa-float{position:fixed;right:16px;bottom:16px;z-index:30;display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;font-weight:700;font-size:13px;padding:12px 16px;border-radius:999px;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.35);min-height:48px}
+.wa-float:hover{opacity:.92}
+@media (max-width:640px){.wa-float{padding:11px 14px;font-size:12px}}
 </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -318,8 +339,7 @@ img{content-visibility:auto}
       <button id="lb" onclick="toggleLang()" class="c px-3 py-2 rounded-xl text-xs font-semibold" title="Idioma">EN</button>
       <button onclick="toggleDark()" class="c px-3 py-2 rounded-xl text-xs" title="Tema">🌓</button>
       <button onclick="openAdmin()" class="c px-3 py-2 rounded-xl text-xs admin-lock" title="Admin" aria-label="Admin">🔒</button>
-      <button type="button" onclick="contactDiscord()" class="c px-3 py-2 rounded-xl text-xs font-semibold" title="Discord" id="discordHeaderBtn">Discord</button>
-      <a id="waHeaderBtn" href="https://wa.me/528124415641" target="_blank" rel="noopener" class="c px-3 py-2 rounded-xl text-xs font-semibold" title="WhatsApp">WhatsApp</a>
+      <a id="waHeaderBtn" href="https://wa.me/528124415641?text=Hola%2C%20quiero%20ayuda%20con%20mi%20pedido%20en%20Aetheria%20Market" target="_blank" rel="noopener" class="c px-3 py-2 rounded-xl text-xs font-semibold" title="WhatsApp">WhatsApp</a>
       <button id="cartBtn" onclick="toggleCart()" class="btn flex items-center gap-1.5 px-4">🛒 <span id="cc">0</span></button>
     </div>
   </div>
@@ -341,7 +361,7 @@ img{content-visibility:auto}
 <div class="max-w-7xl mx-auto px-4 mt-3">
   <div class="trust">
     <span id="trust1">✓ Pago en USDT (BEP20)</span>
-    <span id="trust2">✓ Confirmación por Discord / WhatsApp</span>
+    <span id="trust2">✓ Confirmación por WhatsApp</span>
     <span id="trust3">✓ Encargos y catálogo propio</span>
     <span id="trust4">✓ Atención personalizada</span>
   </div>
@@ -379,7 +399,7 @@ img{content-visibility:auto}
       <span id="how1t">elige</span> ·
       <span id="how2t">datos</span> ·
       <span id="how3t">paga USDT (BEP20)</span> ·
-      <span id="how4t">confirma por WhatsApp/Discord</span>
+      <span id="how4t">confirma por WhatsApp</span>
     </p>
     <span class="hidden" id="how1d"></span><span class="hidden" id="how2d"></span>
     <span class="hidden" id="how3d"></span><span class="hidden" id="how4d"></span>
@@ -393,7 +413,7 @@ img{content-visibility:auto}
     <p class="text-xs m mt-1.5 leading-relaxed" id="usdtSeoText">
       Aetheria Market es una tienda online pensada para <strong>comprar con USDT</strong> (Tether).
       Aceptamos pagos en la red <strong>BNB Smart Chain (BEP20)</strong>.
-      Elige productos del catálogo, paga el total en USDT y confirma por WhatsApp o Discord.
+      Elige productos del catálogo, paga el total en USDT y confirma por WhatsApp.
       Ideal si buscas una <strong>tienda que acepte USDT</strong> para ropa, relojes, perfumes y encargos.
     </p>
   </div>
@@ -440,9 +460,8 @@ img{content-visibility:auto}
     </div>
     <div class="border-t pt-3" style="border-color:var(--line)">
       <b class="text-xs">🎬 Videos (promo / proveedores / producto)</b>
-      <p class="text-[11px] m my-1">Pega URL de MP4 (GitHub o enlace directo) o YouTube. También puedes subir <code>promo-aetheria.mp4</code> al repo.</p>
+      <p class="text-[11px] m my-1">Pega URL de MP4 (GitHub o enlace directo) o YouTube para el video promo o para un producto. También puedes subir <code>promo-aetheria.mp4</code> al repo.</p>
       <input id="vidPromoUrl" class="in mt-1" placeholder="URL video promo principal (mp4 o YouTube)">
-      <input id="vidExtraUrl" class="in mt-2" placeholder="URL video proveedor / promoción">
       <input id="vidProductKey" class="in mt-2" placeholder="Nombre archivo producto ej: reloj inteligente.jpg">
       <input id="vidProductUrl" class="in mt-2" placeholder="URL video de ese producto">
       <div class="flex flex-wrap gap-2 mt-2">
@@ -451,38 +470,21 @@ img{content-visibility:auto}
       </div>
       <p id="vidAdminMsg" class="text-[11px] m mt-2"></p>
     </div>
-    <div class="border-t pt-3" style="border-color:var(--line)">
-      <b class="text-xs">💬 Discord · servidor y #catalogo-y-ofertas</b>
-      <p class="text-[11px] m my-1">Pega la invitación permanente del servidor. Luego publica productos del canal (imagen, precio, oferta, texto, referencia).</p>
-      <input id="dcInviteInput" class="in mt-1" placeholder="https://discord.gg/tu-invitacion">
-      <button type="button" class="btn mt-2" onclick="saveDiscordInvite()">Guardar invitación Discord</button>
-      <hr class="my-3" style="border-color:var(--line)">
-      <input id="dcName" class="in" placeholder="Nombre del producto">
-      <input id="dcPrice" class="in mt-2" type="number" step="0.01" min="0" placeholder="Precio USDT">
-      <input id="dcOffer" class="in mt-2" placeholder="Oferta (ej. -20% o 12.00)">
-      <input id="dcImg" class="in mt-2" placeholder="URL de imagen o nombre archivo del repo">
-      <input id="dcRef" class="in mt-2" placeholder="Referencia / SKU / link proveedor">
-      <textarea id="dcText" class="in mt-2" rows="3" placeholder="Explicación del producto (como en Discord)"></textarea>
-      <div class="flex flex-wrap gap-2 mt-2">
-        <button type="button" class="btn" onclick="discordProductAdd()">Publicar en la web</button>
-        <button type="button" class="opt" onclick="discordProductClear()">Vaciar lista Discord</button>
-      </div>
-      <p id="dcAdminMsg" class="text-[11px] m mt-2"></p>
-    </div>
   </div>
 </div>
 <!-- id adm conservado vacío por compatibilidad -->
 <div id="adm" class="hidden"></div>
 
 <!-- Encargo SheIn -->
-<section class="max-w-3xl mx-auto px-4 mt-4 w-full">
+<section class="max-w-3xl mx-auto px-4 mt-4 w-full" id="encargos">
   <div class="c rounded-2xl p-4">
     <b class="text-sm" id="encTitle"></b>
     <p class="text-xs m my-2" id="encDesc"></p>
     <div class="flex flex-col sm:flex-row gap-2">
-      <input id="eu" class="in" placeholder="">
+      <input id="eu" class="in" placeholder="" inputmode="url" autocomplete="off">
       <button class="btn whitespace-nowrap" onclick="requestEncargo()" id="encBtn"></button>
     </div>
+    <p id="encMsg" class="text-xs mt-2 hidden"></p>
   </div>
 </section>
 
@@ -521,40 +523,17 @@ img{content-visibility:auto}
   <div class="c rounded-2xl p-4 md:p-5">
     <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
       <h2 class="font-semibold border-l-2 pl-3 section-title" style="border-color:var(--tx)" id="videoTitle">Videos</h2>
-      <span class="text-[11px] m" id="videoHint">Productos · proveedores · ofertas</span>
+      <span class="text-[11px] m" id="videoHint">Mira el catálogo en video</span>
     </div>
-    <div class="grid md:grid-cols-2 gap-4">
+    <div class="max-w-2xl">
       <div>
         <p class="text-xs m mb-2" id="promoVidLabel">Promo oficial Aetheria Market</p>
-        <video id="promoVideo" class="w-full rounded-xl bg-black max-h-72 object-contain" controls playsinline preload="none" data-src="promo-aetheria.mp4">
-          <source id="promoVideoSrc" src="" type="video/mp4">
+        <video id="promoVideo" class="w-full rounded-xl bg-black max-h-72 object-contain" controls playsinline preload="none" poster="perfume1.jpg" data-src="promo-aetheria.mp4">
+          <source id="promoVideoSrc" type="video/mp4">
         </video>
         <button type="button" id="promoPlayBtn" class="btn w-full mt-2 text-sm" onclick="ensurePromoVideo(true)">▶ Ver video promo</button>
       </div>
-      <div>
-        <p class="text-xs m mb-2" id="extraVidLabel">Video de proveedor / promoción</p>
-        <div id="extraVideoBox" class="w-full rounded-xl bg-black/40 min-h-[12rem] flex items-center justify-center overflow-hidden border" style="border-color:var(--line)">
-          <video id="extraVideo" class="w-full max-h-72 object-contain hidden" controls playsinline preload="metadata"></video>
-          <p id="extraVideoEmpty" class="text-xs m p-6 text-center">Pronto: videos de proveedores y lanzamientos.<br>En el panel admin 🔒 puedes pegar enlaces MP4 o YouTube.</p>
-        </div>
-        <div id="videoGallery" class="grid grid-cols-2 gap-2 mt-3"></div>
-      </div>
     </div>
-  </div>
-</section>
-
-<!-- Catálogo desde Discord #catalogo-y-ofertas -->
-<section class="max-w-7xl mx-auto px-4 mt-5 w-full">
-  <div class="c rounded-2xl p-4 md:p-5">
-    <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
-      <div>
-        <h2 class="font-bold border-l-4 border-indigo-400 pl-3 section-title" id="dcTitle">💬 Desde Discord · #catalogo-y-ofertas</h2>
-        <p class="text-xs m mt-1" id="dcDesc">Productos y ofertas publicados en el servidor oficial. Imagen, precio, oferta y referencia.</p>
-      </div>
-      <button type="button" class="btn text-sm" onclick="contactDiscord()" id="dcJoinBtn">Unirse al servidor</button>
-    </div>
-    <div id="discordGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
-    <p id="discordEmpty" class="text-xs m text-center py-6 hidden">Aún no hay publicaciones del canal. El admin puede cargarlas desde el panel 🔒.</p>
   </div>
 </section>
 
@@ -572,10 +551,41 @@ img{content-visibility:auto}
   <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
 </main>
 
+<!-- Preguntas frecuentes -->
+<section class="max-w-5xl mx-auto px-4 mt-6 w-full" id="faq">
+  <h2 class="font-bold border-l-4 pl-3 mb-3" style="border-color:var(--tx)">Preguntas frecuentes</h2>
+  <div class="space-y-2 text-sm">
+    <details class="faq-item c rounded-xl p-4">
+      <summary class="font-semibold">¿Cómo pago con USDT?</summary>
+      <p class="text-xs m mt-2 leading-relaxed">Añade productos al carrito, completa nombre, WhatsApp y dirección, y paga el total exacto en USDT por la red <b>BNB Smart Chain (BEP20)</b>. Copia la wallet o escanea el QR. Después confirma por WhatsApp con el comprobante y tu número de pedido.</p>
+    </details>
+    <details class="faq-item c rounded-xl p-4">
+      <summary class="font-semibold">¿Qué pasa si uso otra red (TRC20, ERC20)?</summary>
+      <p class="text-xs m mt-2 leading-relaxed">No uses otra red: solo aceptamos <b>BEP20</b>. Un pago en otra red puede perderse y no podremos recuperarlo. Si tienes dudas, escríbenos por WhatsApp antes de pagar.</p>
+    </details>
+    <details class="faq-item c rounded-xl p-4">
+      <summary class="font-semibold">¿Cuánto tarda el envío?</summary>
+      <p class="text-xs m mt-2 leading-relaxed">Envío estándar: <b>10 a 25 días</b> (+3%). Envío exprés: <b>7 a 14 días</b> (+8%). Los encargos de Shein / CJ tardan de 11 a 15 días. Los tiempos son estimados según destino.</p>
+    </details>
+    <details class="faq-item c rounded-xl p-4">
+      <summary class="font-semibold">¿Puedo cancelar mi pedido?</summary>
+      <p class="text-xs m mt-2 leading-relaxed">Sí, dentro de las <b>24 horas</b> posteriores al pago, con devolución del 98% (se retiene 2% por gestión). Escríbenos por WhatsApp con tu número de pedido.</p>
+    </details>
+    <details class="faq-item c rounded-xl p-4">
+      <summary class="font-semibold">¿Cómo funcionan los encargos de Shein o CJ?</summary>
+      <p class="text-xs m mt-2 leading-relaxed">Envíanos el enlace del artículo por WhatsApp. Lo compramos y te lo enviamos. El encargo tiene un cargo de gestión del <b>35%</b> sobre el precio. El precio final y la disponibilidad se confirman por WhatsApp antes de pagar. Aetheria Market no está afiliada a Shein ni a CJ Dropshipping.</p>
+    </details>
+    <details class="faq-item c rounded-xl p-4">
+      <summary class="font-semibold">¿Qué incluye el total a pagar?</summary>
+      <p class="text-xs m mt-2 leading-relaxed">El total muestra el importe de los productos + IMPSV (5%) + impuesto de entrega (3% estándar u 8% exprés). Los descuentos por cupón o volumen, si aplican, se restan antes del total. No hay cargos ocultos después.</p>
+    </details>
+  </div>
+</section>
+
 <!-- Publicidad + Quejas -->
-<section class="max-w-5xl mx-auto px-4 pb-6 w-full grid md:grid-cols-2 gap-4">
-  <div class="c rounded-2xl p-4">
-    <b class="text-sm" id="adsTitle"></b>
+<section class="max-w-5xl mx-auto px-4 pb-6 w-full grid md:grid-cols-2 gap-4" id="contacto">
+  <details class="c rounded-2xl p-4">
+    <summary class="cursor-pointer"><b class="text-sm" id="adsTitle"></b></summary>
     <p class="text-xs m my-2" id="adsDesc"></p>
     <div class="flex gap-2">
       <select id="au" class="in sel">
@@ -590,12 +600,14 @@ img{content-visibility:auto}
     <p id="ar" class="text-sm font-bold text-cyan-400 mt-2"></p>
     <p class="text-[11px] m mt-2">Monedero publicidad (aparte del pago de productos):</p>
     <code class="text-[10px] break-all select-all">TAQ5Gnezeftivkok2mrLGWMbvhgJNaRN8f</code>
-  </div>
+    <p class="text-[11px] mt-2" style="color:#dc2626">⚠️ Esta wallet es SOLO para publicidad. Nunca pagues productos aquí: los productos se pagan únicamente con la wallet BEP20 del carrito.</p>
+  </details>
   <div class="c rounded-2xl p-4">
     <b class="text-sm" id="compTitle"></b>
     <textarea id="qj" class="in my-2" rows="3" maxlength="500" placeholder=""></textarea>
     <button class="btn" onclick="sendComplaint()" id="compBtn"></button>
-    <p class="text-xs m mt-3">💬 Discord (Atención Moderador): <b>Aetheriamarket</b></p>
+    <p id="compMsg" class="text-xs mt-3 hidden"></p>
+    <p class="text-xs m mt-3">💬 Atención por <a class="underline" href="https://wa.me/528124415641?text=Hola%2C%20tengo%20una%20pregunta%20sobre%20Aetheria%20Market" target="_blank" rel="noopener">WhatsApp</a> · Respuesta personalizada</p>
   </div>
 </section>
 
@@ -608,21 +620,21 @@ img{content-visibility:auto}
     </div>
     <div>
       <b id="payInfoTitle">💎 Pago seguro</b>
-      <p class="m mt-1" id="payInfoDesc">Solo USDT en BNB Smart Chain (BEP20). Tras pagar, envía el comprobante por Discord o WhatsApp.</p>
+      <p class="m mt-1" id="payInfoDesc">Solo USDT en BNB Smart Chain (BEP20). Tras pagar, envía el comprobante por WhatsApp.</p>
     </div>
     <div>
       <b id="retTitle">↩️ Devoluciones</b>
-      <p class="m mt-1" id="retDesc">Cancelación dentro de las 24 h posteriores al pago (se aplica 2% de gestión). Luego el cliente gestiona reclamaciones con el transportista.</p>
+      <p class="m mt-1" id="retDesc">Cancelación dentro de las 24 h posteriores al pago (2% de gestión). Si hay retraso o problema con el envío, escríbenos por WhatsApp y te acompañamos en la reclamación.</p>
     </div>
   </div>
 
   <details class="c rounded-2xl p-4 text-xs m">
-    <summary class="font-bold cursor-pointer" style="color:var(--tx)">⚖️ Aviso legal, derechos de autor y exención de responsabilidad</summary>
+    <summary class="font-bold cursor-pointer" style="color:var(--tx)">⚖️ Aviso legal</summary>
     <p class="mt-2 text-justify leading-relaxed">
-      Los contenidos, marcas, logos, imágenes y signos distintivos de este sitio están protegidos por la legislación de propiedad intelectual e industrial. Queda prohibida su reproducción o uso no autorizado. Los proveedores y anunciantes responden de forma exclusiva por la licitud y calidad de sus productos. El comprador asume la reclamación ante transportistas o proveedores en caso de demora, daño o extravío. Existe derecho de desistimiento dentro de las 24 horas posteriores al pago, con deducción del 2% por gastos de gestión. Los titulares de Aetheria Market quedan liberados de responsabilidad civil o penal derivada de actos de terceros, uso indebido de la plataforma o conductas que atenten contra la identidad de la página, clientes o trabajadores.
+      Los contenidos, marcas e imágenes de este sitio están protegidos por la legislación de propiedad intelectual. Queda prohibida su reproducción o uso no autorizado. Aetheria Market no está afiliada a Shein ni a CJ Dropshipping; los encargos se gestionan como servicio de compra por cuenta del cliente. Tienes derecho a cancelar dentro de las 24 horas posteriores al pago, con deducción del 2% por gastos de gestión. Si tu pedido se retrasa, llega dañado o se extravía, escríbenos por WhatsApp con tu número de pedido: te acompañamos en la reclamación ante el proveedor o transportista y te mantenemos informado hasta resolverlo.
     </p>
     <p class="mt-2 text-justify leading-relaxed">
-      <b>English:</b> All content is protected by intellectual property law. Suppliers are solely responsible for their products. Buyers must claim delays or losses with carriers/suppliers. Cancellation within 24 hours of payment (2% admin fee). Platform owners are not liable for third-party acts or misuse.
+      <b>English:</b> All content is protected by intellectual property law. Aetheria Market is not affiliated with Shein or CJ Dropshipping. You may cancel within 24 hours of payment (2% admin fee). If your order is delayed, damaged or lost, message us on WhatsApp with your order number and we will help you with the claim.
     </p>
   </details>
   <nav class="text-center text-[11px] m pb-1 flex flex-wrap justify-center gap-3" aria-label="Enlaces del sitio">
@@ -631,9 +643,10 @@ img{content-visibility:auto}
     <a href="#heroPromo" class="underline">Promociones</a>
     <a href="#bfBanner" class="underline">Black Friday</a>
     <a href="https://wa.me/528124415641" target="_blank" rel="noopener" class="underline">WhatsApp</a>
-    <button type="button" onclick="contactDiscord()" class="underline" style="background:none;border:none;color:inherit;cursor:pointer;font:inherit">Discord</button>
+    <a href="#faq" class="underline">Preguntas frecuentes</a>
+    <a href="#encargos" class="underline">Encargos</a>
   </nav>
-  <p class="text-center text-[11px] m pb-2">© 2026 Aetheria Market · <span itemprop="name">Aetheria Market</span> · Pago USDT BEP20</p>
+  <p class="text-center text-[11px] m pb-2">© 2026 Aetheria Market · <span itemprop="name">Aetheria Market</span> · Pago USDT BEP20 · <span id="siteVersion"></span></p>
 </footer>
 
 <!-- Overlay carrito -->
@@ -662,16 +675,16 @@ img{content-visibility:auto}
     <!-- Paso 2: datos de envío -->
     <div class="p-3 border-b space-y-2" style="border-color:var(--line)">
       <b class="text-xs" id="cartSecData">Datos de envío</b>
-      <input id="nm" class="in" placeholder="Nombre completo">
-      <div class="grid grid-cols-2 gap-2">
-        <input id="ag" type="number" min="1" class="in" placeholder="Edad">
-        <select id="sh" class="in sel" onchange="ship=this.value;drawCart()"></select>
-      </div>
-      <textarea id="ad" rows="2" class="in" placeholder="Dirección exacta de envío"></textarea>
+      <p id="cartErr" class="text-[11px] p-2 rounded-lg" style="background:rgba(220,38,38,.1);color:#dc2626"></p>
+      <input id="nm" class="in" placeholder="Nombre completo" autocomplete="name" required>
+      <input id="ph" class="in" type="tel" inputmode="tel" placeholder="WhatsApp / teléfono" autocomplete="tel" required>
+      <select id="sh" class="in sel" onchange="ship=this.value;drawCart()"></select>
+      <textarea id="ad" rows="2" class="in" placeholder="Dirección exacta de envío" autocomplete="street-address" required></textarea>
       <div class="flex gap-2">
-        <input id="cp" class="in" placeholder="Cupón">
+        <input id="cp" class="in" placeholder="Cupón" autocomplete="off">
         <button class="btn shrink-0" onclick="applyCoupon()" id="applyBtn">Aplicar</button>
       </div>
+      <p id="cpMsg" class="text-[11px] hidden"></p>
     </div>
 
     <!-- Paso 3: resumen y pago -->
@@ -680,7 +693,7 @@ img{content-visibility:auto}
       <div id="sm" class="text-xs space-y-1 p-3 rounded-xl" style="background:var(--bg)"></div>
       <div id="wallet" class="text-center text-[11px] p-3 rounded-xl" style="background:var(--bg)">
         <b class="text-cyan-400" id="walTitle"></b>
-        <p class="m my-1" id="paySteps" style="font-size:11px;line-height:1.4">1) Copia la wallet · 2) Envía USDT en BEP20 · 3) Confirma por WhatsApp o Discord</p>
+        <p class="m my-1" id="paySteps" style="font-size:11px;line-height:1.4">1) Completa tus datos · 2) Copia la wallet y envía USDT en BEP20 · 3) Confirma por WhatsApp con el comprobante</p>
         <p class="text-cyan-400 font-extrabold text-base my-1" id="payAmountHint"></p>
         <code id="walletAddr" class="block break-all select-all my-1.5 text-[10px] p-2 rounded-lg" style="background:var(--card);border:1px dashed var(--line)">0x2441d8bbbd8e7b93A6FE371D48515c7978201C13</code>
         <div class="mt-2 flex flex-col items-center">
@@ -700,10 +713,7 @@ img{content-visibility:auto}
       <button type="button" class="opt w-full touch-btn" onclick="copyWallet()" id="copyBtn">Copiar dirección</button>
       <button class="opt w-full touch-btn" onclick="generateReceipt()" id="payBtn">Ver recibo</button>
     </div>
-    <div class="grid grid-cols-2 gap-2">
-      <button type="button" class="opt w-full touch-btn" onclick="contactDiscord()" id="discordPayBtn">Discord</button>
-      <a id="waPayLink" href="https://wa.me/528124415641" target="_blank" rel="noopener" class="opt w-full touch-btn text-center">WhatsApp</a>
-    </div>
+    <a id="waPayLink" href="https://wa.me/528124415641" target="_blank" rel="noopener" class="opt w-full touch-btn text-center">Confirmar pedido por WhatsApp</a>
   </div>
 </aside>
 
@@ -721,6 +731,7 @@ img{content-visibility:auto}
       <div>
         <h3 id="mn" class="font-bold text-lg"></h3>
         <p id="mp" class="text-cyan-400 font-extrabold text-xl"></p>
+        <p id="mdesc" class="text-xs m mt-1 leading-relaxed"></p>
         <p class="text-[11px] p-2 my-2 rounded-lg bg-amber-500/10 text-amber-500" id="cancelWarn"></p>
         <b class="text-xs" id="sizeLabel"></b>
         <div id="ms" class="flex flex-wrap gap-2 my-2"></div>
@@ -753,6 +764,7 @@ img{content-visibility:auto}
   <div id="bm" class="mb-2 font-medium"></div>
   <div id="bq" class="flex flex-col gap-1"></div>
 </div>
+<a id="waFloat" class="wa-float" href="https://wa.me/528124415641?text=Hola%2C%20quiero%20hacer%20un%20pedido%20en%20Aetheria%20Market" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">💬 WhatsApp</a>
 
 <script>
 /* ========== CONFIG ========== */
@@ -761,11 +773,8 @@ const CFG = {
   key: 'Aristi2026',
   coupon: 'AETHERIA2026',
   whatsapp: '528124415641',
-  discord: 'Aetheriamarket',
-  /* Servidor oficial Discord — pega tu invitación permanente (https://discord.gg/xxxxx) */
-  discordServer: 'Servidor de Aetheria Market',
-  discordInvite: '',
-  discordChannel: '#catalogo-y-ofertas',
+  /* Contacto único: WhatsApp. */
+  version: '2.0 · 13 nov 2026',
   /* Pago de productos: BNB Smart Chain (BEP20) */
   wallet: '0x2441d8bbbd8e7b93A6FE371D48515c7978201C13',
   network: 'BNB Smart Chain (BEP20)',
@@ -802,17 +811,232 @@ const IMAGES = [
   'zapatilla.jpg','zapatillas GJ2.jpg','zapatillas1.jpg','zapato de vestir4.jpg','zapato.jpg'
 ];
 
+/* ========== DATOS FIJOS DEL CATÁLOGO (v2.0) ==========
+   Antes los nombres y precios se generaban desde el nombre del archivo,
+   así que cualquier cambio de código podía cambiar precios. Ahora cada
+   producto tiene nombre y precio FIJOS aquí. Para cambiar un precio o un
+   nombre, edita solo estas dos tablas. NO cambies los nombres de archivo. */
+const PRICE_TABLE = {
+  "topa interior mujer4.jpg": [2.0, 2.5],
+  "ropa interior moderna.jpg": [3.0, null],
+  "conjunto interior femenino.jpg": [4.5, null],
+  "cosméticos ojos.jpg": [5.5, null],
+  "ropa interior estampados.jpg": [6.0, null],
+  "ropa interior hombre clasico.jpg": [6.0, null],
+  "conjunto de ropa de hombre.jpg": [6.5, null],
+  "ropa interior de hombre.jpg": [6.5, null],
+  "blusa de chica.jpg": [7.0, null],
+  "ropa interior.jpg": [7.0, null],
+  "mono moderno.jpg": [7.5, null],
+  "playera oscura.jpg": [7.5, null],
+  "ropa interior modelo estampados.jpg": [8.0, 10.5],
+  "conjunto de ropa interior.jpg": [8.5, null],
+  "playera chica gym3.jpg": [8.5, 10.0],
+  "ropa.deportiva chica.jpg": [8.5, null],
+  "jeans claro.jpg": [9.0, null],
+  "monos de hombre.jpg": [9.0, null],
+  "playera con michi1.jpg": [9.0, 12.0],
+  "ropa interior mujer elegante.jpg": [9.0, null],
+  "cosméticos bases.jpg": [9.5, 12.5],
+  "jeans ancho claro1.jpg": [9.5, null],
+  "playera.jpg": [9.5, null],
+  "licras de gym mujer.jpg": [10.0, null],
+  "relojes 3.jpg": [10.0, 14.0],
+  "cadena.jpg": [10.5, null],
+  "conjunto deportivo hombre.jpg": [10.5, null],
+  "playera mora3.jpg": [10.5, 13.5],
+  "ropa.deportiva.jpg": [10.5, null],
+  "cosméticos delineador.jpg": [11.0, null],
+  "ropa interior mujer fina.jpg": [11.0, null],
+  "ropa para gym mujer.jpg": [11.0, 14.5],
+  "sudadera car0.jpg": [11.0, null],
+  "anillos7.jpg": [11.5, 13.5],
+  "set de cosméticos.jpg": [11.5, 13.5],
+  "conjunto de ropa de hombre 2.jpg": [12.0, 17.0],
+  "cadena fina .jpg": [12.5, null],
+  "perfume.jpg": [13.0, null],
+  "playera oscura 1.jpg": [14.0, 17.0],
+  "prendas 1.jpg": [14.0, 19.0],
+  "shorts para hombre.jpg": [14.0, null],
+  "blusa.jpg": [14.5, 19.0],
+  "conjunto de ropa de mujer.jpg": [14.5, null],
+  "sudadera retro6.jpg": [14.5, 19.0],
+  "mono deportivo unisex.jpg": [15.0, null],
+  "perfume arabe.jpg": [15.5, 20.0],
+  "perfume 12.jpg": [16.0, 19.5],
+  "perfume 13.jpg": [16.0, 19.5],
+  "perfume 10.jpg": [16.5, 19.5],
+  "perfume 11.jpg": [16.5, 19.5],
+  "monos de chica.jpg": [17.0, 21.0],
+  "vestido elegante 2.jpg": [17.0, null],
+  "vestido elegante 3.jpg": [17.0, null],
+  "playera retro.jpg": [17.5, null],
+  "reloj elegante.jpg": [18.5, 22.0],
+  "ropa de mujer.jpg": [18.5, 23.0],
+  "disfraz.jpg": [19.0, null],
+  "perfume 76.jpg": [19.0, 24.0],
+  "perfume 14.jpg": [19.5, null],
+  "perfume 15.jpg": [19.5, null],
+  "perfume 16.jpg": [19.5, null],
+  "shorts hombre1.jpg": [20.0, null],
+  "abrigos.jpg": [20.5, 26.0],
+  "reloj estilo clásico.jpg": [21.0, null],
+  "sudadera festiva.jpg": [21.0, 25.0],
+  "tenis de mujer.jpg": [21.0, null],
+  "perfume clásico.jpg": [21.5, 28.0],
+  "playera de gym1.jpg": [21.5, null],
+  "playera3.jpg": [21.5, null],
+  "playeras deportivas femenina.jpg": [21.5, null],
+  "abrigo elegante chica.jpg": [22.0, null],
+  "pantalón ancho de mujer.jpg": [22.5, 26.0],
+  "jeans clásico.jpg": [23.0, null],
+  "prendas9.jpg": [23.5, null],
+  "zapato.jpg": [23.5, 32.0],
+  "jeans corte moderno3.jpg": [25.0, null],
+  "perfume 2.jpg": [25.5, null],
+  "relojes4.jpg": [25.5, null],
+  "zapato de vestir4.jpg": [25.5, null],
+  "perfume 9.jpg": [26.0, null],
+  "tenis.jpg": [27.0, null],
+  "zapatilla.jpg": [30.0, 38.0],
+  "relojes varios.jpg": [30.5, 36.0],
+  "zapatillas1.jpg": [30.5, 36.5],
+  "perfume1.jpg": [31.0, null],
+  "perfume7.jpg": [31.0, null],
+  "perfume8.jpg": [31.0, null],
+  "conjunto de ropa elegante hombre.jpg": [33.0, 39.0],
+  "vestido elegante 11.jpg": [33.5, null],
+  "tenis moderno.jpg": [34.0, 38.5],
+  "reloj inteligente.jpg": [39.0, null],
+  "zapatillas GJ2.jpg": [41.0, null],
+  "ropa de hombre elegante.jpg": [44.5, null],
+};
+const NAME_TABLE = {
+  "topa interior mujer4.jpg": ["Top de ropa interior de mujer", "Women's underwear top"],
+  "ropa interior moderna.jpg": ["Ropa interior moderna", "Modern underwear"],
+  "conjunto interior femenino.jpg": ["Conjunto interior femenino", "Women's underwear set"],
+  "cosméticos ojos.jpg": ["Cosméticos para ojos", "Eye cosmetics"],
+  "ropa interior estampados.jpg": ["Ropa interior estampada", "Printed underwear"],
+  "ropa interior hombre clasico.jpg": ["Ropa interior clásica de hombre", "Classic men's underwear"],
+  "conjunto de ropa de hombre.jpg": ["Conjunto de ropa de hombre", "Men's clothing set"],
+  "ropa interior de hombre.jpg": ["Ropa interior de hombre", "Men's underwear"],
+  "blusa de chica.jpg": ["Blusa de mujer", "Women's blouse"],
+  "ropa interior.jpg": ["Ropa interior", "Underwear"],
+  "mono moderno.jpg": ["Mono moderno", "Modern jumpsuit"],
+  "playera oscura.jpg": ["Playera oscura", "Dark T-shirt"],
+  "ropa interior modelo estampados.jpg": ["Ropa interior · Modelo estampado", "Underwear · Printed model"],
+  "conjunto de ropa interior.jpg": ["Conjunto de ropa interior", "Underwear set"],
+  "playera chica gym3.jpg": ["Playera de gimnasio de mujer", "Women's gym T-shirt"],
+  "ropa.deportiva chica.jpg": ["Ropa deportiva de mujer", "Women's sportswear"],
+  "jeans claro.jpg": ["Jeans claro", "Light jeans"],
+  "monos de hombre.jpg": ["Mono de hombre", "Men's jumpsuit"],
+  "playera con michi1.jpg": ["Playera con gatito", "Kitten T-shirt"],
+  "ropa interior mujer elegante.jpg": ["Ropa interior elegante de mujer", "Elegant women's underwear"],
+  "cosméticos bases.jpg": ["Base de maquillaje", "Makeup foundation"],
+  "jeans ancho claro1.jpg": ["Jeans ancho claro", "Light wide-leg jeans"],
+  "playera.jpg": ["Playera clásica", "Classic T-shirt"],
+  "licras de gym mujer.jpg": ["Leggings de gimnasio de mujer", "Women's gym leggings"],
+  "relojes 3.jpg": ["Reloj · Modelo 3", "Watch · Model 3"],
+  "cadena.jpg": ["Cadena", "Chain necklace"],
+  "conjunto deportivo hombre.jpg": ["Conjunto deportivo de hombre", "Men's sportswear set"],
+  "playera mora3.jpg": ["Playera morada", "Purple T-shirt"],
+  "ropa.deportiva.jpg": ["Ropa deportiva", "Sportswear"],
+  "cosméticos delineador.jpg": ["Delineador de ojos", "Eyeliner"],
+  "ropa interior mujer fina.jpg": ["Ropa interior fina de mujer", "Fine women's underwear"],
+  "ropa para gym mujer.jpg": ["Ropa de gimnasio de mujer", "Women's gym wear"],
+  "sudadera car0.jpg": ["Sudadera casual", "Casual hoodie"],
+  "anillos7.jpg": ["Set de anillos", "Ring set"],
+  "set de cosméticos.jpg": ["Set de cosméticos", "Cosmetics set"],
+  "conjunto de ropa de hombre 2.jpg": ["Conjunto de ropa de hombre · Modelo 2", "Men's clothing set · Model 2"],
+  "cadena fina .jpg": ["Cadena fina", "Delicate chain"],
+  "perfume.jpg": ["Perfume", "Perfume"],
+  "playera oscura 1.jpg": ["Playera oscura · Modelo 2", "Dark T-shirt · Model 2"],
+  "prendas 1.jpg": ["Conjunto de prendas · Modelo 1", "Garment set · Model 1"],
+  "shorts para hombre.jpg": ["Shorts de hombre · Modelo 2", "Men's shorts · Model 2"],
+  "blusa.jpg": ["Blusa clásica", "Classic blouse"],
+  "conjunto de ropa de mujer.jpg": ["Conjunto de ropa de mujer", "Women's clothing set"],
+  "sudadera retro6.jpg": ["Sudadera retro", "Retro hoodie"],
+  "mono deportivo unisex.jpg": ["Mono deportivo unisex", "Unisex sport jumpsuit"],
+  "perfume arabe.jpg": ["Perfume árabe", "Arabian perfume"],
+  "perfume 12.jpg": ["Perfume · Modelo 12", "Perfume · Model 12"],
+  "perfume 13.jpg": ["Perfume · Modelo 13", "Perfume · Model 13"],
+  "perfume 10.jpg": ["Perfume · Modelo 10", "Perfume · Model 10"],
+  "perfume 11.jpg": ["Perfume · Modelo 11", "Perfume · Model 11"],
+  "monos de chica.jpg": ["Mono de mujer", "Women's jumpsuit"],
+  "vestido elegante 2.jpg": ["Vestido elegante · Modelo 2", "Elegant dress · Model 2"],
+  "vestido elegante 3.jpg": ["Vestido elegante · Modelo 3", "Elegant dress · Model 3"],
+  "playera retro.jpg": ["Playera retro", "Retro T-shirt"],
+  "reloj elegante.jpg": ["Reloj elegante", "Elegant watch"],
+  "ropa de mujer.jpg": ["Ropa de mujer", "Women's outfit"],
+  "disfraz.jpg": ["Disfraz", "Costume"],
+  "perfume 76.jpg": ["Perfume · Modelo 76", "Perfume · Model 76"],
+  "perfume 14.jpg": ["Perfume · Modelo 14", "Perfume · Model 14"],
+  "perfume 15.jpg": ["Perfume · Modelo 15", "Perfume · Model 15"],
+  "perfume 16.jpg": ["Perfume · Modelo 16", "Perfume · Model 16"],
+  "shorts hombre1.jpg": ["Shorts de hombre", "Men's shorts"],
+  "abrigos.jpg": ["Abrigo clásico", "Classic coat"],
+  "reloj estilo clásico.jpg": ["Reloj de estilo clásico", "Classic-style watch"],
+  "sudadera festiva.jpg": ["Sudadera festiva", "Festive hoodie"],
+  "tenis de mujer.jpg": ["Tenis de mujer", "Women's sneakers"],
+  "perfume clásico.jpg": ["Perfume clásico", "Classic perfume"],
+  "playera de gym1.jpg": ["Playera de gimnasio", "Gym T-shirt"],
+  "playera3.jpg": ["Playera · Modelo 3", "T-shirt · Model 3"],
+  "playeras deportivas femenina.jpg": ["Playera deportiva de mujer", "Women's sport T-shirt"],
+  "abrigo elegante chica.jpg": ["Abrigo elegante de mujer", "Elegant women's coat"],
+  "pantalón ancho de mujer.jpg": ["Pantalón ancho de mujer", "Women's wide-leg pants"],
+  "jeans clásico.jpg": ["Jeans clásico", "Classic jeans"],
+  "prendas9.jpg": ["Conjunto de prendas · Modelo 9", "Garment set · Model 9"],
+  "zapato.jpg": ["Zapato clásico", "Classic shoe"],
+  "jeans corte moderno3.jpg": ["Jeans de corte moderno", "Modern-cut jeans"],
+  "perfume 2.jpg": ["Perfume · Modelo 2", "Perfume · Model 2"],
+  "relojes4.jpg": ["Reloj · Modelo 4", "Watch · Model 4"],
+  "zapato de vestir4.jpg": ["Zapato de vestir", "Dress shoe"],
+  "perfume 9.jpg": ["Perfume · Modelo 9", "Perfume · Model 9"],
+  "tenis.jpg": ["Tenis clásicos", "Classic sneakers"],
+  "zapatilla.jpg": ["Zapatilla deportiva", "Sport sneaker"],
+  "relojes varios.jpg": ["Reloj · Edición colección", "Watch · Collection edition"],
+  "zapatillas1.jpg": ["Zapatillas · Modelo 1", "Sneakers · Model 1"],
+  "perfume1.jpg": ["Perfume · Modelo 1", "Perfume · Model 1"],
+  "perfume7.jpg": ["Perfume · Modelo 7", "Perfume · Model 7"],
+  "perfume8.jpg": ["Perfume · Modelo 8", "Perfume · Model 8"],
+  "conjunto de ropa elegante hombre.jpg": ["Conjunto elegante de hombre", "Elegant men's set"],
+  "vestido elegante 11.jpg": ["Vestido elegante · Modelo 11", "Elegant dress · Model 11"],
+  "tenis moderno.jpg": ["Tenis modernos", "Modern sneakers"],
+  "reloj inteligente.jpg": ["Reloj inteligente", "Smartwatch"],
+  "zapatillas GJ2.jpg": ["Zapatillas · Modelo GJ2", "Sneakers · Model GJ2"],
+  "ropa de hombre elegante.jpg": ["Ropa elegante de hombre", "Elegant men's outfit"],
+};
+/* Orden de destacados: lo primero que ve el cliente (mayor margen / mejor venta) */
+const FEATURED = ['reloj inteligente.jpg','zapatillas GJ2.jpg','ropa de hombre elegante.jpg','vestido elegante 11.jpg','tenis moderno.jpg','perfume clásico.jpg','reloj estilo clásico.jpg','conjunto de ropa elegante hombre.jpg','perfume1.jpg','relojes varios.jpg','zapatillas1.jpg','abrigo elegante chica.jpg'];
+/* Descripción honesta por categoría (sin inventar materiales ni medidas) */
+const CAT_DESC = {
+  perfumes: ['Fragancia del catálogo Aetheria Market. Revisa el modelo en la foto y confirma tu pedido por WhatsApp.', 'Fragrance from the Aetheria Market catalog. Check the model in the photo and confirm your order on WhatsApp.'],
+  relojes: ['Reloj del catálogo Aetheria Market. Revisa el modelo en la foto y confirma tu pedido por WhatsApp.', 'Watch from the Aetheria Market catalog. Check the model in the photo and confirm your order on WhatsApp.'],
+  joyas: ['Accesorio del catálogo Aetheria Market. Revisa el modelo en la foto y confirma tu pedido por WhatsApp.', 'Accessory from the Aetheria Market catalog. Check the model in the photo and confirm your order on WhatsApp.'],
+  cosmeticos: ['Producto de cosmética del catálogo Aetheria Market. Confirma tu pedido por WhatsApp.', 'Cosmetics product from the Aetheria Market catalog. Confirm your order on WhatsApp.'],
+  cremas: ['Producto de cuidado personal del catálogo Aetheria Market. Confirma tu pedido por WhatsApp.', 'Personal care product from the Aetheria Market catalog. Confirm your order on WhatsApp.'],
+  interior: ['Prenda de ropa interior. Elige tu talla y confirma tu pedido por WhatsApp.', 'Underwear item. Choose your size and confirm your order on WhatsApp.'],
+  ropa: ['Prenda de ropa del catálogo Aetheria Market. Elige tu talla y confirma tu pedido por WhatsApp.', 'Clothing item from the Aetheria Market catalog. Choose your size and confirm your order on WhatsApp.'],
+  deportiva: ['Prenda deportiva del catálogo Aetheria Market. Elige tu talla y confirma tu pedido por WhatsApp.', 'Sportswear item from the Aetheria Market catalog. Choose your size and confirm your order on WhatsApp.'],
+  zapatos: ['Calzado del catálogo Aetheria Market. Elige tu número y confirma tu pedido por WhatsApp.', 'Footwear from the Aetheria Market catalog. Choose your size and confirm your order on WhatsApp.'],
+  elegante: ['Prenda elegante del catálogo Aetheria Market. Elige tu talla y confirma tu pedido por WhatsApp.', 'Elegant item from the Aetheria Market catalog. Choose your size and confirm your order on WhatsApp.'],
+  abrigos: ['Abrigo del catálogo Aetheria Market. Elige tu talla y confirma tu pedido por WhatsApp.', 'Coat from the Aetheria Market catalog. Choose your size and confirm your order on WhatsApp.'],
+  eventos: ['Artículo de temporada del catálogo Aetheria Market. Confirma tu pedido por WhatsApp.', 'Seasonal item from the Aetheria Market catalog. Confirm your order on WhatsApp.'],
+  gafas: ['Accesorio del catálogo Aetheria Market. Confirma tu pedido por WhatsApp.', 'Accessory from the Aetheria Market catalog. Confirm your order on WhatsApp.']
+};
+
+
 /* ========== TRADUCCIONES ========== */
 const T = {
   es: {
     search: 'Buscar perfume, reloj, ropa, cosméticos...',
     allsex: 'Todos los sexos', mujer: 'Mujer', hombre: 'Hombre', unisex: 'Unisex',
     allsz: 'Todas las tallas',
-    asc: 'Más baratos primero', desc: 'Más costosos primero',
+    feat: 'Destacados', asc: 'Más baratos primero', desc: 'Más costosos primero',
     items: 'productos', catalog: 'Catálogo',
     add: 'Añadir al carrito', upd: 'Actualizar artículo',
     size: 'Talla / Medida', color: 'Color / Estilo',
-    reviews: '⭐ Valoraciones', post: 'Publicar comentario',
+    reviews: '⭐ Valoraciones de clientes', post: 'Publicar comentario',
     cmph: 'Tu opinión (máx. 300 caracteres)...',
     bad: 'Comentario eliminado automáticamente por contener palabras prohibidas.',
     cartT: '🛒 Carrito de compras',
@@ -825,12 +1049,12 @@ const T = {
     lineTotal: 'Subtotal',
     emptyHint: 'Tu carrito está vacío. Añade productos del catálogo.',
 
-    name: 'Nombre completo', age: 'Edad', addr: 'Dirección exacta de envío',
+    name: 'Nombre completo', phone: 'WhatsApp / teléfono', addr: 'Dirección exacta de envío',
     normal: 'Envío estándar (10-25 días) +3%', express: 'Envío express (7-14 días) +8%',
     coupon: 'Código de cupón', apply: 'Aplicar',
     pay: 'Confirmar pedido y ver pago',
     empty: 'Tu carrito está vacío.',
-    need: 'Por favor completa nombre, edad y dirección.',
+    need: 'Por favor completa nombre, WhatsApp y dirección.',
     cancel: '⚠️ Cancelación: Puedes cancelar dentro de las 24h posteriores al pago; se devuelve el 98% (se retiene 2% de gestión).',
     wal: 'Billetera USDT · BNB Smart Chain (BEP20)',
     copy: 'Copiar dirección', copied: '¡Copiado!',
@@ -841,36 +1065,36 @@ const T = {
     encph: 'Enlace del artículo de SheIn...',
     encb: 'Solicitar encargo',
     ads: '📢 Publicidad para nuevos proveedores',
-    adsd: 'Tarifas: 0.25 USDT/min · 8 USDT/hora · 40 USDT/día · 200 USDT/semana. −1.5% si supera 5 días. Envíanos foto o video corto por Discord y lo publicamos en el banner.',
+    adsd: 'Tarifas: 0.25 USDT/min · 8 USDT/hora · 40 USDT/día · 200 USDT/semana. −1.5% si supera 5 días. Envíanos foto o video corto por WhatsApp y lo publicamos en el banner.',
     comp: '📬 Quejas y sugerencias',
     compph: 'Cuéntanos cómo mejorar la tienda...',
     send: 'Enviar', thanks: '¡Gracias! Tu mensaje fue registrado.',
     hi: '¡Hola! Soy el Bot de Aetheria Market. ¿En qué puedo ayudarte?',
     noenc: 'Pega un enlace válido de SheIn.',
-    encok: 'Enlace copiado. Envíalo a Discord (Aetheriamarket) para procesarlo.',
+    encok: 'Enlace copiado. Envíalo por WhatsApp para procesarlo.',
     encargoTitle: 'Resultados de Encargo para',
     wholesale: 'Proveedor Mayorista · Encargo Directo',
     buyEncargo: 'Comprar por Encargo',
     howTitle: 'Cómo comprar en 4 pasos',
     how1t: 'Elige', how1d: 'Busca o navega el catálogo y añade al carrito.',
-    how2t: 'Datos', how2d: 'Indica nombre, edad y dirección de envío.',
+    how2t: 'Datos', how2d: 'Indica nombre, WhatsApp y dirección de envío.',
     how3t: 'Paga en USDT', how3d: 'Envía el total en USDT red BNB Smart Chain (BEP20).',
-    how4t: 'Confirma', how4d: 'Escríbenos por Discord o WhatsApp con el comprobante.',
-    howNote: 'Discord: Aetheriamarket · WhatsApp disponible · Pago USDT BEP20',
+    how4t: 'Confirma', how4d: 'Escríbenos por WhatsApp con el comprobante.',
+    howNote: 'Cómo comprar: elige · datos · paga USDT (BEP20) · confirma por WhatsApp',
     shipTitle: '📦 Envíos', shipDesc: 'Envío estándar y express. Tiempos estimados: 10–25 días (estándar) / 7–14 días (express), según destino.',
-    payInfoTitle: '💎 Pago seguro', payInfoDesc: 'Solo USDT en BNB Smart Chain (BEP20). Tras pagar, envía el comprobante por Discord o WhatsApp.',
-    retTitle: '↩️ Devoluciones', retDesc: 'Cancelación dentro de las 24 h posteriores al pago (2% de gestión). Luego el cliente gestiona reclamaciones con el transportista.',
-    paySteps: '1) Copia la wallet · 2) Envía el total exacto en USDT (BEP20 / BNB) · 3) Confirma por Discord o WhatsApp'
+    payInfoTitle: '💎 Pago seguro', payInfoDesc: 'Solo USDT en BNB Smart Chain (BEP20). Tras pagar, envía el comprobante por WhatsApp.',
+    retTitle: '↩️ Devoluciones', retDesc: 'Cancelación dentro de las 24 h posteriores al pago (2% de gestión). Si hay retraso o problema con el envío, escríbenos por WhatsApp y te acompañamos en la reclamación.',
+    paySteps: '1) Completa tus datos · 2) Copia la wallet y envía el total exacto en USDT (BEP20 / BNB) · 3) Confirma por WhatsApp'
   },
   en: {
     search: 'Search perfume, watch, clothes, cosmetics...',
     allsex: 'All genders', mujer: 'Women', hombre: 'Men', unisex: 'Unisex',
     allsz: 'All sizes',
-    asc: 'Cheapest first', desc: 'Most expensive first',
+    feat: 'Featured', asc: 'Cheapest first', desc: 'Most expensive first',
     items: 'products', catalog: 'Catalog',
     add: 'Add to cart', upd: 'Update item',
     size: 'Size', color: 'Color / Style',
-    reviews: '⭐ Reviews', post: 'Post comment',
+    reviews: '⭐ Customer reviews', post: 'Post comment',
     cmph: 'Your opinion (max. 300 characters)...',
     bad: 'Comment removed automatically for using prohibited language.',
     cartT: '🛒 Shopping cart',
@@ -882,12 +1106,12 @@ const T = {
     remove: 'Remove',
     lineTotal: 'Line total',
     emptyHint: 'Your cart is empty. Add products from the catalog.',
-    name: 'Full name', age: 'Age', addr: 'Exact shipping address',
+    name: 'Full name', phone: 'WhatsApp / phone', addr: 'Exact shipping address',
     normal: 'Standard shipping (10-25 days) +3%', express: 'Express shipping (7-14 days) +8%',
     coupon: 'Coupon code', apply: 'Apply',
     pay: 'Confirm order & view payment',
     empty: 'Your cart is empty.',
-    need: 'Please fill in name, age and address.',
+    need: 'Please fill in name, WhatsApp and address.',
     cancel: '⚠️ Cancellation: You may cancel within 24h after payment; 98% refunded (2% management fee retained).',
     wal: 'USDT wallet · BNB Smart Chain (BEP20)',
     copy: 'Copy address', copied: 'Copied!',
@@ -898,26 +1122,26 @@ const T = {
     encph: 'SheIn item link...',
     encb: 'Request order',
     ads: '📢 Advertising for suppliers',
-    adsd: 'Rates: 0.25 USDT/min · 8 USDT/hour · 40 USDT/day · 200 USDT/week. 1.5% off over 5 days. Send a photo or short video on Discord and we publish it on the banner.',
+    adsd: 'Rates: 0.25 USDT/min · 8 USDT/hour · 40 USDT/day · 200 USDT/week. 1.5% off over 5 days. Send a photo or short video on WhatsApp and we publish it on the banner.',
     comp: '📬 Complaints & suggestions',
     compph: 'Tell us how to improve...',
     send: 'Send', thanks: 'Thank you! Message recorded.',
     hi: "Hi! I'm the Aetheria Market Bot. How can I help you?",
     noenc: 'Paste a valid SheIn link.',
-    encok: 'Link copied. Send it to Discord (Aetheriamarket) to process.',
+    encok: 'Link copied. Send it on WhatsApp to process it.',
     encargoTitle: 'Order results for',
     wholesale: 'Wholesale Supplier · Direct Order',
     buyEncargo: 'Buy as Order',
     howTitle: 'How to buy in 4 steps',
     how1t: 'Choose', how1d: 'Search or browse the catalog and add to cart.',
-    how2t: 'Details', how2d: 'Enter your name, age and shipping address.',
+    how2t: 'Details', how2d: 'Enter your name, WhatsApp and shipping address.',
     how3t: 'Pay in USDT', how3d: 'Send the total in USDT on BNB Smart Chain (BEP20).',
-    how4t: 'Confirm', how4d: 'Message us on Discord or WhatsApp with the payment proof.',
-    howNote: 'Discord: Aetheriamarket · WhatsApp available · USDT BEP20 payments',
+    how4t: 'Confirm', how4d: 'Message us on WhatsApp with the payment proof.',
+    howNote: 'How to buy: choose · details · pay USDT (BEP20) · confirm on WhatsApp',
     shipTitle: '📦 Shipping', shipDesc: 'Standard and express available. Estimated: 10–25 days (standard) / 7–14 days (express), depending on destination.',
-    payInfoTitle: '💎 Secure payment', payInfoDesc: 'USDT only on BNB Smart Chain (BEP20). After paying, send the receipt via Discord or WhatsApp.',
-    retTitle: '↩️ Returns', retDesc: 'Cancel within 24h after payment (2% admin fee). After that, claims are handled with the carrier.',
-    paySteps: '1) Copy the wallet · 2) Send the exact total in USDT (BEP20 / BNB) · 3) Confirm on Discord or WhatsApp'
+    payInfoTitle: '💎 Secure payment', payInfoDesc: 'USDT only on BNB Smart Chain (BEP20). After paying, send the receipt via WhatsApp.',
+    retTitle: '↩️ Returns', retDesc: 'Cancel within 24h after payment (2% admin fee). If shipping is delayed or there is a problem, message us on WhatsApp and we will help you with the claim.',
+    paySteps: '1) Fill in your details · 2) Copy the wallet and send the exact total in USDT (BEP20 / BNB) · 3) Confirm on WhatsApp'
   }
 };
 
@@ -926,6 +1150,8 @@ const CATS = [
   ['todos', '🔥 Todo', '🔥 All'],
   ['perfumes', '✨ Perfumes', '✨ Perfumes'],
   ['relojes', '⌚ Relojes', '⌚ Watches'],
+  ['joyas', '💎 Joyas', '💎 Jewelry'],
+  ['cosmeticos', '💄 Cosméticos', '💄 Cosmetics'],
   ['interior', '🩲 Ropa interior', '🩲 Underwear'],
   ['ropa', '👕 Ropa y jeans', '👕 Clothes & jeans'],
   ['deportiva', '⚽ Deportiva', '⚽ Sportswear'],
@@ -1056,16 +1282,19 @@ function imgWebpUrl(f) { return imgUrl(f, '.webp'); }
 function pictureTag(f, cls, extra = '') {
   const primary = imgPrimaryUrl(f);
   const ph = 'https://placehold.co/400x400/1e293b/94a3b8?text=Aetheria';
+  const loadingAttr = /loading\s*=/.test(extra) ? '' : 'loading="lazy" ';
+  const decAttr = /decoding\s*=/.test(extra) ? '' : 'decoding="async" ';
   if (CFG.useWebp) {
     return `<picture>
       <source srcset="${imgWebpUrl(f)}" type="image/webp">
-      <img src="${primary}" class="${cls}" ${extra} loading="lazy" decoding="async"
+      <img src="${primary}" class="${cls}" ${extra} ${loadingAttr}${decAttr}
         onerror="this.onerror=null;this.src='${ph}';">
     </picture>`;
   }
-  return `<img src="${primary}" class="${cls}" ${extra} loading="lazy" decoding="async"
+  return `<img src="${primary}" class="${cls}" ${extra} ${loadingAttr}${decAttr}
     onerror="this.onerror=null;this.src='${ph}';">`;
 }
+
 function setImgWithWebp(el, f) {
   if (!el) return;
   const primary = imgPrimaryUrl(f);
@@ -1092,63 +1321,26 @@ function setImgWithWebp(el, f) {
 function buildProduct(f, i) {
   const fileBase = f.replace(/\.[^.]+$/, '').replace(/\s+/g, ' ').trim();
   const n = nz(fileBase);
-  const H = hs(fileBase);
   const cat = (RULES.find(r => r[0].test(n)) || [0, 'ropa'])[1];
   const sex = /mujer|chica|dama|femen|vestido/.test(n) ? 'Mujer'
             : /hombre|chico|caballero|masculin/.test(n) ? 'Hombre' : 'Unisex';
-
-  const nameEs = fileBase.charAt(0).toUpperCase() + fileBase.slice(1);
-  let nameEn = nameEs
-    .replace(/ropa interior/gi, 'Underwear')
-    .replace(/mujer/gi, 'Women')
-    .replace(/hombre/gi, 'Men')
-    .replace(/chica/gi, 'Women')
-    .replace(/reloj(es)?/gi, m => m.toLowerCase().includes('es') ? 'Watches' : 'Watch')
-    .replace(/perfume(ría)?/gi, 'Perfume')
-    .replace(/zapatillas?/gi, 'Sneakers')
-    .replace(/zapato/gi, 'Shoe')
-    .replace(/tenis/gi, 'Sneakers')
-    .replace(/abrigo(s)?/gi, m => m.toLowerCase().endsWith('s') ? 'Coats' : 'Coat')
-    .replace(/vestido/gi, 'Dress')
-    .replace(/playera/gi, 'T-shirt')
-    .replace(/short(s)?/gi, 'Shorts')
-    .replace(/mono(s)?/gi, 'Jumpsuit')
-    .replace(/sudadera/gi, 'Hoodie')
-    .replace(/jeans/gi, 'Jeans')
-    .replace(/pantalón/gi, 'Pants')
-    .replace(/conjunto/gi, 'Set')
-    .replace(/elegante/gi, 'Elegant')
-    .replace(/moderno/gi, 'Modern')
-    .replace(/clásico/gi, 'Classic')
-    .replace(/inteligente/gi, 'Smart')
-    .replace(/festiva/gi, 'Festive')
-    .replace(/gym|deporte/gi, 'Sport')
-    .replace(/disfraz/gi, 'Costume');
-
-  let [lo, hi] = PR[cat] || [6, 22];
-  if (/inteligente|smart/.test(n)) [lo, hi] = [28, 48];
-  if (cat === 'interior' && /fina|elegan|conjunto|modelo/.test(n)) { lo = 4.5; hi = 12; }
-  // Precio base competitivo
-  let priceBase = Math.round((lo + (H % 1000) / 1000 * (hi - lo)) * 2) / 2;
-  if (priceBase < 2.5) priceBase = 2.5;
-
-  // Rebajas: ~35% de productos con descuento 12–28%
-  const onSale = (H % 10) <= 3;
-  const discPct = onSale ? (12 + (H % 17)) : 0;
-  const oldPrice = onSale ? priceBase : null;
-  let price = onSale ? Math.round(priceBase * (1 - discPct / 100) * 2) / 2 : priceBase;
-  if (price < 2) price = 2;
-
+  // Nombres y precios FIJOS (tablas v2.0): estables entre cargas y ediciones.
+  const nm = NAME_TABLE[f];
+  const nameEs = nm ? nm[0] : (fileBase.charAt(0).toUpperCase() + fileBase.slice(1));
+  const nameEn = nm ? nm[1] : nameEs;
+  const pr = PRICE_TABLE[f];
+  const price = pr ? pr[0] : 10;
+  const oldPrice = (pr && pr[1]) ? pr[1] : null;
+  const onSale = !!(oldPrice && oldPrice > price);
+  const discPct = onSale ? Math.round((1 - price / oldPrice) * 100) : 0;
   const sizes = ['zapatos'].includes(cat)
     ? ['38', '39', '40', '41', '42', '43']
     : ['perfumes', 'relojes', 'joyas', 'gafas', 'cremas', 'cosmeticos'].includes(cat)
       ? ['Única']
       : ['S', 'M', 'L', 'XL'];
-
-  const pool = RV[POOL[cat] || 'R'];
-  const rev = [0, 1, 2].map(k => pool[(H + k * 3) % pool.length]);
-
-  return { i, f, nameEs, nameEn, cat, sex, price, oldPrice, discPct, onSale, sizes, rev };
+  const desc = CAT_DESC[cat] || CAT_DESC.ropa;
+  // Sin reseñas generadas: rev queda vacío; solo se muestran comentarios reales.
+  return { i, f, nameEs, nameEn, cat, sex, price, oldPrice, discPct, onSale, sizes, rev: [], descEs: desc[0], descEn: desc[1] };
 }
 
 function displayName(p) {
@@ -1167,8 +1359,6 @@ function load() {
   startBlackFridayCountdown();
   // Hero ligero al inicio (sin marquee pesado todavía)
   renderHeroPromo(true);
-  const inv = getDiscordInvite();
-  if ($('#dcInviteInput') && inv) $('#dcInviteInput').value = inv;
   const hdr = document.querySelector('.site-header');
   const onScroll = () => {
     if (!hdr) return;
@@ -1182,13 +1372,9 @@ function load() {
   const later = window.requestIdleCallback || ((fn) => setTimeout(fn, 200));
   later(() => {
     try {
-      renderDiscordCatalog();
       injectSeoProductList();
     } catch (e) {}
   });
-  later(() => {
-    try { fetchDiscordCatalogJson(); } catch (e) {}
-  }, { timeout: 2500 });
   // Video: no se descarga hasta que el usuario pulse play
   setupPromoVideoLazy();
 }
@@ -1232,14 +1418,14 @@ function injectSeoProductList() {
   const old = document.getElementById('seo-product-list');
   if (old) old.remove();
   const base = 'https://kingwaches.github.io/aetheria-market-/';
-  const items = P.slice(0, 12).map((p, i) => ({
+  const items = P.map((p, i) => ({
     '@type': 'ListItem',
     position: i + 1,
     item: {
       '@type': 'Product',
       name: p.nameEs,
       image: base + encodeURIComponent(p.f),
-      description: (p.nameEs || '') + ' — Disponible en Aetheria Market. Precio en USDT, pago por red BNB Smart Chain (BEP20).',
+      description: p.descEs || p.nameEs,
       sku: 'AETH-' + (p.i + 1),
       offers: {
         '@type': 'Offer',
@@ -1334,7 +1520,7 @@ function applyLang() {
   setTxt('cartSecPay', 'cartPay');
   setTxt('contShopBtn', 'contShop');
   $('#nm').placeholder = t('name');
-  $('#ag').placeholder = t('age');
+  const phEl = $('#ph'); if (phEl) phEl.placeholder = t('phone');
   $('#ad').placeholder = t('addr');
   $('#cp').placeholder = t('coupon');
   $('#applyBtn').textContent = t('apply');
@@ -1369,7 +1555,7 @@ function applyLang() {
     : 'Verified catalog · USDT BEP20 payments · International shipping';
   const t1 = $('#trust1'), t2 = $('#trust2'), t3 = $('#trust3'), t4 = $('#trust4');
   if (t1) t1.textContent = L === 'es' ? '✓ Pago en USDT (BEP20)' : '✓ USDT (BEP20) payments';
-  if (t2) t2.textContent = L === 'es' ? '✓ Confirmación por Discord / WhatsApp' : '✓ Confirm via Discord / WhatsApp';
+  if (t2) t2.textContent = L === 'es' ? '✓ Confirmación por WhatsApp' : '✓ Confirm via WhatsApp';
   if (t3) t3.textContent = L === 'es' ? '✓ Encargos y catálogo propio' : '✓ Catalog & custom orders';
   if (t4) t4.textContent = L === 'es' ? '✓ Atención personalizada' : '✓ Personalized support';
 
@@ -1385,11 +1571,12 @@ function applyLang() {
 
   // Select orden
   const fo = $('#fo');
-  const curOrd = fo.value || 'asc';
+  const curOrd = fo.value || 'feat';
   fo.innerHTML = `
+    <option value="feat">${t('feat')}</option>
     <option value="asc">${t('asc')}</option>
     <option value="desc">${t('desc')}</option>`;
-  fo.value = curOrd;
+  fo.value = ['feat', 'asc', 'desc'].includes(curOrd) ? curOrd : 'feat';
 
   // Select talla
   const allSizes = [...new Set(P.flatMap(p => p.sizes))];
@@ -1418,210 +1605,27 @@ function applyLang() {
 }
 
 function contactLine() {
-  const d = CFG.discord || 'Aetheriamarket';
   const wa = (CFG.whatsapp || '').replace(/\D/g, '');
-  if (wa) {
-    return L === 'es'
-      ? `Discord: ${d} · WhatsApp: +${wa}`
-      : `Discord: ${d} · WhatsApp: +${wa}`;
-  }
-  return L === 'es'
-    ? `Discord: ${d} · WhatsApp: pídelo por Discord`
-    : `Discord: ${d} · WhatsApp: ask via Discord`;
-}
-
-/** Abre el servidor oficial Discord (o copia usuario si no hay invitación) */
-function contactDiscord(ev) {
-  if (ev && ev.preventDefault) ev.preventDefault();
-  const invite = getDiscordInvite();
-  const d = CFG.discord || 'Aetheriamarket';
-  const server = CFG.discordServer || 'Servidor de Aetheria Market';
-  if (invite) {
-    window.open(invite, '_blank', 'noopener');
-    return;
-  }
-  const copy = () => {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(d);
-    }
-    return Promise.resolve();
-  };
-  copy().then(() => {
-    alert(
-      L === 'es'
-        ? `Servidor: ${server}\nUsuario: ${d}\nCanal: ${CFG.discordChannel || '#catalogo-y-ofertas'}\n\nAún no hay link de invitación en la web.\nEn Admin 🔒 pega tu enlace discord.gg permanente.\nMientras tanto se abrió Discord.`
-        : `Server: ${server}\nUser: ${d}\nChannel: ${CFG.discordChannel || '#catalogo-y-ofertas'}\n\nNo invite link on the site yet.\nPaste your permanent discord.gg link in Admin 🔒.`
-    );
-    window.open('https://discord.com/app', '_blank', 'noopener');
-  }).catch(() => {
-    window.open('https://discord.com/app', '_blank', 'noopener');
-  });
-}
-
-function getDiscordInvite() {
-  try {
-    const s = localStorage.getItem('aetheria_discord_invite');
-    if (s && /^https?:\/\/(discord\.gg|discord\.com\/invite)\//i.test(s)) return s;
-  } catch (e) {}
-  if (CFG.discordInvite && /^https?:\/\//i.test(CFG.discordInvite)) return CFG.discordInvite;
-  return '';
-}
-
-const DC_KEY = 'aetheria_discord_catalog_v1';
-
-function getDiscordCatalog() {
-  try { return JSON.parse(localStorage.getItem(DC_KEY) || '[]'); }
-  catch (e) { return []; }
-}
-
-function setDiscordCatalog(arr) {
-  localStorage.setItem(DC_KEY, JSON.stringify(arr));
-}
-
-/** Productos generados por el bot (discord-catalog.json) */
-let DC_BOT = [];
-
-async function fetchDiscordCatalogJson() {
-  try {
-    const res = await fetch('discord-catalog.json?ts=' + Date.now(), { cache: 'no-store' });
-    if (!res.ok) return;
-    const data = await res.json();
-    const list = Array.isArray(data) ? data : (data.products || []);
-    DC_BOT = list.map(p => ({
-      id: p.id || ('bot-' + (p.name || Math.random())),
-      name: p.name || 'Producto',
-      price: String(p.price ?? '0.00'),
-      offer: p.offer || '',
-      img: p.img || (p.images && p.images[0]) || '',
-      ref: p.ref || '',
-      text: p.text || p.description || '',
-      channel: p.channel || '#catalogo-y-ofertas',
-      date: p.date || data.updatedAt || '',
-      fromBot: true,
-      messageUrl: p.messageUrl || ''
-    }));
-    renderDiscordCatalog();
-  } catch (e) { /* sin JSON aún */ }
-}
-
-function allDiscordProducts() {
-  const map = new Map();
-  DC_BOT.forEach(p => map.set(String(p.id), p));
-  getDiscordCatalog().forEach(p => map.set(String(p.id), { ...p, fromBot: false }));
-  return [...map.values()].sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
-}
-
-function saveDiscordInvite() {
-  const u = ($('#dcInviteInput')?.value || '').trim();
-  if (!/^https?:\/\/(discord\.gg|discord\.com\/invite)\//i.test(u)) {
-    alert(L === 'es' ? 'Pega un enlace válido de Discord (discord.gg/...).' : 'Paste a valid Discord invite link.');
-    return;
-  }
-  localStorage.setItem('aetheria_discord_invite', u);
-  CFG.discordInvite = u;
-  const msg = $('#dcAdminMsg');
-  if (msg) msg.textContent = L === 'es' ? '✔ Invitación guardada. El botón Discord abrirá el servidor.' : '✔ Invite saved.';
-}
-
-function discordProductAdd() {
-  const name = ($('#dcName')?.value || '').trim();
-  const price = parseFloat($('#dcPrice')?.value || '0');
-  const offer = ($('#dcOffer')?.value || '').trim();
-  const img = ($('#dcImg')?.value || '').trim();
-  const ref = ($('#dcRef')?.value || '').trim();
-  const text = ($('#dcText')?.value || '').trim();
-  if (!name || !(price > 0)) {
-    alert(L === 'es' ? 'Nombre y precio son obligatorios.' : 'Name and price are required.');
-    return;
-  }
-  const arr = getDiscordCatalog();
-  arr.unshift({
-    id: Date.now(),
-    name,
-    price: f2(price),
-    offer,
-    img,
-    ref,
-    text,
-    channel: CFG.discordChannel || '#catalogo-y-ofertas',
-    date: new Date().toISOString()
-  });
-  setDiscordCatalog(arr.slice(0, 40));
-  ['dcName','dcPrice','dcOffer','dcImg','dcRef','dcText'].forEach(id => {
-    if ($(id)) $(id).value = '';
-  });
-  renderDiscordCatalog();
-  const msg = $('#dcAdminMsg');
-  if (msg) msg.textContent = L === 'es' ? '✔ Producto publicado en la sección Discord.' : '✔ Product published on Discord section.';
-}
-
-function discordProductClear() {
-  if (!confirm(L === 'es' ? '¿Vaciar productos de Discord en la web?' : 'Clear Discord products on the site?')) return;
-  setDiscordCatalog([]);
-  renderDiscordCatalog();
-}
-
-function discordImgSrc(img) {
-  if (!img) return 'https://placehold.co/400x400/1e293b/94a3b8?text=Discord';
-  if (/^https?:\/\//i.test(img)) return img;
-  return imgUrl(img);
-}
-
-function renderDiscordCatalog() {
-  const grid = $('#discordGrid');
-  const empty = $('#discordEmpty');
-  if (!grid) return;
-  const arr = (typeof allDiscordProducts === 'function') ? allDiscordProducts() : getDiscordCatalog();
-  if (!arr.length) {
-    grid.innerHTML = '';
-    if (empty) empty.classList.remove('hidden');
-    return;
-  }
-  if (empty) empty.classList.add('hidden');
-  grid.innerHTML = arr.map(item => {
-    const offerHtml = item.offer
-      ? `<span class="badge-hot" style="position:static;display:inline-block;margin-bottom:6px">${esc(item.offer)}</span>`
-      : '';
-    const badge = item.fromBot ? 'Bot' : 'Discord';
-    return `
-    <article class="c rounded-2xl p-3 flex flex-col card-hover">
-      <div class="relative overflow-hidden rounded-xl mb-2">
-        <img src="${esc(discordImgSrc(item.img))}" alt="${esc(item.name)}" class="w-full h-48 object-cover" loading="lazy" decoding="async"
-          onerror="this.src='https://placehold.co/400x400/1e293b/94a3b8?text=Discord'">
-        <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-600 text-white">${badge}</span>
-      </div>
-      ${offerHtml}
-      <h3 class="font-semibold text-sm leading-snug">${esc(item.name)}</h3>
-      <p class="text-[11px] m mt-1 line-clamp-2">${esc(item.text || '')}</p>
-      ${item.ref ? `<p class="text-[10px] m mt-1">Ref: ${esc(item.ref)}</p>` : ''}
-      <div class="flex justify-between items-center mt-auto pt-2">
-        <b class="text-cyan-400 text-lg">${esc(item.price)} USDT</b>
-        <button type="button" class="opt text-[11px]" style="min-height:36px" onclick="contactDiscord()">${L==='es'?'Pedir en Discord':'Order on Discord'}</button>
-      </div>
-      <p class="text-[10px] m mt-2">${esc(item.channel || '#catalogo-y-ofertas')}</p>
-    </article>`;
-  }).join('');
+  return wa ? `WhatsApp: +${wa}` : (L === 'es' ? 'WhatsApp disponible' : 'WhatsApp available');
 }
 
 function updateContacts() {
   const wa = (CFG.whatsapp || '').replace(/\D/g, '');
-  const d = CFG.discord || 'Aetheriamarket';
   const note = $('#howNote');
   if (note) {
     note.innerHTML = L === 'es'
-      ? `${contactLine()} · Envíos internacionales · USDT BNB Smart Chain (BEP20)`
-      : `${contactLine()} · International shipping · USDT BNB Smart Chain (BEP20)`;
+      ? `<b style="color:var(--tx)">Cómo comprar:</b> elige · datos · paga USDT (BEP20) · confirma por WhatsApp · WhatsApp: +${wa} · Envíos internacionales`
+      : `<b style="color:var(--tx)">How to buy:</b> choose · details · pay USDT (BEP20) · confirm on WhatsApp · WhatsApp: +${wa} · International shipping`;
   }
   const foot = document.querySelector('footer p.text-center');
   if (foot) {
-    const waLink = wa ? ` · <a href="https://wa.me/${wa}" target="_blank" rel="noopener" class="underline">WhatsApp</a>` : '';
-    foot.innerHTML = `© 2026 Aetheria Market · <button type="button" onclick="contactDiscord()" class="underline" style="background:none;border:none;color:var(--tx);cursor:pointer;font:inherit">Discord</button>: <b style="color:var(--tx)">${esc(d)}</b>${waLink}`;
+    const waLink = wa ? ` · <a href="https://wa.me/${wa}" target="_blank" rel="noopener" class="underline">WhatsApp +${wa}</a>` : '';
+    foot.innerHTML = `© 2026 Aetheria Market · Pago USDT BEP20${waLink} · <span id="siteVersion">v${CFG.version || ''}</span>`;
   }
   const waHeader = $('#waHeaderBtn');
   if (waHeader) {
     if (wa) {
-      waHeader.href = `https://wa.me/${wa}`;
-      waHeader.setAttribute('href', `https://wa.me/${wa}`);
+      waHeader.href = `https://wa.me/${wa}?text=${encodeURIComponent(L === 'es' ? 'Hola, quiero ayuda con mi pedido en Aetheria Market' : 'Hi, I need help with my Aetheria Market order')}`;
       waHeader.textContent = 'WhatsApp';
       waHeader.target = '_blank';
       waHeader.rel = 'noopener';
@@ -1633,14 +1637,13 @@ function updateContacts() {
   const waPay = $('#waPayLink');
   if (waPay && wa) {
     waPay.href = `https://wa.me/${wa}`;
-    waPay.textContent = 'WhatsApp';
     waPay.target = '_blank';
     waPay.rel = 'noopener';
   }
-  const dHead = $('#discordHeaderBtn');
-  if (dHead) dHead.textContent = 'Discord';
-  const dPay = $('#discordPayBtn');
-  if (dPay) dPay.textContent = L === 'es' ? 'Discord' : 'Discord';
+  const waFloat = $('#waFloat');
+  if (waFloat && wa) {
+    waFloat.href = `https://wa.me/${wa}?text=${encodeURIComponent(L === 'es' ? 'Hola, quiero hacer un pedido en Aetheria Market' : 'Hi, I want to place an order at Aetheria Market')}`;
+  }
   const feat = $('#featTitle');
   if (feat) feat.textContent = L === 'es' ? 'Ofertas destacadas' : 'Featured deals';
   const vt = $('#videoTitle');
@@ -1648,22 +1651,9 @@ function updateContacts() {
   const ct = $('#cartTrust');
   if (ct) ct.textContent = L === 'es' ? 'Pago USDT · BEP20 · Confirmación por WhatsApp' : 'USDT · BEP20 · Confirm via WhatsApp';
   const vh = $('#videoHint');
-  if (vh) vh.textContent = L === 'es' ? 'Productos · proveedores · ofertas' : 'Products · suppliers · deals';
+  if (vh) vh.textContent = L === 'es' ? 'Mira el catálogo en video' : 'Watch the catalog on video';
   const pvl = $('#promoVidLabel');
   if (pvl) pvl.textContent = L === 'es' ? 'Promo oficial Aetheria Market' : 'Official Aetheria Market promo';
-  const evl = $('#extraVidLabel');
-  if (evl) evl.textContent = L === 'es' ? 'Video de proveedor / promoción' : 'Supplier / promo video';
-  const dct = $('#dcTitle');
-  if (dct) dct.textContent = L === 'es'
-    ? `💬 Desde Discord · ${CFG.discordChannel || '#catalogo-y-ofertas'}`
-    : `💬 From Discord · ${CFG.discordChannel || '#catalogo-y-ofertas'}`;
-  const dcd = $('#dcDesc');
-  if (dcd) dcd.textContent = L === 'es'
-    ? `Productos y ofertas del ${CFG.discordServer || 'servidor oficial'}. Imagen, precio, oferta y referencia.`
-    : `Products and deals from ${CFG.discordServer || 'the official server'}. Image, price, offer and reference.`;
-  const dcj = $('#dcJoinBtn');
-  if (dcj) dcj.textContent = L === 'es' ? 'Unirse al servidor' : 'Join the server';
-  renderDiscordCatalog();
   showPromo(promoIdx);
   renderHeroPromo(true);
   startBlackFridayCountdown();
@@ -1671,8 +1661,8 @@ function updateContacts() {
   const usdtX = $('#usdtSeoText');
   if (usdtT) usdtT.textContent = L === 'es' ? 'Pago con USDT (BEP20)' : 'Pay with USDT (BEP20)';
   if (usdtX) usdtX.innerHTML = L === 'es'
-    ? 'Aetheria Market es una tienda online pensada para <strong>comprar con USDT</strong> (Tether). Aceptamos pagos en la red <strong>BNB Smart Chain (BEP20)</strong>. Elige productos del catálogo, paga el total en USDT y confirma por WhatsApp o Discord. Ideal si buscas una <strong>tienda que acepte USDT</strong> para ropa, relojes, perfumes y encargos.'
-    : 'Aetheria Market is an online store built for <strong>paying with USDT</strong> (Tether). We accept payments on the <strong>BNB Smart Chain (BEP20)</strong> network. Choose products, pay the total in USDT, and confirm via WhatsApp or Discord. Ideal if you want a <strong>store that accepts USDT</strong> for clothes, watches, perfumes and custom orders.';
+    ? 'Aetheria Market es una tienda online pensada para <strong>comprar con USDT</strong> (Tether). Aceptamos pagos en la red <strong>BNB Smart Chain (BEP20)</strong>. Elige productos del catálogo, paga el total en USDT y confirma por WhatsApp. Ideal si buscas una <strong>tienda que acepte USDT</strong> para ropa, relojes, perfumes y encargos.'
+    : 'Aetheria Market is an online store built for <strong>paying with USDT</strong> (Tether). We accept payments on the <strong>BNB Smart Chain (BEP20)</strong> network. Choose products, pay the total in USDT, and confirm via WhatsApp. Ideal if you want a <strong>store that accepts USDT</strong> for clothes, watches, perfumes and custom orders.';
 }
 
 /* ========== HERO PROMO DINÁMICO (bajo buscador) ========== */
@@ -1972,15 +1962,16 @@ function quickAdd(i) {
 function renderFeatured() {
   const box = $('#featGrid');
   if (!box || !P.length) return;
-  // Destacados: prioriza rebajas + variedad de categorías
+  // Destacados: orden fijo curado (FEATURED) y luego rebajas
   const picks = [];
-  const catsSeen = new Set();
-  const sorted = [...P].sort((a, b) => (b.onSale - a.onSale) || (b.discPct - a.discPct) || (a.price - b.price));
+  for (const f of FEATURED) {
+    const p = P.find(x => x.f === f);
+    if (p && picks.length < 4) picks.push(p);
+  }
+  const sorted = [...P].sort((a, b) => (b.onSale - a.onSale) || (b.discPct - a.discPct) || (b.price - a.price));
   for (const p of sorted) {
     if (picks.length >= 4) break;
-    if (catsSeen.has(p.cat) && picks.length < 3) continue;
-    catsSeen.add(p.cat);
-    picks.push(p);
+    if (!picks.includes(p)) picks.push(p);
   }
   while (picks.length < 4 && picks.length < P.length) {
     const p = P[picks.length * 7 % P.length];
@@ -2003,13 +1994,13 @@ function smartMatch(p, query) {
   return false;
 }
 
-let catalogLimit = 8;
+let catalogLimit = 12;
 function renderCatalog(resetLimit) {
-  if (resetLimit !== false) catalogLimit = 8;
+  if (resetLimit !== false) catalogLimit = 12;
   const q = nz($('#q')?.value || '');
   const sx = $('#fs')?.value || 'todos';
   const sz = $('#fz')?.value || 'todas';
-  const o = $('#fo')?.value || 'asc';
+  const o = $('#fo')?.value || 'feat';
 
   let list = P.filter(p =>
     (cat === 'todos' || p.cat === cat) &&
@@ -2018,13 +2009,15 @@ function renderCatalog(resetLimit) {
     smartMatch(p, q)
   );
 
-  list.sort((a, b) => o === 'asc' ? a.price - b.price : b.price - a.price);
+  const featRank = p => { const i = FEATURED.indexOf(p.f); return i === -1 ? 999 : i; };
+  if (o === 'feat') list.sort((a, b) => (featRank(a) - featRank(b)) || (b.onSale - a.onSale) || (b.price - a.price));
+  else list.sort((a, b) => o === 'asc' ? a.price - b.price : b.price - a.price);
 
   const shown = list.slice(0, catalogLimit);
   const more = list.length > shown.length;
   $('#grid').innerHTML = shown.map((p, idx) => productCard(p, { eager: idx < 2 })).join('') + (more
     ? `<div class="col-span-full flex justify-center py-4">
-        <button type="button" class="btn" onclick="catalogLimit+=8;renderCatalog(false)">
+        <button type="button" class="btn" onclick="catalogLimit+=12;renderCatalog(false)">
           ${L === 'es' ? 'Ver más productos' : 'Show more'} (${list.length - shown.length})
         </button>
       </div>`
@@ -2088,13 +2081,13 @@ function handleSearch(val) {
       'https://images.unsplash.com/photo-1521572163474-6854fcae595a?w=400&q=80',
       'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&q=80',
       'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400&q=80',
-      'https://images.unsplash.com/photo-1576561547992-50b6c0c0c0c0?w=400&q=80'
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&q=80'
     ],
     camisa: [
       'https://images.unsplash.com/photo-1521572163474-6854fcae595a?w=400&q=80',
       'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=400&q=80',
       'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400&q=80',
-      'https://images.unsplash.com/photo-1576561547992-50b6c0c0c0c0?w=400&q=80'
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&q=80'
     ],
     default: [
       'https://images.unsplash.com/photo-1521572163474-6854fcae595a?w=400&q=80',
@@ -2134,8 +2127,8 @@ function handleSearch(val) {
       </div>
       <p style="margin:8px 0 0;font-size:0.75rem;color:var(--mut);">
         ${L === 'es'
-          ? 'Resultados de Encargo generados para ti. También puedes abrir el catálogo completo del proveedor.'
-          : 'Order results generated for you. You can also open the full supplier catalog.'}
+          ? 'Ejemplos de encargo. Los precios son estimados: el precio final y la disponibilidad se confirman por WhatsApp antes de pagar.'
+          : 'Custom-order examples. Prices are estimated: final price and availability are confirmed on WhatsApp before payment.'}
       </p>
     </div>`;
 
@@ -2155,16 +2148,15 @@ function handleSearch(val) {
       </div>
       <h4 class="font-semibold text-sm leading-tight mb-1">${esc(title)}</h4>
       <div class="my-1">
-        <span class="text-lg font-bold text-emerald-400">${sell} USDT</span>
-        <span class="text-xs line-through m ml-1.5">${original} USDT</span>
+        <span class="text-lg font-bold text-emerald-400">Desde ${sell} USDT</span>
+        <span class="text-xs m ml-1.5">${L === 'es' ? '(precio estimado)' : '(estimated price)'}</span>
       </div>
       <p class="text-[11px] m mb-2">${t('wholesale')}</p>
       <div class="flex flex-col gap-1.5">
-        <button class="btn w-full text-sm" onclick="alert('${L === 'es'
-          ? 'Encargo seleccionado. Contacta por Discord (Aetheriamarket) y envía el nombre del producto para completar el pago en USDT.'
-          : 'Order selected. Contact via Discord (Aetheriamarket) and send the product name to complete payment in USDT.'}')">
-          🛒 ${t('buyEncargo')} (${sell} USDT)
-        </button>
+        <a class="btn w-full text-sm text-center" target="_blank" rel="noopener"
+           href="https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent((L === 'es' ? 'Hola, quiero encargar: ' : 'Hi, I want to order: ') + title + ' (' + sell + ' USDT, precio estimado)')}">
+          🛒 ${t('buyEncargo')}
+        </a>
         <a href="${cjSearchUrl}" target="_blank" rel="noopener"
            class="opt w-full text-center text-xs py-1.5" style="display:block;">
           ${L === 'es' ? 'Ver similares en CJ' : 'See similar on CJ'} ↗
@@ -2219,6 +2211,7 @@ function drawModal() {
     }
   }
   $('#mn').textContent = displayName(p);
+  const md = $('#mdesc'); if (md) md.textContent = L === 'es' ? (p.descEs || '') : (p.descEn || p.descEs || '');
   if (p.onSale && p.oldPrice) {
     $('#mp').innerHTML = `<span class="text-sm m line-through mr-2">${f2(p.oldPrice)} USDT</span>${f2(p.price)} USDT <span class="text-xs font-semibold">−${p.discPct}%</span>`;
   } else {
@@ -2233,10 +2226,13 @@ function drawModal() {
   $('#mb').textContent = edit >= 0 ? t('upd') : t('add');
 
   const stored = JSON.parse(localStorage.getItem('cm' + p.f) || '[]');
-  const allRev = [...p.rev.map(r => [r[0], r[1]]), ...stored.map(x => [x, 5])];
-  $('#mr').innerHTML = allRev.map(r =>
-    `<div>${'★'.repeat(r[1])}${'☆'.repeat(5 - r[1])} ${esc(r[0])}</div>`
-  ).join('');
+  if (!stored.length) {
+    $('#mr').innerHTML = `<div class="m">${L === 'es' ? 'Aún no hay valoraciones de clientes para este producto.' : 'No customer reviews for this product yet.'}</div>`;
+  } else {
+    $('#mr').innerHTML = stored.map(x =>
+      `<div>${'★'.repeat(5)} ${esc(x)}</div>`
+    ).join('');
+  }
 }
 
 function toggleProductVideo() {
@@ -2406,13 +2402,17 @@ function drawCart() {
   if (waBtn) {
     const wa = (CFG.whatsapp || '').replace(/\D/g, '');
     if (wa) {
+      const lines = cart.map(item => {
+        const pp = P.find(x => x.f === item.f);
+        return pp ? `• ${displayName(pp)} (${item.s}) ×${item.q}` : '';
+      }).filter(Boolean).join('\n');
       const msg = encodeURIComponent(
-        (L === 'es' ? 'Hola, voy a pagar / ya pagué mi pedido en Aetheria Market. Total: ' : 'Hi, I will pay / I paid my Aetheria Market order. Total: ')
-        + f2(total) + ' USDT (BEP20)'
+        (L === 'es' ? 'Hola, quiero confirmar mi pedido en Aetheria Market:\n' : 'Hi, I want to confirm my Aetheria Market order:\n')
+        + lines + '\n' + (L === 'es' ? 'Total: ' : 'Total: ') + f2(total) + ' USDT (BEP20)'
       );
       waBtn.href = `https://wa.me/${wa}?text=${msg}`;
       waBtn.style.display = 'block';
-      waBtn.textContent = 'WhatsApp';
+      waBtn.textContent = L === 'es' ? 'Confirmar pedido por WhatsApp' : 'Confirm order on WhatsApp';
     } else {
       waBtn.style.display = 'none';
     }
@@ -2427,12 +2427,22 @@ function drawCart() {
 
 function applyCoupon() {
   const code = $('#cp').value.trim().toUpperCase();
-  if (code === CFG.coupon || code === 'AETHERIA') {
+  const msg = $('#cpMsg');
+  const show = (txt, ok) => {
+    if (!msg) return;
+    msg.classList.remove('hidden');
+    msg.textContent = txt;
+    msg.style.color = ok ? '#16a34a' : '#dc2626';
+  };
+  if (!code) {
+    coupon = false;
+    show(L === 'es' ? 'Escribe un código de cupón.' : 'Enter a coupon code.', false);
+  } else if (code === CFG.coupon || code === 'AETHERIA') {
     coupon = true;
-    alert(L === 'es' ? '✓ Cupón aplicado (−2%)' : '✓ Coupon applied (−2%)');
+    show(L === 'es' ? '✓ Cupón aplicado (−2%)' : '✓ Coupon applied (−2%)', true);
   } else {
     coupon = false;
-    alert(L === 'es' ? 'Cupón no válido' : 'Invalid coupon');
+    show(L === 'es' ? 'Cupón no válido. Revisa el código.' : 'Invalid coupon. Check the code.', false);
   }
   drawCart();
 }
@@ -2450,73 +2460,128 @@ function copyWallet() {
   });
 }
 
-/** Botón principal de pago: copia wallet y guía al cliente */
+let lastOrder = null;
+
+function validateCheckout() {
+  const nameEl = $('#nm'), phoneEl = $('#ph'), addrEl = $('#ad');
+  const name = (nameEl?.value || '').trim();
+  const phone = (phoneEl?.value || '').trim();
+  const addr = (addrEl?.value || '').trim();
+  const digits = phone.replace(/\D/g, '');
+  const missing = [];
+  const mark = (el, bad) => { if (el) el.classList.toggle('err', !!bad); };
+  mark(nameEl, !name);
+  mark(phoneEl, digits.length < 7);
+  mark(addrEl, !addr);
+  if (!name) missing.push(L === 'es' ? 'nombre' : 'name');
+  if (digits.length < 7) missing.push('WhatsApp');
+  if (!addr) missing.push(L === 'es' ? 'dirección' : 'address');
+  const err = $('#cartErr');
+  if (missing.length) {
+    if (err) {
+      err.textContent = (L === 'es' ? 'Completa: ' : 'Please complete: ') + missing.join(', ') + '.';
+      err.classList.add('show');
+    }
+    const first = !name ? nameEl : (digits.length < 7 ? phoneEl : addrEl);
+    if (first) first.focus();
+    return { ok: false, name, phone, addr };
+  }
+  if (err) err.classList.remove('show');
+  return { ok: true, name, phone, addr };
+}
+
+function newOrderId() {
+  const d = new Date();
+  const ymd = d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+  const rnd = Math.random().toString(36).slice(2, 6).toUpperCase();
+  return 'AETH-' + ymd + '-' + rnd;
+}
+
+function orderSummaryText(o) {
+  const lines = [
+    'Aetheria Market — Pedido ' + o.id,
+    'Cliente: ' + o.name,
+    'WhatsApp: ' + o.phone,
+    'Dirección: ' + o.addr,
+    'Envío: ' + o.shipLabel,
+    ''
+  ];
+  o.items.forEach(it => lines.push('• ' + it));
+  lines.push('');
+  lines.push('Subtotal: ' + o.sub + ' USDT');
+  lines.push('IMPSV 5%: ' + o.tax + ' USDT');
+  lines.push('Entrega: ' + o.delivery + ' USDT');
+  if (Number(o.couponDisc) > 0) lines.push('Cupón: -' + o.couponDisc + ' USDT');
+  if (Number(o.volumeDisc) > 0) lines.push('Volumen: -' + o.volumeDisc + ' USDT');
+  lines.push('TOTAL: ' + o.total + ' USDT (BEP20)');
+  lines.push('Wallet: ' + CFG.wallet);
+  return lines.join('\n');
+}
+
+function copyReceipt() {
+  if (!lastOrder) return;
+  const txt = orderSummaryText(lastOrder);
+  const done = () => alert(L === 'es' ? 'Resumen copiado. Pégalo en WhatsApp con tu comprobante.' : 'Summary copied. Paste it on WhatsApp with your proof.');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(done).catch(() => alert(txt));
+  } else {
+    alert(txt);
+  }
+}
+
+/** Botón principal de pago: valida datos, copia wallet y muestra el recibo */
 function payNow() {
   if (!cart.length) {
     alert(t('empty'));
     return;
   }
-  const { total } = calcTotals();
-  copyWallet().then(() => {
-    const msg = L === 'es'
-      ? `Dirección copiada.\n\nEnvía exactamente ${f2(total)} USDT\nRed: BNB Smart Chain (BEP20)\n\nLuego confirma por WhatsApp o Discord con el comprobante.`
-      : `Address copied.\n\nSend exactly ${f2(total)} USDT\nNetwork: BNB Smart Chain (BEP20)\n\nThen confirm on WhatsApp or Discord with the receipt.`;
-    alert(msg);
-    // Resalta wallet y QR
-    const addr = $('#walletAddr');
-    if (addr) {
-      addr.style.outline = '2px solid #22d3ee';
-      setTimeout(() => { addr.style.outline = ''; }, 2000);
-    }
-  });
+  const v = validateCheckout();
+  if (!v.ok) return;
+  copyWallet().catch(() => {});
+  generateReceipt();
 }
 
 function generateReceipt() {
-  const name = $('#nm').value.trim();
-  const age = $('#ag').value.trim();
-  const addr = $('#ad').value.trim();
-  if (!name || !age || !addr) {
-    alert(t('need'));
-    return;
-  }
+  const v = validateCheckout();
+  if (!v.ok) return;
   if (!cart.length) {
     alert(t('empty'));
     return;
   }
-
   const { sub, tax, delivery, couponDisc, volumeDisc, total } = calcTotals();
-  const products = cart.map(item => {
+  const shipLabel = ship === 'expres' ? t('express') : t('normal');
+  const items = cart.map(item => {
     const p = P.find(x => x.f === item.f);
-    return p ? `${displayName(p)} (${item.s}) x${item.q}` : '';
-  }).filter(Boolean).join('; ');
-  let itemsHtml = cart.map(item => {
-    const p = P.find(x => x.f === item.f);
-    return p ? `<div>• ${esc(displayName(p))} (${item.s}) ×${item.q} = ${f2(p.price * item.q)} USDT</div>` : '';
-  }).join('');
-
+    return p ? `${displayName(p)} (${item.s}) ×${item.q} = ${f2(p.price * item.q)} USDT` : '';
+  }).filter(Boolean);
+  const itemsHtml = items.map(x => `<div>• ${esc(x)}</div>`).join('');
+  const orderId = newOrderId();
   const wallet = CFG.wallet;
   const net = CFG.network || 'BNB Smart Chain (BEP20)';
   const wa = (CFG.whatsapp || '').replace(/\D/g, '');
-  const d = CFG.discord || 'Aetheriamarket';
-  const msg = `Hola, generé un pedido en Aetheria Market.\nCliente: ${name}\nTotal: ${f2(total)} USDT (${net})\nProductos: ${products}`;
+  lastOrder = {
+    id: orderId, name: v.name, phone: v.phone, addr: v.addr, shipLabel,
+    items, sub: f2(sub), tax: f2(tax), delivery: f2(delivery),
+    couponDisc: f2(couponDisc), volumeDisc: f2(volumeDisc), total: f2(total)
+  };
+  const waText = orderSummaryText(lastOrder) + '\n\n' + (L === 'es' ? 'Ya pagué / voy a pagar. Adjunto comprobante.' : 'I paid / I will pay. Proof attached.');
   const contactHtml = wa
-    ? `<a class="btn inline-block mt-2" href="https://wa.me/${wa}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp</a>
-       <span class="m text-xs mx-2">o</span>
-       <span class="text-xs">Discord: <b>${esc(d)}</b></span>`
-    : `<p class="text-xs mt-2">Discord: <b>${esc(d)}</b></p>`;
+    ? `<a class="btn inline-block mt-2" href="https://wa.me/${wa}?text=${encodeURIComponent(waText)}" target="_blank" rel="noopener">WhatsApp</a>
+       <button type="button" class="opt mt-2 ml-2" onclick="copyReceipt()">${L === 'es' ? 'Copiar resumen' : 'Copy summary'}</button>`
+    : '';
 
-  // Guarda borrador local (el admin registra el pago confirmado en Contabilidad)
   try {
     const drafts = JSON.parse(localStorage.getItem('aetheria_drafts') || '[]');
-    drafts.unshift({ name, age, addr, products, total: f2(total), network: net, date: new Date().toISOString() });
+    drafts.unshift({ id: orderId, name: v.name, phone: v.phone, addr: v.addr, products: items.join('; '), total: f2(total), network: net, date: new Date().toISOString() });
     localStorage.setItem('aetheria_drafts', JSON.stringify(drafts.slice(0, 50)));
   } catch (e) {}
 
   $('#rb').innerHTML = `
     <div class="mb-2 text-emerald-400 font-bold">${L === 'es' ? '✅ Pedido generado' : '✅ Order created'}</div>
-    <div class="mb-2"><b>${esc(name)}</b> · ${esc(age)} ${L === 'es' ? 'años' : 'y/o'}</div>
-    <div class="mb-2 m">${esc(addr)}</div>
-    <div class="mb-2">${ship === 'expres' ? t('express') : t('normal')}</div>
+    <div class="mb-2 p-2 rounded-lg text-center" style="background:var(--bg);border:1px dashed var(--line)"><span class="text-[10px] m">${L === 'es' ? 'Número de pedido' : 'Order number'}</span><br><b class="text-base select-all">${orderId}</b><br><span class="text-[10px] m">${L === 'es' ? 'Guárdalo: lo necesitarás para confirmar y reclamar.' : 'Keep it: you will need it to confirm and claim.'}</span></div>
+    <div class="mb-2"><b>${esc(v.name)}</b> · WhatsApp: ${esc(v.phone)}</div>
+    <div class="mb-2 m">${esc(v.addr)}</div>
+    <div class="mb-2">${esc(shipLabel)}</div>
     <hr class="my-2" style="border-color:var(--line)">
     ${itemsHtml}
     <hr class="my-2" style="border-color:var(--line)">
@@ -2531,7 +2596,7 @@ function generateReceipt() {
       <ol class="mt-1 ml-4 list-decimal space-y-1 m">
         <li>${L === 'es' ? 'Copia la wallet USDT · red BNB Smart Chain (BEP20)' : 'Copy the USDT wallet · BNB Smart Chain (BEP20)'}</li>
         <li>${L === 'es' ? 'Envía exactamente' : 'Send exactly'} <b style="color:var(--tx)">${f2(total)} USDT</b> (${net})</li>
-        <li>${L === 'es' ? 'Mándanos el comprobante por Discord o WhatsApp' : 'Send us the proof on Discord or WhatsApp'}</li>
+        <li>${L === 'es' ? 'Mándanos el comprobante por WhatsApp con tu número de pedido' : 'Send us the proof on WhatsApp with your order number'}</li>
       </ol>
       <p class="break-all select-all font-mono mt-2 text-[10px] p-2 rounded-lg" style="background:var(--card)">${wallet}</p>
       <p class="text-[10px] m mt-1">${L === 'es' ? '⚠️ Solo red BEP20. Otra red = pérdida de fondos.' : '⚠️ BEP20 only. Wrong network = lost funds.'}</p>
@@ -2545,24 +2610,52 @@ function generateReceipt() {
 /* ========== ENCARGO SHEIN ========== */
 function requestEncargo() {
   const u = $('#eu').value.trim();
+  const msg = $('#encMsg');
+  const show = (txt, ok) => {
+    if (!msg) return;
+    msg.classList.remove('hidden');
+    msg.textContent = txt;
+    msg.style.color = ok ? '#16a34a' : '#dc2626';
+  };
   if (!/^https?:\/\/([\w-]+\.)*(shein)\./i.test(u)) {
-    alert(t('noenc'));
+    show(t('noenc'), false);
     return;
   }
-  navigator.clipboard && navigator.clipboard.writeText(u);
-  alert(t('encok'));
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).catch(() => {});
+  show(L === 'es' ? '✓ Enlace listo. Se abrirá WhatsApp para enviarlo y confirmar precio (+35%).' : '✓ Link ready. WhatsApp will open so you can send it and confirm the price (+35%).', true);
+  const wa = (CFG.whatsapp || '').replace(/\D/g, '');
+  if (wa) {
+    const text = encodeURIComponent((L === 'es' ? 'Hola, quiero hacer un encargo de Shein (+35%): ' : 'Hi, I want a Shein order (+35%): ') + u);
+    window.open('https://wa.me/' + wa + '?text=' + text, '_blank', 'noopener');
+  }
   $('#eu').value = '';
 }
 
 /* ========== QUEJAS ========== */
 function sendComplaint() {
   const x = $('#qj').value.trim();
-  if (!x) return;
+  const msg = $('#compMsg');
+  if (!x) {
+    if (msg) {
+      msg.classList.remove('hidden');
+      msg.textContent = L === 'es' ? 'Escribe tu mensaje primero.' : 'Write your message first.';
+      msg.style.color = '#dc2626';
+    }
+    return;
+  }
   const arr = JSON.parse(localStorage.getItem('quejas') || '[]');
   arr.push({ text: x, date: new Date().toISOString() });
   localStorage.setItem('quejas', JSON.stringify(arr));
   $('#qj').value = '';
-  alert(t('thanks'));
+  const wa = (CFG.whatsapp || '').replace(/\D/g, '');
+  if (msg) {
+    msg.classList.remove('hidden');
+    msg.style.color = '';
+    const link = wa ? `https://wa.me/${wa}?text=${encodeURIComponent((L === 'es' ? 'Hola, quiero compartir una sugerencia sobre Aetheria Market: ' : 'Hi, I want to share feedback about Aetheria Market: ') + x)}` : '#';
+    msg.innerHTML = `${t('thanks')} <a class="underline" href="${link}" target="_blank" rel="noopener">${L === 'es' ? 'Enviarlo también por WhatsApp →' : 'Send it on WhatsApp too →'}</a>`;
+  } else {
+    alert(t('thanks'));
+  }
 }
 
 /* ========== PUBLICIDAD ========== */
@@ -2888,22 +2981,22 @@ function applySeason() {
 /* ========== BOT ASISTENTE ========== */
 const FAQ = {
   es: [
-    ['📝 Inscribirse / Nuevo Cliente', 'Para registrarte realiza tu primera compra llenando tus datos en el carrito.'],
-    ['⚡ Compra rápida y Envío exprés', 'Normal (15-30 días) +3%. Compra exprés (5-8 días) +8%.'],
-    ['🔎 Buscar con proveedores (CJ / SheIn)', 'Si no encuentras un producto en el catálogo, búscala en la página del proveedor (CJ Dropshipping o SheIn). Luego envíanos por WhatsApp o Discord: 1) enlace o nombre, 2) talla/color, 3) tu dirección. Nosotros lo compramos, lo subimos a la tienda si hace falta y te lo enviamos. El bot te enviará el link de pago con la wallet USDT (BEP20) y el total. Pagas y mandas el comprobante por WhatsApp o Discord.'],
-    ['💳 Link de pago', 'Cuando confirmes tu pedido (catálogo o proveedor), el bot te enviará el link de pago: dirección de wallet USDT en red BNB Smart Chain (BEP20), el monto exacto y el QR. También puedes abrirlo desde el carrito con el botón «Pagar con USDT».'],
+    ['📝 Inscribirse / Nuevo Cliente', 'Para comprar, llena tus datos en el carrito (nombre, WhatsApp y dirección) y genera tu pedido. No necesitas registrarte antes.'],
+    ['⚡ Compra rápida y Envío exprés', 'Estándar (10-25 días) +3%. Exprés (7-14 días) +8%. Elige el envío en el carrito.'],
+    ['🔎 Buscar con proveedores (CJ / SheIn)', 'Si no encuentras un producto en el catálogo, búscalo en la página del proveedor (CJ Dropshipping o SheIn). Luego envíanos por WhatsApp: 1) enlace o nombre, 2) talla/color, 3) tu dirección. Nosotros lo compramos y te lo enviamos (+35% de gestión). Te enviaremos el link de pago con la wallet USDT (BEP20) y el total. Pagas y mandas el comprobante por WhatsApp.'],
+    ['💳 Link de pago', 'Cuando confirmes tu pedido (catálogo o proveedor), te enviaremos el link de pago: dirección de wallet USDT en red BNB Smart Chain (BEP20), el monto exacto y el QR. También puedes abrirlo desde el carrito con el botón «Pagar con USDT».'],
     ['🏷️ Cupones y Descuentos', 'Cupón AETHERIA2026 (−2%). Pedidos >100 USDT con >3 artículos tienen −3.4% extra.'],
-    ['🕒 Cancelaciones (24h)', 'Puedes cancelar dentro de las 24h posteriores al pago con devolución del 98%.'],
+    ['🕒 Cancelaciones (24h)', 'Puedes cancelar dentro de las 24h posteriores al pago con devolución del 98%. Escríbenos por WhatsApp con tu número de pedido.'],
     ['🎉 Fechas importantes', 'La tienda cambia de ambiente automáticamente según la festividad.'],
     ['▶ Tour Guiado Paso a Paso']
   ],
   en: [
-    ['📝 Register / New Customer', 'To register place your first order filling your data in the cart.'],
-    ['⚡ Fast buy & Express Shipping', 'Standard (15-30 days) +3%. Express (5-8 days) +8%.'],
-    ['🔎 Search with suppliers (CJ / SheIn)', 'If an item is not in the catalog, search it on the supplier site (CJ Dropshipping or SheIn). Then message us on WhatsApp or Discord with: 1) link or name, 2) size/color, 3) your address. We buy it, add it to the store if needed, and ship it. The bot will send you the payment link with the USDT wallet (BEP20) and total. Pay and send the proof on WhatsApp or Discord.'],
-    ['💳 Payment link', 'When you confirm your order (catalog or supplier), the bot will send you the payment link: USDT wallet on BNB Smart Chain (BEP20), exact amount, and QR. You can also open it from the cart with «Pay with USDT».'],
+    ['📝 Register / New Customer', 'To buy, fill in your details in the cart (name, WhatsApp and address) and create your order. No need to register first.'],
+    ['⚡ Fast buy & Express Shipping', 'Standard (10-25 days) +3%. Express (7-14 days) +8%. Choose shipping in the cart.'],
+    ['🔎 Search with suppliers (CJ / SheIn)', 'If an item is not in the catalog, search it on the supplier site (CJ Dropshipping or SheIn). Then message us on WhatsApp with: 1) link or name, 2) size/color, 3) your address. We buy it and ship it to you (+35% handling). We will send you the payment link with the USDT wallet (BEP20) and total. Pay and send the proof on WhatsApp.'],
+    ['💳 Payment link', 'When you confirm your order (catalog or supplier), we will send you the payment link: USDT wallet on BNB Smart Chain (BEP20), exact amount, and QR. You can also open it from the cart with «Pay with USDT».'],
     ['🏷️ Coupons & Discounts', 'Coupon AETHERIA2026 (−2%). Orders >100 USDT with >3 items get −3.4% off.'],
-    ['🕒 Cancellations (24h)', 'You may cancel within 24h of payment with a 98% refund.'],
+    ['🕒 Cancellations (24h)', 'You may cancel within 24h of payment with a 98% refund. Message us on WhatsApp with your order number.'],
     ['🎉 Special Dates', 'The store changes theme automatically for holidays.'],
     ['▶ Guided Tour Step-by-Step']
   ]
